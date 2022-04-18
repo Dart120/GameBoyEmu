@@ -1,0 +1,3 @@
+/Users/temi/Developer/GameBoyEmu/build/CMakeFiles/main.dir
+/Users/temi/Developer/GameBoyEmu/build/CMakeFiles/edit_cache.dir
+/Users/temi/Developer/GameBoyEmu/build/CMakeFiles/rebuild_cache.dir
