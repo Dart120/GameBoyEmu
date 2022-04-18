@@ -3,7 +3,7 @@ set(CMAKE_HOST_SYSTEM_NAME "Darwin")
 set(CMAKE_HOST_SYSTEM_VERSION "21.4.0")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "arm64")
 
-include("/Users/temi/Developer/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 
 set(CMAKE_SYSTEM "Darwin-21.4.0")
 set(CMAKE_SYSTEM_NAME "Darwin")

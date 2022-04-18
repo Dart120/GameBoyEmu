@@ -1,9 +1,8 @@
 // main.cpp
-#include <sqlite3.h>
 #include <stdio.h>
-
+#include <SDL.h>
 int main()
 {
-    printf("%s\n", sqlite3_libversion());
+    printf("%s\n");
     return 0;
 }
