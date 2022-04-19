@@ -8,7 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/temi/Developer/GameBoyEmu/main.cpp" "CMakeFiles/main.dir/main.cpp.o" "gcc" "CMakeFiles/main.dir/main.cpp.o.d"
+  "/Users/temi/Developer/GameBoyEmu/src/cpu.cpp" "CMakeFiles/main.dir/src/cpu.cpp.o" "gcc" "CMakeFiles/main.dir/src/cpu.cpp.o.d"
+  "/Users/temi/Developer/GameBoyEmu/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.o" "gcc" "CMakeFiles/main.dir/src/main.cpp.o.d"
+  "/Users/temi/Developer/GameBoyEmu/src/memory.cpp" "CMakeFiles/main.dir/src/memory.cpp.o" "gcc" "CMakeFiles/main.dir/src/memory.cpp.o.d"
   )
 
 # Targets to which this target links.

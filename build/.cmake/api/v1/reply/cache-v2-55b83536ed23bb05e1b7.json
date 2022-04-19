@@ -43,7 +43,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "Release"
+			"value" : "Debug"
 		},
 		{
 			"name" : "CMAKE_CACHEFILE_DIR",
@@ -461,10 +461,6 @@
 			"name" : "CMAKE_EXPORT_COMPILE_COMMANDS",
 			"properties" : 
 			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
 				{
 					"name" : "HELPSTRING",
 					"value" : "No help, variable specified on the command line."
@@ -1168,18 +1164,6 @@
 			],
 			"type" : "STATIC",
 			"value" : "/Users/temi/Developer/GameBoyEmu"
-		},
-		{
-			"name" : "unofficial-sqlite3_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for unofficial-sqlite3."
-				}
-			],
-			"type" : "PATH",
-			"value" : "unofficial-sqlite3_DIR-NOTFOUND"
 		}
 	],
 	"kind" : "cache",
