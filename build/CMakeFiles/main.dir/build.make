@@ -124,10 +124,11 @@ main: CMakeFiles/main.dir/src/cpu.cpp.o
 main: CMakeFiles/main.dir/src/main.cpp.o
 main: CMakeFiles/main.dir/src/memory.cpp.o
 main: CMakeFiles/main.dir/build.make
-main: /opt/homebrew/lib/libfmt.8.1.1.dylib
 main: /opt/homebrew/Cellar/sdl2/2.0.20/lib/libSDL2.dylib
 main: /opt/homebrew/Cellar/sdl2/2.0.20/lib/libSDL2main.a
 main: /opt/homebrew/Cellar/sdl2/2.0.20/lib/libSDL2.a
+main: /opt/homebrew/lib/libspdlog.1.9.2.dylib
+main: /opt/homebrew/lib/libfmt.8.1.1.dylib
 main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/temi/Developer/GameBoyEmu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
