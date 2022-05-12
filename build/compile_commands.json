@@ -1,17 +1,17 @@
 [
 {
   "directory": "/Users/temi/Developer/GameBoyEmu/build",
-  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.20/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/cpu.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/cpu.cpp",
+  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.22/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/cpu.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/cpu.cpp",
   "file": "/Users/temi/Developer/GameBoyEmu/src/cpu.cpp"
 },
 {
   "directory": "/Users/temi/Developer/GameBoyEmu/build",
-  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.20/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/main.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/main.cpp",
+  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.22/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/main.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/main.cpp",
   "file": "/Users/temi/Developer/GameBoyEmu/src/main.cpp"
 },
 {
   "directory": "/Users/temi/Developer/GameBoyEmu/build",
-  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.20/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/memory.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/memory.cpp",
+  "command": "/usr/bin/clang++ -DFMT_LOCALE -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/temi/Developer/GameBoyEmu/include -isystem /opt/homebrew/include -isystem /opt/homebrew/Cellar/sdl2/2.0.22/include/SDL2 -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++11 -o CMakeFiles/main.dir/src/memory.cpp.o -c /Users/temi/Developer/GameBoyEmu/src/memory.cpp",
   "file": "/Users/temi/Developer/GameBoyEmu/src/memory.cpp"
 },
 {

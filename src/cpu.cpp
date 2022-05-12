@@ -38,7 +38,7 @@
         return 1;
      }
      bool CPU::get_flag(flag_index index){
-        bool bit = (this->registers.AF.F >> index) & 1U;
+        bool bit = (this->registers.AF.F >> index) & 1UL;
         return bit;
      }
      void CPU::FDE(){
@@ -54,6 +54,7 @@
             {
             case 0x00:
                 spdlog::info("NOP {:X}", opcode);
+                this->registers.PC += 1;
                 cycles--;
                 break;
             case 0x1000:
@@ -62,9 +63,20 @@
                 cycles--;
                 break;
             case 0x20:
-                spdlog::info("STOP {:X}", opcode);
+                spdlog::info("JR NZ, s8 {:X}", opcode);
                 cycles--;
                 break;
+            case 0x40:
+                spdlog::info("LD B,B {:X}", opcode);
+                this -> registers.BC.B = this->registers.BC.B;
+                cycles--;
+
+                // this -> registers.BC.B = this->memory.mem[this->registers.HL_double];
+
+                break;
+
+
+
             
             default:
                 break;
