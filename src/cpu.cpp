@@ -71,9 +71,9 @@
                 this -> registers.BC.B = this->registers.BC.B;
                 cycles--;
             case 0x50:
-                spdlog::info("LD D, B {:X}", opcode)
+                spdlog::info("LD D, B {:X}", opcode);
                 this -> registers.BC.B = this ->registers.DE.D;
-                cycles--:
+                cycles--;
 
                 // this -> registers.BC.B = this->memory.mem[this->registers.HL_double];
 

@@ -1,0 +1,59 @@
+[settings]
+    arch=armv8
+    build_type=Release
+    compiler=apple-clang
+    compiler.libcxx=libc++
+    compiler.version=13
+    os=Macos
+
+[requires]
+    fmt/8.Y.Z
+    sdl/2.Y.Z
+    spdlog/1.Y.Z
+
+[options]
+
+
+[full_settings]
+    arch=armv8
+    arch_build=armv8
+    build_type=Release
+    compiler=apple-clang
+    compiler.libcxx=libc++
+    compiler.version=13
+    os=Macos
+    os_build=Macos
+
+[full_requires]
+    fmt/8.1.1:2ab5e7a71f81ed7ec68723743c780f2a172fdd49
+    libiconv/1.16:095512ed878f14a09dd732e9f6868729dd437529
+    sdl/2.0.20:e4f93841d737e8ed475ad87ea31f8c7f9a7f815b
+    spdlog/1.10.0:3f5404f0cb554852906516936ff0eff86715f40b
+
+[full_options]
+    fmt:fPIC=True
+    fmt:header_only=False
+    fmt:shared=False
+    fmt:with_fmt_alias=False
+    fmt:with_os_api=True
+    libiconv:fPIC=True
+    libiconv:shared=False
+    sdl:fPIC=True
+    sdl:iconv=True
+    sdl:opengl=True
+    sdl:opengles=True
+    sdl:sdl2main=True
+    sdl:shared=False
+    sdl:vulkan=True
+    spdlog:fPIC=True
+    spdlog:header_only=False
+    spdlog:no_exceptions=False
+    spdlog:shared=False
+    spdlog:wchar_filenames=False
+    spdlog:wchar_support=False
+
+[recipe_hash]
+
+
+[env]
+
