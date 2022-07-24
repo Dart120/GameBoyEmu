@@ -19,7 +19,6 @@ cd /Users/temi/Developer/GameBoyEmu/src && /Library/Developer/CommandLineTools/u
 /opt/homebrew/Cellar/cmake/3.23.1_1/bin/cmake -E cmake_echo_color --switch= --green --bold --progress-dir=/Users/temi/Developer/GameBoyEmu/CMakeFiles --progress-num=4 "Linking CXX executable bin/main"
 cd /Users/temi/Developer/GameBoyEmu/src && /opt/homebrew/Cellar/cmake/3.23.1_1/bin/cmake -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=
 make[2]: Leaving directory `/Users/temi/Developer/GameBoyEmu'
- 
 /opt/homebrew/Cellar/cmake/3.23.1_1/bin/cmake -E cmake_echo_color --switch= --progress-dir=/Users/temi/Developer/GameBoyEmu/CMakeFiles --progress-num=1,2,3,4 "Built target main"
 make[1]: Leaving directory `/Users/temi/Developer/GameBoyEmu'
 /opt/homebrew/Cellar/cmake/3.23.1_1/bin/cmake -E cmake_progress_start /Users/temi/Developer/GameBoyEmu/CMakeFiles 0

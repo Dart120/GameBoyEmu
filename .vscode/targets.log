@@ -6,9 +6,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
- 
 
-# Make data base, printed on Fri May 20 20:15:30 2022
+# Make data base, printed on Tue Jul 12 10:35:11 2022
 
 # Variables
 
@@ -47,7 +46,7 @@ INFOPATH = /opt/homebrew/share/info:
 # makefile (from `Makefile', line 35)
 MAKESILENT = -s
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/jk/nn5s2z2x5z56fgsvh932pwdm0000gn/T/vscode-ipc-a79d8780-dcae-427f-b442-9be72bc23698.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/jk/nn5s2z2x5z56fgsvh932pwdm0000gn/T/vscode-ipc-ddca8b08-2e7e-411f-85c9-5eeb82d6de7f.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -59,7 +58,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.svA6EzlQzn/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.95AtbwSN3k/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -155,7 +154,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 39759
+VSCODE_PID = 9428
 # variable set hash-table stats:
 # Load=72/1024=7%, Rehash=0, Collisions=3/103=3%
 
@@ -242,7 +241,7 @@ preinstall/fast:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-20 17:45:08
+#  Last modified 2022-05-20 20:16:33
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -305,6 +304,7 @@ help:
 
 preinstall: all
 #  Phony target (prerequisite of .PHONY).
+ 
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
@@ -314,7 +314,6 @@ preinstall: all
 
 main/fast:
 #  Phony target (prerequisite of .PHONY).
- 
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
@@ -407,6 +406,6 @@ rebuild_cache:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri May 20 20:15:30 2022
+# Finished Make data base on Tue Jul 12 10:35:11 2022
 
  
