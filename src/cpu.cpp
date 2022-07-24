@@ -82,10 +82,11 @@
                 spdlog::info("LD BC, d16 {:X}", opcode);
                 this -> registers.BC_double = this -> memory.read_16_bit(PC_value + 1);
                 cycles = cycles - 3;
-
-
-
-
+            case 0x02:
+                spdlog::info("LD (BC), A {:X}", opcode);
+                this->memory.write_8_bit(this->registers.BC_double, this->registers.AF.A);
+                cycles = cycles - 2;
+            
 
             
             default:
