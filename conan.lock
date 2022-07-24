@@ -16,6 +16,7 @@
     "options": "fPIC=True\niconv=True\nopengl=True\nopengles=True\nsdl2main=True\nshared=False\nvulkan=True\nlibiconv:fPIC=True\nlibiconv:shared=False",
     "package_id": "e4f93841d737e8ed475ad87ea31f8c7f9a7f815b",
     "prev": "0",
+    "modified": true,
     "requires": [
      "2"
     ],
