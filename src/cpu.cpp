@@ -46,7 +46,7 @@
          while (cycles){
             u_int16_t PC_value = this->registers.PC;
             u_int8_t* PC_pointer = this->memory.mem + PC_value;
-            fmt::print("here");
+            // fmt::print("here");
             spdlog::info("PC Value: {:X} read", PC_value);
             u_int8_t opcode = *PC_pointer;
             spdlog::info("Opcode: {:X} read", opcode);
@@ -78,6 +78,12 @@
                 // this -> registers.BC.B = this->memory.mem[this->registers.HL_double];
 
                 break;
+            case 0x01:
+                spdlog::info("LD BC, d16 {:X}", opcode);
+                this -> registers.BC_double = this -> memory.read_16_bit(PC_value + 1);
+                cycles = cycles - 3;
+
+
 
 
 
