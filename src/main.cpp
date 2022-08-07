@@ -1,6 +1,6 @@
 // main.cpp
 #include <stdio.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 #define FMT_HEADER_ONLY
 #include <fmt/core.h> 

@@ -24,7 +24,7 @@ macro(conan_find_apple_frameworks FRAMEWORKS_FOUND FRAMEWORKS SUFFIX BUILD_TYPE)
         endif()
         foreach(_FRAMEWORK ${FRAMEWORKS})
             # https://cmake.org/pipermail/cmake-developers/2017-August/030199.html
-            find_library(CONAN_FRAMEWORK_${_FRAMEWORK}_FOUND NAME ${_FRAMEWORK} PATHS ${CONAN_FRAMEWORK_DIRS${SUFFIX}} CMAKE_FIND_ROOT_PATH_BOTH)
+            find_library(CONAN_FRAMEWORK_${_FRAMEWORK}_FOUND NAMES ${_FRAMEWORK} PATHS ${CONAN_FRAMEWORK_DIRS${SUFFIX}} CMAKE_FIND_ROOT_PATH_BOTH)
             if(CONAN_FRAMEWORK_${_FRAMEWORK}_FOUND)
                 list(APPEND ${FRAMEWORKS_FOUND} ${CONAN_FRAMEWORK_${_FRAMEWORK}_FOUND})
             else()
@@ -36,58 +36,19 @@ endmacro()
 
 
 #################
-###  SDL
-#################
-set(CONAN_SDL_ROOT "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b")
-set(CONAN_INCLUDE_DIRS_SDL "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include"
-			"/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include/SDL2")
-set(CONAN_LIB_DIRS_SDL "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/lib")
-set(CONAN_BIN_DIRS_SDL "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/bin")
-set(CONAN_RES_DIRS_SDL )
-set(CONAN_SRC_DIRS_SDL )
-set(CONAN_BUILD_DIRS_SDL "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/")
-set(CONAN_FRAMEWORK_DIRS_SDL )
-set(CONAN_LIBS_SDL SDL2main SDL2)
-set(CONAN_PKG_LIBS_SDL SDL2main SDL2)
-set(CONAN_SYSTEM_LIBS_SDL )
-set(CONAN_FRAMEWORKS_SDL CoreVideo CoreAudio AudioToolbox AVFoundation Foundation QuartzCore Cocoa Carbon IOKit ForceFeedback GameController Metal CoreHaptics)
-set(CONAN_FRAMEWORKS_FOUND_SDL "")  # Will be filled later
-set(CONAN_DEFINES_SDL )
-set(CONAN_BUILD_MODULES_PATHS_SDL )
-# COMPILE_DEFINITIONS are equal to CONAN_DEFINES without -D, for targets
-set(CONAN_COMPILE_DEFINITIONS_SDL )
-
-set(CONAN_C_FLAGS_SDL "")
-set(CONAN_CXX_FLAGS_SDL "")
-set(CONAN_SHARED_LINKER_FLAGS_SDL "")
-set(CONAN_EXE_LINKER_FLAGS_SDL "")
-
-# For modern cmake targets we use the list variables (separated with ;)
-set(CONAN_C_FLAGS_SDL_LIST "")
-set(CONAN_CXX_FLAGS_SDL_LIST "")
-set(CONAN_SHARED_LINKER_FLAGS_SDL_LIST "")
-set(CONAN_EXE_LINKER_FLAGS_SDL_LIST "")
-
-# Apple Frameworks
-conan_find_apple_frameworks(CONAN_FRAMEWORKS_FOUND_SDL "${CONAN_FRAMEWORKS_SDL}" "_SDL" "")
-# Append to aggregated values variable
-set(CONAN_LIBS_SDL ${CONAN_PKG_LIBS_SDL} ${CONAN_SYSTEM_LIBS_SDL} ${CONAN_FRAMEWORKS_FOUND_SDL})
-
-
-#################
 ###  SPDLOG
 #################
-set(CONAN_SPDLOG_ROOT "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b")
-set(CONAN_INCLUDE_DIRS_SPDLOG "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/include")
-set(CONAN_LIB_DIRS_SPDLOG "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/lib")
+set(CONAN_SPDLOG_ROOT "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9")
+set(CONAN_INCLUDE_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include")
+set(CONAN_LIB_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib")
 set(CONAN_BIN_DIRS_SPDLOG )
 set(CONAN_RES_DIRS_SPDLOG )
 set(CONAN_SRC_DIRS_SPDLOG )
-set(CONAN_BUILD_DIRS_SPDLOG "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/")
+set(CONAN_BUILD_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/")
 set(CONAN_FRAMEWORK_DIRS_SPDLOG )
 set(CONAN_LIBS_SPDLOG spdlog)
 set(CONAN_PKG_LIBS_SPDLOG spdlog)
-set(CONAN_SYSTEM_LIBS_SPDLOG )
+set(CONAN_SYSTEM_LIBS_SPDLOG pthread)
 set(CONAN_FRAMEWORKS_SPDLOG )
 set(CONAN_FRAMEWORKS_FOUND_SPDLOG "")  # Will be filled later
 set(CONAN_DEFINES_SPDLOG "-DSPDLOG_FMT_EXTERNAL"
@@ -115,57 +76,21 @@ set(CONAN_LIBS_SPDLOG ${CONAN_PKG_LIBS_SPDLOG} ${CONAN_SYSTEM_LIBS_SPDLOG} ${CON
 
 
 #################
-###  LIBICONV
-#################
-set(CONAN_LIBICONV_ROOT "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529")
-set(CONAN_INCLUDE_DIRS_LIBICONV "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/include")
-set(CONAN_LIB_DIRS_LIBICONV "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/lib")
-set(CONAN_BIN_DIRS_LIBICONV "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/bin")
-set(CONAN_RES_DIRS_LIBICONV )
-set(CONAN_SRC_DIRS_LIBICONV )
-set(CONAN_BUILD_DIRS_LIBICONV "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/")
-set(CONAN_FRAMEWORK_DIRS_LIBICONV )
-set(CONAN_LIBS_LIBICONV iconv charset)
-set(CONAN_PKG_LIBS_LIBICONV iconv charset)
-set(CONAN_SYSTEM_LIBS_LIBICONV )
-set(CONAN_FRAMEWORKS_LIBICONV )
-set(CONAN_FRAMEWORKS_FOUND_LIBICONV "")  # Will be filled later
-set(CONAN_DEFINES_LIBICONV )
-set(CONAN_BUILD_MODULES_PATHS_LIBICONV )
-# COMPILE_DEFINITIONS are equal to CONAN_DEFINES without -D, for targets
-set(CONAN_COMPILE_DEFINITIONS_LIBICONV )
-
-set(CONAN_C_FLAGS_LIBICONV "")
-set(CONAN_CXX_FLAGS_LIBICONV "")
-set(CONAN_SHARED_LINKER_FLAGS_LIBICONV "")
-set(CONAN_EXE_LINKER_FLAGS_LIBICONV "")
-
-# For modern cmake targets we use the list variables (separated with ;)
-set(CONAN_C_FLAGS_LIBICONV_LIST "")
-set(CONAN_CXX_FLAGS_LIBICONV_LIST "")
-set(CONAN_SHARED_LINKER_FLAGS_LIBICONV_LIST "")
-set(CONAN_EXE_LINKER_FLAGS_LIBICONV_LIST "")
-
-# Apple Frameworks
-conan_find_apple_frameworks(CONAN_FRAMEWORKS_FOUND_LIBICONV "${CONAN_FRAMEWORKS_LIBICONV}" "_LIBICONV" "")
-# Append to aggregated values variable
-set(CONAN_LIBS_LIBICONV ${CONAN_PKG_LIBS_LIBICONV} ${CONAN_SYSTEM_LIBS_LIBICONV} ${CONAN_FRAMEWORKS_FOUND_LIBICONV})
-
-
-#################
 ###  FMT
 #################
-set(CONAN_FMT_ROOT "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49")
-set(CONAN_INCLUDE_DIRS_FMT "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/include")
-set(CONAN_LIB_DIRS_FMT "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/lib")
+set(CONAN_FMT_ROOT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380")
+set(CONAN_INCLUDE_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include")
+set(CONAN_LIB_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib")
 set(CONAN_BIN_DIRS_FMT )
 set(CONAN_RES_DIRS_FMT )
 set(CONAN_SRC_DIRS_FMT )
-set(CONAN_BUILD_DIRS_FMT "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/")
+set(CONAN_BUILD_DIRS_FMT )
 set(CONAN_FRAMEWORK_DIRS_FMT )
 set(CONAN_LIBS_FMT fmt)
 set(CONAN_PKG_LIBS_FMT fmt)
-set(CONAN_SYSTEM_LIBS_FMT )
+set(CONAN_SYSTEM_LIBS_FMT m)
 set(CONAN_FRAMEWORKS_FMT )
 set(CONAN_FRAMEWORKS_FOUND_FMT "")  # Will be filled later
 set(CONAN_DEFINES_FMT )
@@ -198,13 +123,13 @@ set(CONAN_PACKAGE_VERSION None)
 set(CONAN_SETTINGS_ARCH "armv8")
 set(CONAN_SETTINGS_ARCH_BUILD "armv8")
 set(CONAN_SETTINGS_BUILD_TYPE "Release")
-set(CONAN_SETTINGS_COMPILER "apple-clang")
-set(CONAN_SETTINGS_COMPILER_LIBCXX "libc++")
-set(CONAN_SETTINGS_COMPILER_VERSION "13")
-set(CONAN_SETTINGS_OS "Macos")
-set(CONAN_SETTINGS_OS_BUILD "Macos")
+set(CONAN_SETTINGS_COMPILER "gcc")
+set(CONAN_SETTINGS_COMPILER_LIBCXX "libstdc++11")
+set(CONAN_SETTINGS_COMPILER_VERSION "11")
+set(CONAN_SETTINGS_OS "Linux")
+set(CONAN_SETTINGS_OS_BUILD "Linux")
 
-set(CONAN_DEPENDENCIES sdl spdlog libiconv fmt)
+set(CONAN_DEPENDENCIES spdlog fmt)
 # Storing original command line args (CMake helper) flags
 set(CONAN_CMD_CXX_FLAGS ${CONAN_CXX_FLAGS})
 
@@ -212,31 +137,24 @@ set(CONAN_CMD_SHARED_LINKER_FLAGS ${CONAN_SHARED_LINKER_FLAGS})
 set(CONAN_CMD_C_FLAGS ${CONAN_C_FLAGS})
 # Defining accumulated conan variables for all deps
 
-set(CONAN_INCLUDE_DIRS "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include"
-			"/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include/SDL2"
-			"/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/include"
-			"/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/include"
-			"/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/include" ${CONAN_INCLUDE_DIRS})
-set(CONAN_LIB_DIRS "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/lib"
-			"/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/lib"
-			"/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/lib"
-			"/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/lib" ${CONAN_LIB_DIRS})
-set(CONAN_BIN_DIRS "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/bin"
-			"/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/bin" ${CONAN_BIN_DIRS})
+set(CONAN_INCLUDE_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include" ${CONAN_INCLUDE_DIRS})
+set(CONAN_LIB_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib" ${CONAN_LIB_DIRS})
+set(CONAN_BIN_DIRS  ${CONAN_BIN_DIRS})
 set(CONAN_RES_DIRS  ${CONAN_RES_DIRS})
 set(CONAN_FRAMEWORK_DIRS  ${CONAN_FRAMEWORK_DIRS})
-set(CONAN_LIBS SDL2main SDL2 spdlog iconv charset fmt ${CONAN_LIBS})
-set(CONAN_PKG_LIBS SDL2main SDL2 spdlog iconv charset fmt ${CONAN_PKG_LIBS})
-set(CONAN_SYSTEM_LIBS  ${CONAN_SYSTEM_LIBS})
-set(CONAN_FRAMEWORKS CoreVideo CoreAudio AudioToolbox AVFoundation Foundation QuartzCore Cocoa Carbon IOKit ForceFeedback GameController Metal CoreHaptics ${CONAN_FRAMEWORKS})
+set(CONAN_LIBS spdlog fmt ${CONAN_LIBS})
+set(CONAN_PKG_LIBS spdlog fmt ${CONAN_PKG_LIBS})
+set(CONAN_SYSTEM_LIBS pthread m ${CONAN_SYSTEM_LIBS})
+set(CONAN_FRAMEWORKS  ${CONAN_FRAMEWORKS})
 set(CONAN_FRAMEWORKS_FOUND "")  # Will be filled later
 set(CONAN_DEFINES "-DSPDLOG_FMT_EXTERNAL"
 			"-DSPDLOG_COMPILED_LIB" ${CONAN_DEFINES})
 set(CONAN_BUILD_MODULES_PATHS  ${CONAN_BUILD_MODULES_PATHS})
-set(CONAN_CMAKE_MODULE_PATH "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/"
-			"/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/"
-			"/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/"
-			"/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/" ${CONAN_CMAKE_MODULE_PATH})
+set(CONAN_CMAKE_MODULE_PATH "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/" ${CONAN_CMAKE_MODULE_PATH})
 
 set(CONAN_CXX_FLAGS " ${CONAN_CXX_FLAGS}")
 set(CONAN_SHARED_LINKER_FLAGS " ${CONAN_SHARED_LINKER_FLAGS}")
@@ -258,76 +176,6 @@ macro(conan_define_targets)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CONAN_CMD_CXX_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CONAN_CMD_C_FLAGS}")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${CONAN_CMD_SHARED_LINKER_FLAGS}")
-
-
-    set(_CONAN_PKG_LIBS_SDL_DEPENDENCIES "${CONAN_SYSTEM_LIBS_SDL} ${CONAN_FRAMEWORKS_FOUND_SDL} CONAN_PKG::libiconv")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_SDL_DEPENDENCIES "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_SDL}" "${CONAN_LIB_DIRS_SDL}"
-                                  CONAN_PACKAGE_TARGETS_SDL "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES}"
-                                  "" sdl)
-    set(_CONAN_PKG_LIBS_SDL_DEPENDENCIES_DEBUG "${CONAN_SYSTEM_LIBS_SDL_DEBUG} ${CONAN_FRAMEWORKS_FOUND_SDL_DEBUG} CONAN_PKG::libiconv")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_SDL_DEPENDENCIES_DEBUG "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_DEBUG}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_SDL_DEBUG}" "${CONAN_LIB_DIRS_SDL_DEBUG}"
-                                  CONAN_PACKAGE_TARGETS_SDL_DEBUG "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_DEBUG}"
-                                  "debug" sdl)
-    set(_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELEASE "${CONAN_SYSTEM_LIBS_SDL_RELEASE} ${CONAN_FRAMEWORKS_FOUND_SDL_RELEASE} CONAN_PKG::libiconv")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELEASE "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELEASE}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_SDL_RELEASE}" "${CONAN_LIB_DIRS_SDL_RELEASE}"
-                                  CONAN_PACKAGE_TARGETS_SDL_RELEASE "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELEASE}"
-                                  "release" sdl)
-    set(_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELWITHDEBINFO "${CONAN_SYSTEM_LIBS_SDL_RELWITHDEBINFO} ${CONAN_FRAMEWORKS_FOUND_SDL_RELWITHDEBINFO} CONAN_PKG::libiconv")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELWITHDEBINFO "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELWITHDEBINFO}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_SDL_RELWITHDEBINFO}" "${CONAN_LIB_DIRS_SDL_RELWITHDEBINFO}"
-                                  CONAN_PACKAGE_TARGETS_SDL_RELWITHDEBINFO "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELWITHDEBINFO}"
-                                  "relwithdebinfo" sdl)
-    set(_CONAN_PKG_LIBS_SDL_DEPENDENCIES_MINSIZEREL "${CONAN_SYSTEM_LIBS_SDL_MINSIZEREL} ${CONAN_FRAMEWORKS_FOUND_SDL_MINSIZEREL} CONAN_PKG::libiconv")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_SDL_DEPENDENCIES_MINSIZEREL "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_MINSIZEREL}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_SDL_MINSIZEREL}" "${CONAN_LIB_DIRS_SDL_MINSIZEREL}"
-                                  CONAN_PACKAGE_TARGETS_SDL_MINSIZEREL "${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_MINSIZEREL}"
-                                  "minsizerel" sdl)
-
-    add_library(CONAN_PKG::sdl INTERFACE IMPORTED)
-
-    # Property INTERFACE_LINK_FLAGS do not work, necessary to add to INTERFACE_LINK_LIBRARIES
-    set_property(TARGET CONAN_PKG::sdl PROPERTY INTERFACE_LINK_LIBRARIES ${CONAN_PACKAGE_TARGETS_SDL} ${_CONAN_PKG_LIBS_SDL_DEPENDENCIES}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_SDL_LIST}>
-
-                                                                 $<$<CONFIG:Release>:${CONAN_PACKAGE_TARGETS_SDL_RELEASE} ${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELEASE}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_RELEASE_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_RELEASE_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_SDL_RELEASE_LIST}>>
-
-                                                                 $<$<CONFIG:RelWithDebInfo>:${CONAN_PACKAGE_TARGETS_SDL_RELWITHDEBINFO} ${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_RELWITHDEBINFO}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_RELWITHDEBINFO_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_RELWITHDEBINFO_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_SDL_RELWITHDEBINFO_LIST}>>
-
-                                                                 $<$<CONFIG:MinSizeRel>:${CONAN_PACKAGE_TARGETS_SDL_MINSIZEREL} ${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_MINSIZEREL}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_MINSIZEREL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_MINSIZEREL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_SDL_MINSIZEREL_LIST}>>
-
-                                                                 $<$<CONFIG:Debug>:${CONAN_PACKAGE_TARGETS_SDL_DEBUG} ${_CONAN_PKG_LIBS_SDL_DEPENDENCIES_DEBUG}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_DEBUG_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_SDL_DEBUG_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_SDL_DEBUG_LIST}>>)
-    set_property(TARGET CONAN_PKG::sdl PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CONAN_INCLUDE_DIRS_SDL}
-                                                                      $<$<CONFIG:Release>:${CONAN_INCLUDE_DIRS_SDL_RELEASE}>
-                                                                      $<$<CONFIG:RelWithDebInfo>:${CONAN_INCLUDE_DIRS_SDL_RELWITHDEBINFO}>
-                                                                      $<$<CONFIG:MinSizeRel>:${CONAN_INCLUDE_DIRS_SDL_MINSIZEREL}>
-                                                                      $<$<CONFIG:Debug>:${CONAN_INCLUDE_DIRS_SDL_DEBUG}>)
-    set_property(TARGET CONAN_PKG::sdl PROPERTY INTERFACE_COMPILE_DEFINITIONS ${CONAN_COMPILE_DEFINITIONS_SDL}
-                                                                      $<$<CONFIG:Release>:${CONAN_COMPILE_DEFINITIONS_SDL_RELEASE}>
-                                                                      $<$<CONFIG:RelWithDebInfo>:${CONAN_COMPILE_DEFINITIONS_SDL_RELWITHDEBINFO}>
-                                                                      $<$<CONFIG:MinSizeRel>:${CONAN_COMPILE_DEFINITIONS_SDL_MINSIZEREL}>
-                                                                      $<$<CONFIG:Debug>:${CONAN_COMPILE_DEFINITIONS_SDL_DEBUG}>)
-    set_property(TARGET CONAN_PKG::sdl PROPERTY INTERFACE_COMPILE_OPTIONS ${CONAN_C_FLAGS_SDL_LIST} ${CONAN_CXX_FLAGS_SDL_LIST}
-                                                                  $<$<CONFIG:Release>:${CONAN_C_FLAGS_SDL_RELEASE_LIST} ${CONAN_CXX_FLAGS_SDL_RELEASE_LIST}>
-                                                                  $<$<CONFIG:RelWithDebInfo>:${CONAN_C_FLAGS_SDL_RELWITHDEBINFO_LIST} ${CONAN_CXX_FLAGS_SDL_RELWITHDEBINFO_LIST}>
-                                                                  $<$<CONFIG:MinSizeRel>:${CONAN_C_FLAGS_SDL_MINSIZEREL_LIST} ${CONAN_CXX_FLAGS_SDL_MINSIZEREL_LIST}>
-                                                                  $<$<CONFIG:Debug>:${CONAN_C_FLAGS_SDL_DEBUG_LIST}  ${CONAN_CXX_FLAGS_SDL_DEBUG_LIST}>)
 
 
     set(_CONAN_PKG_LIBS_SPDLOG_DEPENDENCIES "${CONAN_SYSTEM_LIBS_SPDLOG} ${CONAN_FRAMEWORKS_FOUND_SPDLOG} CONAN_PKG::fmt")
@@ -400,76 +248,6 @@ macro(conan_define_targets)
                                                                   $<$<CONFIG:Debug>:${CONAN_C_FLAGS_SPDLOG_DEBUG_LIST}  ${CONAN_CXX_FLAGS_SPDLOG_DEBUG_LIST}>)
 
 
-    set(_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES "${CONAN_SYSTEM_LIBS_LIBICONV} ${CONAN_FRAMEWORKS_FOUND_LIBICONV} ")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_LIBICONV}" "${CONAN_LIB_DIRS_LIBICONV}"
-                                  CONAN_PACKAGE_TARGETS_LIBICONV "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES}"
-                                  "" libiconv)
-    set(_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_DEBUG "${CONAN_SYSTEM_LIBS_LIBICONV_DEBUG} ${CONAN_FRAMEWORKS_FOUND_LIBICONV_DEBUG} ")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_DEBUG "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_DEBUG}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_LIBICONV_DEBUG}" "${CONAN_LIB_DIRS_LIBICONV_DEBUG}"
-                                  CONAN_PACKAGE_TARGETS_LIBICONV_DEBUG "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_DEBUG}"
-                                  "debug" libiconv)
-    set(_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELEASE "${CONAN_SYSTEM_LIBS_LIBICONV_RELEASE} ${CONAN_FRAMEWORKS_FOUND_LIBICONV_RELEASE} ")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELEASE "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELEASE}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_LIBICONV_RELEASE}" "${CONAN_LIB_DIRS_LIBICONV_RELEASE}"
-                                  CONAN_PACKAGE_TARGETS_LIBICONV_RELEASE "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELEASE}"
-                                  "release" libiconv)
-    set(_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELWITHDEBINFO "${CONAN_SYSTEM_LIBS_LIBICONV_RELWITHDEBINFO} ${CONAN_FRAMEWORKS_FOUND_LIBICONV_RELWITHDEBINFO} ")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELWITHDEBINFO "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELWITHDEBINFO}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_LIBICONV_RELWITHDEBINFO}" "${CONAN_LIB_DIRS_LIBICONV_RELWITHDEBINFO}"
-                                  CONAN_PACKAGE_TARGETS_LIBICONV_RELWITHDEBINFO "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELWITHDEBINFO}"
-                                  "relwithdebinfo" libiconv)
-    set(_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_MINSIZEREL "${CONAN_SYSTEM_LIBS_LIBICONV_MINSIZEREL} ${CONAN_FRAMEWORKS_FOUND_LIBICONV_MINSIZEREL} ")
-    string(REPLACE " " ";" _CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_MINSIZEREL "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_MINSIZEREL}")
-    conan_package_library_targets("${CONAN_PKG_LIBS_LIBICONV_MINSIZEREL}" "${CONAN_LIB_DIRS_LIBICONV_MINSIZEREL}"
-                                  CONAN_PACKAGE_TARGETS_LIBICONV_MINSIZEREL "${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_MINSIZEREL}"
-                                  "minsizerel" libiconv)
-
-    add_library(CONAN_PKG::libiconv INTERFACE IMPORTED)
-
-    # Property INTERFACE_LINK_FLAGS do not work, necessary to add to INTERFACE_LINK_LIBRARIES
-    set_property(TARGET CONAN_PKG::libiconv PROPERTY INTERFACE_LINK_LIBRARIES ${CONAN_PACKAGE_TARGETS_LIBICONV} ${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_LIBICONV_LIST}>
-
-                                                                 $<$<CONFIG:Release>:${CONAN_PACKAGE_TARGETS_LIBICONV_RELEASE} ${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELEASE}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_RELEASE_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_RELEASE_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_LIBICONV_RELEASE_LIST}>>
-
-                                                                 $<$<CONFIG:RelWithDebInfo>:${CONAN_PACKAGE_TARGETS_LIBICONV_RELWITHDEBINFO} ${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_RELWITHDEBINFO}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_RELWITHDEBINFO_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_RELWITHDEBINFO_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_LIBICONV_RELWITHDEBINFO_LIST}>>
-
-                                                                 $<$<CONFIG:MinSizeRel>:${CONAN_PACKAGE_TARGETS_LIBICONV_MINSIZEREL} ${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_MINSIZEREL}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_MINSIZEREL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_MINSIZEREL_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_LIBICONV_MINSIZEREL_LIST}>>
-
-                                                                 $<$<CONFIG:Debug>:${CONAN_PACKAGE_TARGETS_LIBICONV_DEBUG} ${_CONAN_PKG_LIBS_LIBICONV_DEPENDENCIES_DEBUG}
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_DEBUG_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,MODULE_LIBRARY>:${CONAN_SHARED_LINKER_FLAGS_LIBICONV_DEBUG_LIST}>
-                                                                 $<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:${CONAN_EXE_LINKER_FLAGS_LIBICONV_DEBUG_LIST}>>)
-    set_property(TARGET CONAN_PKG::libiconv PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CONAN_INCLUDE_DIRS_LIBICONV}
-                                                                      $<$<CONFIG:Release>:${CONAN_INCLUDE_DIRS_LIBICONV_RELEASE}>
-                                                                      $<$<CONFIG:RelWithDebInfo>:${CONAN_INCLUDE_DIRS_LIBICONV_RELWITHDEBINFO}>
-                                                                      $<$<CONFIG:MinSizeRel>:${CONAN_INCLUDE_DIRS_LIBICONV_MINSIZEREL}>
-                                                                      $<$<CONFIG:Debug>:${CONAN_INCLUDE_DIRS_LIBICONV_DEBUG}>)
-    set_property(TARGET CONAN_PKG::libiconv PROPERTY INTERFACE_COMPILE_DEFINITIONS ${CONAN_COMPILE_DEFINITIONS_LIBICONV}
-                                                                      $<$<CONFIG:Release>:${CONAN_COMPILE_DEFINITIONS_LIBICONV_RELEASE}>
-                                                                      $<$<CONFIG:RelWithDebInfo>:${CONAN_COMPILE_DEFINITIONS_LIBICONV_RELWITHDEBINFO}>
-                                                                      $<$<CONFIG:MinSizeRel>:${CONAN_COMPILE_DEFINITIONS_LIBICONV_MINSIZEREL}>
-                                                                      $<$<CONFIG:Debug>:${CONAN_COMPILE_DEFINITIONS_LIBICONV_DEBUG}>)
-    set_property(TARGET CONAN_PKG::libiconv PROPERTY INTERFACE_COMPILE_OPTIONS ${CONAN_C_FLAGS_LIBICONV_LIST} ${CONAN_CXX_FLAGS_LIBICONV_LIST}
-                                                                  $<$<CONFIG:Release>:${CONAN_C_FLAGS_LIBICONV_RELEASE_LIST} ${CONAN_CXX_FLAGS_LIBICONV_RELEASE_LIST}>
-                                                                  $<$<CONFIG:RelWithDebInfo>:${CONAN_C_FLAGS_LIBICONV_RELWITHDEBINFO_LIST} ${CONAN_CXX_FLAGS_LIBICONV_RELWITHDEBINFO_LIST}>
-                                                                  $<$<CONFIG:MinSizeRel>:${CONAN_C_FLAGS_LIBICONV_MINSIZEREL_LIST} ${CONAN_CXX_FLAGS_LIBICONV_MINSIZEREL_LIST}>
-                                                                  $<$<CONFIG:Debug>:${CONAN_C_FLAGS_LIBICONV_DEBUG_LIST}  ${CONAN_CXX_FLAGS_LIBICONV_DEBUG_LIST}>)
-
-
     set(_CONAN_PKG_LIBS_FMT_DEPENDENCIES "${CONAN_SYSTEM_LIBS_FMT} ${CONAN_FRAMEWORKS_FOUND_FMT} ")
     string(REPLACE " " ";" _CONAN_PKG_LIBS_FMT_DEPENDENCIES "${_CONAN_PKG_LIBS_FMT_DEPENDENCIES}")
     conan_package_library_targets("${CONAN_PKG_LIBS_FMT}" "${CONAN_LIB_DIRS_FMT}"
@@ -539,7 +317,7 @@ macro(conan_define_targets)
                                                                   $<$<CONFIG:MinSizeRel>:${CONAN_C_FLAGS_FMT_MINSIZEREL_LIST} ${CONAN_CXX_FLAGS_FMT_MINSIZEREL_LIST}>
                                                                   $<$<CONFIG:Debug>:${CONAN_C_FLAGS_FMT_DEBUG_LIST}  ${CONAN_CXX_FLAGS_FMT_DEBUG_LIST}>)
 
-    set(CONAN_TARGETS CONAN_PKG::sdl CONAN_PKG::spdlog CONAN_PKG::libiconv CONAN_PKG::fmt)
+    set(CONAN_TARGETS CONAN_PKG::spdlog CONAN_PKG::fmt)
 
 endmacro()
 
@@ -688,7 +466,7 @@ endfunction()
 
 function(conan_find_libraries_abs_path libraries package_libdir libraries_abs_path)
     foreach(_LIBRARY_NAME ${libraries})
-        find_library(CONAN_FOUND_LIBRARY NAME ${_LIBRARY_NAME} PATHS ${package_libdir}
+        find_library(CONAN_FOUND_LIBRARY NAMES ${_LIBRARY_NAME} PATHS ${package_libdir}
                      NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
         if(CONAN_FOUND_LIBRARY)
             conan_message(STATUS "Library ${_LIBRARY_NAME} found ${CONAN_FOUND_LIBRARY}")
@@ -707,7 +485,7 @@ function(conan_package_library_targets libraries package_libdir libraries_abs_pa
     unset(_CONAN_ACTUAL_TARGETS CACHE)
     unset(_CONAN_FOUND_SYSTEM_LIBS CACHE)
     foreach(_LIBRARY_NAME ${libraries})
-        find_library(CONAN_FOUND_LIBRARY NAME ${_LIBRARY_NAME} PATHS ${package_libdir}
+        find_library(CONAN_FOUND_LIBRARY NAMES ${_LIBRARY_NAME} PATHS ${package_libdir}
                      NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
         if(CONAN_FOUND_LIBRARY)
             conan_message(STATUS "Library ${_LIBRARY_NAME} found ${CONAN_FOUND_LIBRARY}")
