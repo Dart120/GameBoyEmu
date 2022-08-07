@@ -1,4 +1,5 @@
 #!/bin/sh
+conan profile new default --detect
 conan profile update settings.compiler.libcxx=libstdc++11 default
 export CONAN_SYSREQUIRES_MODE=enabled
 apt install -y pkg-config
