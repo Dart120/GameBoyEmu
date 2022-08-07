@@ -11,6 +11,7 @@ RUN apt-get install -y libsdl2-dev
 RUN pip3 install conan
 WORKDIR /app
 COPY . .
+RUN ./build.sh
 # RUN yarn install --production
 # CMD ["node", "src/index.js"]
 # EXPOSE 3000
