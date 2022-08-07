@@ -19,7 +19,6 @@ cd /workspaces/GameBoyEmu/src && /usr/bin/c++  -I/workspaces/GameBoyEmu/include 
 /usr/bin/cmake -E cmake_echo_color --switch= --green --bold --progress-dir=/workspaces/GameBoyEmu/CMakeFiles --progress-num=4 "Linking CXX executable bin/main"
 cd /workspaces/GameBoyEmu/src && /usr/bin/cmake -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=
 make[2]: Leaving directory `/Users/temi/Developer/GameBoyEmu'
- 
 /usr/bin/cmake -E cmake_echo_color --switch= --progress-dir=/workspaces/GameBoyEmu/CMakeFiles --progress-num=1,2,3,4 "Built target main"
 make[1]: Leaving directory `/Users/temi/Developer/GameBoyEmu'
 /usr/bin/cmake -E cmake_progress_start /workspaces/GameBoyEmu/CMakeFiles 0
