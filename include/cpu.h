@@ -9,7 +9,6 @@ struct double_register{
     u_int8_t low;
 };
 enum register_index {AF,BC,DE,HL,SP,PC};
-enum flag_index {U0,U1,U2,U3,c,h,n,z};
 class CPU
 {
     
@@ -60,8 +59,12 @@ class CPU
     } registers;
     // Member Functions()
     u_int16_t read_double_register(register_index index);
-    int set_flag(flag_index index);
-    bool get_flag(flag_index index);
+    int set_flag(int index);
+    bool get_flag(int index);
+    int clear_flag(int index);
+    template <typename T> bool check_if_result_zero (T result);
+    template <typename T> bool check_H(T a, T b);
+    template <typename T> bool check_C(T a, T b);
     
 };
 #endif

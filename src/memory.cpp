@@ -15,6 +15,7 @@
         IO = mem + 0xFF00;
         HR = mem + 0xFF80;
         IR = mem + 0xFFFF;
+        SP = mem + 0xFFFE;
         if(!this->fill_memory(2)){
             spdlog::error("Memory not filled");
         }

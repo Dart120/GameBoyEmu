@@ -19,6 +19,7 @@ class Memory
     uint8_t* IO;
     uint8_t* HR;
     uint8_t* IR;
+    uint8_t* SP;
     int fill_memory(u_int8_t num);
     
     u_int8_t read_8_bit(u_int16_t address);

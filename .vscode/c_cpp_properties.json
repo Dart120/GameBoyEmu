@@ -1,1 +1,50 @@
-{"configurations": [{"name": "Mac", "includePath": ["/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/include", "", "${workspaceFolder}/**", "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include/SDL2", "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include", "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/include", "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/include"], "defines": [], "macFrameworkPath": ["/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"], "compilerPath": "/usr/bin/clang", "cStandard": "c17", "cppStandard": "c++98", "intelliSenseMode": "macos-clang-arm64", "configurationProvider": "go2sh.cmake-integration"}], "version": 4}
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "",
+                "/Users/temi/.conan/data/libiconv/1.16/_/_/package/095512ed878f14a09dd732e9f6868729dd437529/include",
+                "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include/SDL2",
+                "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include",
+                "${workspaceFolder}/**",
+                "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/include",
+      
+                "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/include",
+               
+                "/usr/include/"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "linux-gcc-arm",
+            "configurationProvider": "go2sh.cmake-integration"
+        },
+        {
+            "name": "linux-container",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include/**",
+                "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include/**",
+                "/usr/include/"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-arm64",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}
