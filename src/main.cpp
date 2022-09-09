@@ -17,7 +17,10 @@ int main()
         auto logger = spdlog::basic_logger_mt("basic_logger", "./logs/basic-log.txt");
         spdlog::set_default_logger(logger);
     spdlog::flush_on(spdlog::level::info);
+    
 
+    
+    
     
     }
     catch (const spdlog::spdlog_ex &ex)
@@ -29,8 +32,9 @@ int main()
     int regTo = 255;
     if(!GB_CPU.set_registers(regTo)){
         spdlog::info("Registers not set");
+        
     }
     GB_CPU.FDE();
-   
+    
 
 }

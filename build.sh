@@ -5,5 +5,6 @@ export CONAN_SYSREQUIRES_MODE=enabled
 apt install -y pkg-config
 apt install -y cmake
 conan install . --build=missing -c tools.system.package_manager:mode=install
+# https://bugs.gentoo.org/827889
 cmake .
 make

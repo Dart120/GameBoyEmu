@@ -7,7 +7,7 @@ RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 RUN sudo apt-get update -y
 
 RUN sudo apt-get install -y python3-pip
-RUN apt-get install -y libsdl2-dev
+RUN apt-get install -y libsdl2-dev --fix-missing
 RUN pip3 install conan
 WORKDIR /app
 COPY . .
