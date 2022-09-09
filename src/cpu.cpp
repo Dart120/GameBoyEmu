@@ -177,6 +177,14 @@
                 PC_value += 1;
                 break;
             }
+
+            case 0x0B:
+            {
+                spdlog::info("DEC BC {:X}", opcode);
+                this->registers.BC_double-- ; 
+                cycles -= 2;       
+                break;     
+            }
                 
             
 
