@@ -11,6 +11,10 @@ RUN apt-get install -y libsdl2-dev --fix-missing
 RUN pip3 install conan
 WORKDIR /app
 COPY . .
+RUN apt-get install -y cmake
+RUN apt-get install -y vim
+RUN vim build.sh -c "set ff=unix" -c ":wq"
+RUN vim run.sh -c "set ff=unix" -c ":wq"
 RUN ./build.sh
 # RUN yarn install --production
 # CMD ["node", "src/index.js"]
