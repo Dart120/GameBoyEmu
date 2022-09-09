@@ -6,10 +6,10 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-#define FLAG_Z 7
-#define FLAG_N 6
-#define FLAG_H 5
-#define FLAG_C 4
+#define FLAG_Z 7                //00001111
+#define FLAG_N 6                //0000CHNZ
+#define FLAG_H 5                //00004567
+#define FLAG_C 4                
     CPU::CPU(Memory memory){
         this->memory = memory;
         
@@ -37,7 +37,7 @@
         this->registers.SP = 0xFFFE;
         return 1;
     }
-    int CPU::set_flag(int index){
+    int CPU::set_flag(int index){                       //set flag sets corresponding flag to true i.e. 1
         this->registers.AF.F |= 1UL << index;
         return 1;
      }
@@ -45,7 +45,7 @@
         bool bit = (this->registers.AF.F >> index) & 1UL;
         return bit;
      }
-     int CPU::clear_flag(int index){
+     int CPU::clear_flag(int index){                    //clear flag sets corresponding flag to false i.e. 0
         this->registers.AF.F = ~(~(this->registers.AF.F) | 1UL << index);
         return 1;
      }
@@ -178,14 +178,42 @@
                 break;
             }
 
-            case 0x0B:
+            case 0x0B:                                  
             {
                 spdlog::info("DEC BC {:X}", opcode);
                 this->registers.BC_double-- ; 
                 cycles -= 2;       
                 break;     
             }
+
+            case 0x0C:
+            {
+                spdlog::info("INC C {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                if (this -> check_H(this -> register.BC_double.C, 1)){
+                    this -> set_flag(FLAG_H);
+                else    
+                    this -> clear_flag(FLAG_H);
+                }
+                char result = this ->registers.BC_double.C ++;
+                cycles -= 1;
+                if(this -> check_if_result_zero(result)){
+                    this -> set_flag(FLAG_Z);
+                else    
+                    this -> clear_flag(FLAG_Z);
+                }
+                break;
+            }
                 
+
+//                 INC C
+// X
+// Opcode: 0x0C
+// Number of Bytes: 1
+// Number of Cycles: 1
+// Flags: Z 0 8-bit -
+// Description
+// Increment the contents of register C by 1.
             
 
             
