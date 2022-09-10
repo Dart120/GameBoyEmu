@@ -1,2 +1,2 @@
 #!/bin/sh
-./src/bin/main
+./src/bin/main ./ROMS/Tetris.gb
