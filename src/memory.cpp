@@ -4,6 +4,7 @@
 #include "memory.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
+#include <fstream>
     Memory::Memory(){
         mem = new uint8_t[65536];
         ROM = mem;
@@ -43,5 +44,25 @@ int Memory::write_16_bit(u_int16_t address, u_int16_t data){
     this->mem[address + 1] = second;
     return 0;
    }
+bool Memory::read_rom(char* path){
+    
+    std::ifstream myFile (path, std::ios::in | std::ios::binary);
+    myFile.seekg(0,std::ios::end);
+    int size = (int) myFile.tellg();
+    // Tetris is bigger than this and I dont know why
+    // if (size > 32767){
+    //     std::cout<<"Rom too big "<< size << "> 32767" "\n";
+    //     return 0;
+    // }
+    myFile.seekg(0,std::ios::beg);
+    myFile.read ((char*) this -> mem, size);
+    if (!myFile) {
+        spdlog::info("Rom not read");
+        std::cout<<"Rom not read"<< "\n";
+        return 0;
+    }
+    return 1;
+}
+
 
  

@@ -26,6 +26,7 @@ class Memory
     int write_8_bit(u_int16_t address, u_int8_t data);
     u_int16_t read_16_bit(u_int16_t address);
     int write_16_bit(u_int16_t address, u_int16_t data);
+    bool read_rom(char* name);
     // Member Functions()
  
 };

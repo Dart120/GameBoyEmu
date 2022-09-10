@@ -9,7 +9,7 @@
 #include "memory.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
-int main()
+int main(int argc, char *argv[])
 {
    
     try 
@@ -28,12 +28,23 @@ int main()
         std::cout << "Log init failed: " << ex.what() << std::endl;
     }
     Memory memory;
+    if (argc == 2){
+        if (!memory.read_rom(argv[1])){
+            std::cout << "Rom read not working\n";
+        }
+     
+    }else{
+        std::cout << "Please supply path to rom\n";
+        exit(0);
+    }
     CPU GB_CPU(memory);
     int regTo = 255;
     if(!GB_CPU.set_registers(regTo)){
         spdlog::info("Registers not set");
         
     }
+    
+
     GB_CPU.FDE();
     
 
