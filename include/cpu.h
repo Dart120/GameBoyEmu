@@ -62,9 +62,12 @@ class CPU
     int set_flag(int index);
     bool get_flag(int index);
     int clear_flag(int index);
-    template <typename T> bool check_if_result_zero (T result);
-    template <typename T> bool check_H(T a, T b);
-    template <typename T> bool check_C(T a, T b);
-    
+    template <typename T> void check_if_result_zero (T result);
+    template <typename T> void check_H_8(T a, T b);
+    template <typename T> void check_C(T a, T b);
+    template <typename T> void check_H_11(T a, T b);
+    template <typename T> void check_C_15(T a, T b);
+    template <typename T> void check_H_DEC(T a, T b);
+
 };
 #endif

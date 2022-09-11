@@ -49,14 +49,36 @@
         this->registers.AF.F = ~(~(this->registers.AF.F) | 1UL << index);
         return 1;
      }
-     template <typename T> bool CPU::check_H(T a, T b){
-        return ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10);
+     template <typename T> void CPU::check_H_8(T a, T b){
+        if ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
+            this->set_flag(FLAG_H);
+        }
      }
-     template <typename T> bool CPU::check_C(T a, T b){
-        return ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10);
+     template <typename T> void CPU::check_H_11(T a, T b){
+        if ((((a & 0xfff) + (b & 0xfff)) & 0x800) == 0x800){
+            this->set_flag(FLAG_H);
+        }
      }
-     template <typename T> bool CPU::check_if_result_zero(T result){
-        return result == 0;
+     template <typename T> void CPU::check_C_15(T a, T b){
+        if ((((a & 0xffff) + (b & 0xffff)) & 0x8000) == 0x8000){
+            this->set_flag(FLAG_C);
+        }
+     }
+     template <typename T> void CPU::check_H_DEC(T a, T b){
+       
+        if (!((a >> 3) & 1) && ((b >> 3) & 1)){
+this->set_flag(FLAG_H);
+        }
+     }
+     template <typename T> void CPU::check_C(T a, T b){
+        if((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
+this->set_flag(FLAG_C);
+        }
+     }
+     template <typename T> void CPU::check_if_result_zero(T result){
+        if (!result){
+this->set_flag(FLAG_Z);
+        }
      }
      void CPU::FDE(){
          u_int32_t cycles = 69905;
@@ -110,26 +132,26 @@
                 cycles = cycles - 2;}
                 break;
             case 0x03:
-                {spdlog::info("INC BC {:X}", opcode);
+                {spdlog::info("INC BC {:X} no flags affected", opcode);
                 this->registers.BC_double++;
                 PC_value += 1;
                 cycles = cycles - 2;}
                 break;
             case 0x04:
             {    spdlog::info("INC B {:X}", opcode);
-                !((((this->registers.BC.B  & 0xf) + (1 & 0xf)) & 0x10) == 0x10) || this->set_flag(FLAG_H);
-                char result = this->registers.BC.B++;
-                !this->check_if_result_zero(result) || this->set_flag(FLAG_Z);
+                this->check_H_8(this->registers.BC.B,(u_int8_t) 1);
+                char result = ++this->registers.BC.B;
+                this->check_if_result_zero(result);
                 this->clear_flag(FLAG_N);
                 PC_value += 1;
                 cycles--;
                 break;}
             case 0x05:
                 {spdlog::info("DEC B {:X}", opcode);
-                char result = this->registers.BC.B--;
+                char result = --this->registers.BC.B;
                 this->set_flag(FLAG_N);
-                !this->check_if_result_zero(result) || this->set_flag(FLAG_Z);
-                this->clear_flag(FLAG_H);
+                this->check_if_result_zero(result);
+                this->check_H_DEC(this->registers.BC.B,(u_int8_t) 1);
                 PC_value += 1;
                 cycles--;
                 break;}
@@ -148,7 +170,12 @@
                 this -> registers.AF.A = this -> registers.AF.A << 1;
                 if (lastValue){
                     this -> registers.AF.A++;
+                    this->set_flag(FLAG_C);
+                }else{
+                    this->clear_flag(FLAG_C);
                 }
+                this->check_if_result_zero(this -> registers.AF.A);
+
                 PC_value += 1;
                 break;}
                
@@ -161,9 +188,10 @@
                 PC_value += 3;
                 break;}
             case 0x09:
+            // Fix with info from manual, then go down
                 {spdlog::info("ADD HL, BC {:X}", opcode);
                 this->clear_flag(FLAG_N);
-                !((((this->registers.BC.B  & 0xf) + (1 & 0xf)) & 0x10) == 0x10) || this->set_flag(FLAG_H);
+                this->check_C_15(this -> registers.HL_double,this->registers.BC_double);
                 this -> registers.HL_double += this->registers.BC_double;
                 cycles -= 2;
                 PC_value += 1;
@@ -190,18 +218,10 @@
             {
                 spdlog::info("INC C {:X}", opcode);
                 this -> clear_flag(FLAG_N);
-                if (this -> check_H(this -> registers.BC.C, (u_int8_t) 1)){
-                    this -> set_flag(FLAG_H);
-                }else   { 
-                    this -> clear_flag(FLAG_H);
-                }
-                char result = this ->registers.BC.C ++;
+                this->check_H_8(this ->registers.BC.C, (u_int8_t) 1);
+                char result = ++this ->registers.BC.C;
+                this->check_if_result_zero(result);
                 cycles -= 1;
-                if(this -> check_if_result_zero(result)){
-                    this -> set_flag(FLAG_Z);
-                }else  {  
-                    this -> clear_flag(FLAG_Z);
-                }
                 break;
 
             }
