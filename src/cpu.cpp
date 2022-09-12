@@ -166,7 +166,7 @@ this->set_flag(FLAG_Z);
 
             case 0x07:
                 {spdlog::info("RLCA {:X}", opcode);
-                bool lastValue = this -> registers.AF.A >> 7 | 1UL;
+                bool lastValue = this -> registers.AF.A >> 7 & 1UL;
                 this -> registers.AF.A = this -> registers.AF.A << 1;
                 if (lastValue){
                     this -> registers.AF.A++;
@@ -175,7 +175,9 @@ this->set_flag(FLAG_Z);
                     this->clear_flag(FLAG_C);
                 }
                 this->check_if_result_zero(this -> registers.AF.A);
-
+                this->clear_flag(FLAG_N);
+                this->clear_flag(FLAG_H);
+                cycles++;
                 PC_value += 1;
                 break;}
                
@@ -233,7 +235,27 @@ this->set_flag(FLAG_Z);
                 this -> check_H_8(this -> registers.BC.C, (u_int8_t) 1);
                 char result = --this -> registers.BC.C;
                 this -> check_if_result_zero(result);
+                PC_value++;
                 cycles -= 1;
+                break;
+            }
+
+            case 0x0F:
+            {
+                spdlog::info("RRCA {:X}", opcode);
+                bool firstValue = this -> registers.AF.A & 1UL;
+                this -> registers.AF.A = this -> registers.AF.A >> 1;
+                if (firstValue){
+                    this->registers.AF.A |= 1UL << 7;
+                    this->set_flag(FLAG_C);
+                }else{
+                    this->clear_flag(FLAG_C);
+                }
+                this->check_if_result_zero(this -> registers.AF.A);
+                this->clear_flag(FLAG_N);
+                this->clear_flag(FLAG_H);
+                PC_value += 1;
+                cycles++;
                 break;
             }
             
