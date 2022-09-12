@@ -214,7 +214,7 @@ this->set_flag(FLAG_Z);
                 break;     
             }
 
-            case 0x0C:
+            case 0x0C:                  //increment contents of register C by 1
             {
                 spdlog::info("INC C {:X}", opcode);
                 this -> clear_flag(FLAG_N);
@@ -226,8 +226,16 @@ this->set_flag(FLAG_Z);
 
             }
 
-            
-
+            case 0x0D:
+            {
+                spdlog::info("DEC C {:X}", opcode);
+                this -> set_flag(FLAG_N);
+                this -> check_H_8(this -> registers.BC.C, (u_int8_t) 1);
+                char result = --this -> registers.BC.C;
+                this -> check_if_result_zero(result);
+                cycles -= 1;
+                break;
+            }
             
             default:
                 break;
