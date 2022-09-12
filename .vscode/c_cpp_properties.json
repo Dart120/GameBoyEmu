@@ -9,9 +9,7 @@
                 "/Users/temi/.conan/data/sdl/2.0.20/_/_/package/e4f93841d737e8ed475ad87ea31f8c7f9a7f815b/include",
                 "${workspaceFolder}/**",
                 "/Users/temi/.conan/data/spdlog/1.10.0/_/_/package/3f5404f0cb554852906516936ff0eff86715f40b/include",
-      
                 "/Users/temi/.conan/data/fmt/8.1.1/_/_/package/2ab5e7a71f81ed7ec68723743c780f2a172fdd49/include",
-               
                 "/usr/include/"
             ],
             "defines": [],
@@ -43,7 +41,8 @@
                     "${workspaceFolder}/**"
                 ],
                 "limitSymbolsToIncludedHeaders": true
-            }
+            },
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }
     ],
     "version": 4

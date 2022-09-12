@@ -223,7 +223,7 @@ this->set_flag(FLAG_Z);
                 this->check_if_result_zero(result);
                 cycles -= 1;
                 break;
-
+                
             }
 
             case 0x0D:
@@ -237,6 +237,7 @@ this->set_flag(FLAG_Z);
                 break;
             }
             
+
             default:
                 break;
             }
