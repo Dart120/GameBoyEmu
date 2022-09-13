@@ -123,8 +123,10 @@ this->set_flag(FLAG_Z);
               {  spdlog::info("LD BC, d16 {:X}", opcode);
                 this -> registers.BC_double = this -> memory.read_16_bit(PC_value + 1);
                 PC_value += 3;
-                cycles = cycles - 3;}
+                cycles = cycles - 3;
                 break;
+                }
+              
             case 0x02:
                 {spdlog::info("LD (BC), A {:X}", opcode);
                 this->memory.write_8_bit(this->registers.BC_double, this->registers.AF.A);
@@ -256,6 +258,14 @@ this->set_flag(FLAG_Z);
                 this->clear_flag(FLAG_H);
                 PC_value += 1;
                 cycles++;
+                break;
+            }
+            case 0x11:
+            {  
+                spdlog::info("LD DE, d16 {:X}", opcode);
+                this -> registers.DE_double = this -> memory.read_16_bit(PC_value + 1);
+                PC_value += 3;
+                cycles = cycles - 3;
                 break;
             }
             
