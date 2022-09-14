@@ -49,7 +49,7 @@
         this->registers.AF.F = ~(~(this->registers.AF.F) | 1UL << index);
         return 1;
      }
-     template <typename T> void CPU::check_H_8(T a, T b){
+     template <typename T> void CPU::check_H_8(T a, T b){           
         if ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
             this->set_flag(FLAG_H);
         }
@@ -77,7 +77,7 @@ this->set_flag(FLAG_C);
      }
      template <typename T> void CPU::check_if_result_zero(T result){
         if (!result){
-this->set_flag(FLAG_Z);
+            this->set_flag(FLAG_Z);
         }
      }
      void CPU::FDE(){
@@ -232,7 +232,7 @@ this->set_flag(FLAG_Z);
             {
                 spdlog::info("DEC C {:X}", opcode);
                 this -> set_flag(FLAG_N);
-                this -> check_H_8(this -> registers.BC.C, (u_int8_t) 1);
+                this -> check_H_DEC(this -> registers.BC.C, (u_int8_t) 1);
                 char result = --this -> registers.BC.C;
                 this -> check_if_result_zero(result);
                 PC_value++;
@@ -259,6 +259,16 @@ this->set_flag(FLAG_Z);
                 break;
             }
             
+
+            case 0x0E:
+            {
+                spdlog::info("LD C, d8 {:X}", opcode);
+                this -> registers.BC.C = memory.read_8_bit(PC_value + 1 )
+                PC_value += 2;
+                cycles -= 2;
+                break;
+            }
+
 
             default:
                 break;

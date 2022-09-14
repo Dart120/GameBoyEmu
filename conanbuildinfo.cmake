@@ -38,9 +38,9 @@ endmacro()
 #################
 ###  SPDLOG
 #################
-set(CONAN_SPDLOG_ROOT "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9")
-set(CONAN_INCLUDE_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include")
-set(CONAN_LIB_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib")
+set(CONAN_SPDLOG_ROOT "/root/.conan/data/spdlog/1.10.0/_/_/package/4d2b231078dcc813aaf3eb5175bee272655efbc4")
+set(CONAN_INCLUDE_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/4d2b231078dcc813aaf3eb5175bee272655efbc4/include")
+set(CONAN_LIB_DIRS_SPDLOG "/root/.conan/data/spdlog/1.10.0/_/_/package/4d2b231078dcc813aaf3eb5175bee272655efbc4/lib")
 set(CONAN_BIN_DIRS_SPDLOG )
 set(CONAN_RES_DIRS_SPDLOG )
 set(CONAN_SRC_DIRS_SPDLOG )
@@ -78,15 +78,15 @@ set(CONAN_LIBS_SPDLOG ${CONAN_PKG_LIBS_SPDLOG} ${CONAN_SYSTEM_LIBS_SPDLOG} ${CON
 #################
 ###  FMT
 #################
-set(CONAN_FMT_ROOT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380")
-set(CONAN_INCLUDE_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include")
-set(CONAN_LIB_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib")
+set(CONAN_FMT_ROOT "/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6")
+set(CONAN_INCLUDE_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/include")
+set(CONAN_LIB_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/lib")
 set(CONAN_BIN_DIRS_FMT )
 set(CONAN_RES_DIRS_FMT )
 set(CONAN_SRC_DIRS_FMT )
-set(CONAN_BUILD_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/")
+set(CONAN_BUILD_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/")
 set(CONAN_FRAMEWORK_DIRS_FMT )
 set(CONAN_LIBS_FMT fmt)
 set(CONAN_PKG_LIBS_FMT fmt)
@@ -120,8 +120,8 @@ set(CONAN_LIBS_FMT ${CONAN_PKG_LIBS_FMT} ${CONAN_SYSTEM_LIBS_FMT} ${CONAN_FRAMEW
 set(CONAN_PACKAGE_NAME None)
 set(CONAN_PACKAGE_VERSION None)
 
-set(CONAN_SETTINGS_ARCH "armv8")
-set(CONAN_SETTINGS_ARCH_BUILD "armv8")
+set(CONAN_SETTINGS_ARCH "x86_64")
+set(CONAN_SETTINGS_ARCH_BUILD "x86_64")
 set(CONAN_SETTINGS_BUILD_TYPE "Release")
 set(CONAN_SETTINGS_COMPILER "gcc")
 set(CONAN_SETTINGS_COMPILER_LIBCXX "libstdc++11")
@@ -137,12 +137,12 @@ set(CONAN_CMD_SHARED_LINKER_FLAGS ${CONAN_SHARED_LINKER_FLAGS})
 set(CONAN_CMD_C_FLAGS ${CONAN_C_FLAGS})
 # Defining accumulated conan variables for all deps
 
-set(CONAN_INCLUDE_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include" ${CONAN_INCLUDE_DIRS})
-set(CONAN_LIB_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib" ${CONAN_LIB_DIRS})
+set(CONAN_INCLUDE_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/4d2b231078dcc813aaf3eb5175bee272655efbc4/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/include"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/include" ${CONAN_INCLUDE_DIRS})
+set(CONAN_LIB_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/4d2b231078dcc813aaf3eb5175bee272655efbc4/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/lib"
+			"/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/lib" ${CONAN_LIB_DIRS})
 set(CONAN_BIN_DIRS  ${CONAN_BIN_DIRS})
 set(CONAN_RES_DIRS  ${CONAN_RES_DIRS})
 set(CONAN_FRAMEWORK_DIRS  ${CONAN_FRAMEWORK_DIRS})
@@ -154,7 +154,7 @@ set(CONAN_FRAMEWORKS_FOUND "")  # Will be filled later
 set(CONAN_DEFINES "-DSPDLOG_FMT_EXTERNAL"
 			"-DSPDLOG_COMPILED_LIB" ${CONAN_DEFINES})
 set(CONAN_BUILD_MODULES_PATHS  ${CONAN_BUILD_MODULES_PATHS})
-set(CONAN_CMAKE_MODULE_PATH "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/" ${CONAN_CMAKE_MODULE_PATH})
+set(CONAN_CMAKE_MODULE_PATH "/root/.conan/data/fmt/8.1.1/_/_/package/2c09c8f84c016041549fcee94e4caae5d89424b6/" ${CONAN_CMAKE_MODULE_PATH})
 
 set(CONAN_CXX_FLAGS " ${CONAN_CXX_FLAGS}")
 set(CONAN_SHARED_LINKER_FLAGS " ${CONAN_SHARED_LINKER_FLAGS}")
