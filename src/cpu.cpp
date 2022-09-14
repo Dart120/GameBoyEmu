@@ -684,6 +684,15 @@ this->set_flag(FLAG_C);
                 cycles -= 3;
                 break;
             }
+
+            case 0x12:
+            {
+                spdlog::info("LD (DE), A {:X}", opcode);
+                this -> memory.write_8_bit(this -> registers.DE_double, this -> registers.AF.A);
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
             default:
                 break;
             }
