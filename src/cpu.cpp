@@ -673,6 +673,16 @@ this->set_flag(FLAG_C);
                 exit(0);
                 cycles--;
                 PC_value += 2;
+                break;
+            }
+
+            case 0x11:
+            {
+                spdlog::info("LD DE, d16 {:X}", opcode);
+                this -> registers.DE_double = this -> memory.read_16_bit(PC_value + 1);
+                PC_value += 3;
+                cycles -= 3;
+                break;
             }
             default:
                 break;
