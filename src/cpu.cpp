@@ -693,6 +693,15 @@ this->set_flag(FLAG_C);
                 cycles -= 2;
                 break;
             }
+
+            case 0x13:
+            {
+                spdlog::info("INC DE {:X}", opcode);
+                this -> registers.DE_double++;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
             default:
                 break;
             }
