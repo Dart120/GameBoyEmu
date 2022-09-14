@@ -263,7 +263,7 @@ this->set_flag(FLAG_C);
             case 0x0E:
             {
                 spdlog::info("LD C, d8 {:X}", opcode);
-                this -> registers.BC.C = memory.read_8_bit(PC_value + 1 )
+                this -> registers.BC.C = memory.read_8_bit(PC_value + 1 );
                 PC_value += 2;
                 cycles -= 2;
                 break;
