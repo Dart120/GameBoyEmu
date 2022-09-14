@@ -667,6 +667,13 @@ this->set_flag(FLAG_C);
 
             
 
+            case 0x10:
+            {
+                spdlog::info("STOP {:X} read", opcode);
+                exit(0);
+                cycles--;
+                PC_value += 2;
+            }
             default:
                 break;
             }
