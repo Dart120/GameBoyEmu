@@ -12,6 +12,7 @@ RUN pip3 install conan
 WORKDIR /app
 COPY . .
 RUN apt-get install -y cmake
+RUN apt-get install -y clang-tidy
 RUN apt-get install -y vim
 RUN vim build.sh -c "set ff=unix" -c ":wq"
 RUN vim run.sh -c "set ff=unix" -c ":wq"
