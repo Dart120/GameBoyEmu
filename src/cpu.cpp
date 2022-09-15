@@ -51,28 +51,28 @@
         this->registers.AF.F = ~(~(this->registers.AF.F) | 1UL << index);
         return 1;
      }
-     template <typename T> void CPU::check_H_8(T a, T b){           
+     template <typename T> void CPU::check_H_8_INC(T a, T b){           
         if ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
             this->set_flag(FLAG_H);
         }
      }
-     template <typename T> void CPU::check_H_11(T a, T b){
+     template <typename T> void CPU::check_H_11_INC(T a, T b){
         if ((((a & 0xfff) + (b & 0xfff)) & 0x800) == 0x800){
             this->set_flag(FLAG_H);
         }
      }
-     template <typename T> void CPU::check_C_15(T a, T b){
+     template <typename T> void CPU::check_C_15_INC(T a, T b){
         if ((((a & 0xffff) + (b & 0xffff)) & 0x8000) == 0x8000){
             this->set_flag(FLAG_C);
         }
      }
-     template <typename T> void CPU::check_H_DEC(T a, T b){
+     template <typename T> void CPU::check_H_8_DEC(T a, T b){
        
         if (!((a >> 3) & 1) && ((b >> 3) & 1)){
 this->set_flag(FLAG_H);
         }
      }
-     template <typename T> void CPU::check_C(T a, T b){
+     template <typename T> void CPU::check_C_INC(T a, T b){
         if((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
 this->set_flag(FLAG_C);
         }
@@ -156,7 +156,7 @@ this->set_flag(FLAG_C);
              
             case 0x04:
             {    spdlog::info("INC B {:X}", opcode);
-                this->check_H_8(this->registers.BC.B,(u_int8_t) 1);
+                this->check_H_8_INC(this->registers.BC.B,(u_int8_t) 1);
                 char result = ++this->registers.BC.B;
                 this->check_if_result_zero(result);
                 this->clear_flag(FLAG_N);
@@ -168,7 +168,7 @@ this->set_flag(FLAG_C);
                 char result = --this->registers.BC.B;
                 this->set_flag(FLAG_N);
                 this->check_if_result_zero(result);
-                this->check_H_DEC(this->registers.BC.B,(u_int8_t) 1);
+                this->check_H_8_DEC(this->registers.BC.B,(u_int8_t) 1);
                 PC_value += 1;
                 cycles--;
                 break;}
@@ -210,7 +210,7 @@ this->set_flag(FLAG_C);
             // Fix with info from manual, then go down
                 {spdlog::info("ADD HL, BC {:X}", opcode);
                 this->clear_flag(FLAG_N);
-                this->check_C_15(this -> registers.HL_double,this->registers.BC_double);
+                this->check_C_15_INC(this -> registers.HL_double,this->registers.BC_double);
                 this -> registers.HL_double += this->registers.BC_double;
                 cycles -= 2;
                 PC_value += 1;
@@ -237,7 +237,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("INC C {:X}", opcode);
                 this -> clear_flag(FLAG_N);
-                this->check_H_8(this ->registers.BC.C, (u_int8_t) 1);
+                this->check_H_8_INC(this ->registers.BC.C, (u_int8_t) 1);
                 char result = ++this ->registers.BC.C;
                 this->check_if_result_zero(result);
                 cycles -= 1;
@@ -250,7 +250,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC C {:X}", opcode);
                 this -> set_flag(FLAG_N);
-                this -> check_H_DEC(this -> registers.BC.C, (u_int8_t) 1);
+                this -> check_H_8_DEC(this -> registers.BC.C, (u_int8_t) 1);
                 char result = --this -> registers.BC.C;
                 this -> check_if_result_zero(result);
                 PC_value++;
@@ -318,7 +318,7 @@ this->set_flag(FLAG_C);
                 break;}
             case 0x24:
             {    spdlog::info("INC H {:X}", opcode);
-                this->check_H_8(this->registers.HL.H,(u_int8_t) 1);
+                this->check_H_8_INC(this->registers.HL.H,(u_int8_t) 1);
                 char result = ++this->registers.HL.H;
                 this->check_if_result_zero(result);
                 this->clear_flag(FLAG_N);
@@ -331,7 +331,7 @@ this->set_flag(FLAG_C);
                     char result = --this->registers.HL.H;
                     this->set_flag(FLAG_N);
                     this->check_if_result_zero(result);
-                    this->check_H_DEC(this->registers.HL.H,(u_int8_t) 1);
+                    this->check_H_8_DEC(this->registers.HL.H,(u_int8_t) 1);
                     PC_value += 1;
                     cycles--;
                     break;
@@ -385,7 +385,7 @@ this->set_flag(FLAG_C);
                 {
                 spdlog::info("ADD HL, HL {:X}", opcode);
                 this->clear_flag(FLAG_N);
-                this->check_C_15(this -> registers.HL_double,this->registers.HL_double);
+                this->check_C_15_INC(this -> registers.HL_double,this->registers.HL_double);
                 this -> registers.HL_double += this->registers.HL_double;
                 cycles -= 2;
                 PC_value += 1;
@@ -413,7 +413,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("INC L {:X}", opcode);
                 this -> clear_flag(FLAG_N);
-                this->check_H_8(this ->registers.HL.L, (u_int8_t) 1);
+                this->check_H_8_INC(this ->registers.HL.L, (u_int8_t) 1);
                 char result = ++this ->registers.HL.L;
                 this->check_if_result_zero(result);
                 PC_value++;
@@ -426,7 +426,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC L {:X}", opcode);
                 this -> set_flag(FLAG_N);
-                this -> check_H_DEC(this -> registers.HL.L, (u_int8_t) 1);
+                this -> check_H_8_DEC(this -> registers.HL.L, (u_int8_t) 1);
                 char result = --this -> registers.HL.L;
                 this -> check_if_result_zero(result);
                 PC_value++;

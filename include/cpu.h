@@ -64,11 +64,11 @@ class CPU
     bool get_flag(int index);
     int clear_flag(int index);
     template <typename T> void check_if_result_zero (T result);
-    template <typename T> void check_H_8(T a, T b);
-    template <typename T> void check_C(T a, T b);
-    template <typename T> void check_H_11(T a, T b);
-    template <typename T> void check_C_15(T a, T b);
-    template <typename T> void check_H_DEC(T a, T b);
+    template <typename T> void check_H_8_INC(T a, T b);
+    template <typename T> void check_C_INC(T a, T b);
+    template <typename T> void check_H_11_INC(T a, T b);
+    template <typename T> void check_C_15_INC(T a, T b);
+    template <typename T> void check_H_8_DEC(T a, T b);
     std::vector<int> num_to_list(int num);
 
 };
