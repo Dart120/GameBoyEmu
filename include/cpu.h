@@ -4,6 +4,7 @@
 // #include<iostream>
 // #define FMT_HEADER_ONLY
 #include "memory.h"
+#include <vector>
 struct double_register{
     u_int8_t high;
     u_int8_t low;
@@ -68,6 +69,7 @@ class CPU
     template <typename T> void check_H_11(T a, T b);
     template <typename T> void check_C_15(T a, T b);
     template <typename T> void check_H_DEC(T a, T b);
+    std::vector<int> num_to_list(int num);
 
 };
 #endif
