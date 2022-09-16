@@ -13,14 +13,14 @@
    "1": {
     "ref": "fmt/8.1.1",
     "options": "fPIC=True\nheader_only=False\nshared=False\nwith_fmt_alias=False\nwith_os_api=True",
-    "package_id": "75884ca7ea74925b5b3662be7401009979be1380",
+    "package_id": "2c09c8f84c016041549fcee94e4caae5d89424b6",
     "prev": "0",
     "context": "host"
    },
    "2": {
     "ref": "spdlog/1.10.0",
     "options": "fPIC=True\nheader_only=False\nno_exceptions=False\nshared=False\nwchar_filenames=False\nwchar_support=False\nfmt:fPIC=True\nfmt:header_only=False\nfmt:shared=False\nfmt:with_fmt_alias=False\nfmt:with_os_api=True",
-    "package_id": "ebfe6bf659cecc24b8d46bc0138b61c2f32994c9",
+    "package_id": "4d2b231078dcc813aaf3eb5175bee272655efbc4",
     "prev": "0",
     "requires": [
      "1"
@@ -31,5 +31,5 @@
   "revisions_enabled": false
  },
  "version": "0.4",
- "profile_host": "[settings]\narch=armv8\narch_build=armv8\nbuild_type=Release\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=11\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n[conf]\ntools.system.package_manager:mode=install\n"
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Release\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=11\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n[env]\n[conf]\ntools.system.package_manager:mode=install\n"
 }
