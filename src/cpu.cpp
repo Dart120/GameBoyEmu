@@ -229,7 +229,8 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC BC {:X}", opcode);
                 this->registers.BC_double-- ; 
-                cycles -= 2;       
+                cycles -= 2;    
+                PC_value += 1;   
                 break;     
             }
 
@@ -285,6 +286,178 @@ this->set_flag(FLAG_C);
                 cycles++;
                 break;
             }
+
+            case 0x10:
+            {
+                spdlog::info("STOP {:X} read", opcode);
+                exit(0);
+                cycles--;
+                PC_value += 2;
+                break;
+            }
+
+            case 0x11:
+            {
+                spdlog::info("LD DE, d16 {:X}", opcode);
+                this -> registers.DE_double = this -> memory.read_16_bit(PC_value + 1);
+                PC_value += 3;
+                cycles -= 3;
+                break;
+            }
+
+            case 0x12:
+            {
+                spdlog::info("LD (DE), A {:X}", opcode);
+                this -> memory.write_8_bit(this -> registers.DE_double, this -> registers.AF.A);
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x13:
+            {
+                spdlog::info("INC DE {:X}", opcode);
+                this -> registers.DE_double++;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+             case 0x14:
+            {
+                spdlog::info("INC D {:X}", opcode);
+                this -> check_H_8_INC(this -> registers.DE.D, (u_int8_t) 1);
+                char result = ++this ->registers.DE.D;
+                this -> check_if_result_zero(result);
+                this -> clear_flag(FLAG_N);
+                PC_value += 1;
+                cycles--;
+                break;
+            }
+
+            case 0x15:
+            {
+                spdlog::info("DEC D {:X}", opcode);
+                this -> check_H_8_DEC(this -> registers.DE.D, (u_int8_t) 1);
+                char result = --this -> registers.DE.D;
+                this -> check_if_result_zero(result);
+                this -> set_flag(FLAG_N);
+                PC_value += 1;
+                cycles--;
+                break;
+            }
+
+            case 0x16:
+            {
+                spdlog::info("LD D, d8 {:X}", opcode);
+                this -> registers.DE.D = this -> memory.read_8_bit(PC_value +1);
+                PC_value += 2;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x17:
+            {
+                spdlog::info("RLA {:X}", opcode);
+                this -> registers.AF.A = this -> registers.AF.A<< 1;
+                if(get_flag(FLAG_C)){
+                   this -> registers.AF.A |= 1UL;
+                   
+                }
+                
+                this -> check_if_result_zero(this -> registers.AF.A);
+                this -> clear_flag(FLAG_N);
+                this -> clear_flag(FLAG_H);
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x18:
+            {
+                PC_value += this -> memory.read_8_bit(PC_value + 1);
+                cycles += 3;
+                break;
+            }
+
+            case 0x19:
+            {
+                spdlog::info("ADD HL, DE {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                this -> check_C_15_INC(this -> registers.HL_double, this -> registers.DE_double);
+                this -> registers.HL_double += this -> registers.DE_double;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x1A:
+            {
+                spdlog::info("LD A, (DE) {:X}", opcode);
+                this -> registers.AF.A = memory.read_8_bit(this -> registers.DE_double);
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x1B:
+            {
+                spdlog::info("DEC DE {:X}", opcode);
+                this -> registers.DE_double--;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x1C:
+            {
+                spdlog::info("INC E {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                this -> check_H_8_INC(this -> registers.DE.E, (u_int8_t) 1);
+                char result = ++this -> registers.DE.E;
+                this -> check_if_result_zero(result);
+                cycles -= 1;
+                PC_value += 1;
+                break;
+            }
+
+            case 0x1D:
+            {
+                spdlog::info("DEC E {:X}", opcode);
+                this -> set_flag(FLAG_N);
+                this -> check_H_8_DEC(this -> registers.DE.E, (u_int8_t) 1);
+                char result = --this -> registers.DE.E;
+                this -> check_if_result_zero(result);
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x1E:
+            {
+                spdlog::info("LD E, d8 {:X}", opcode);
+                this -> registers.DE.E = memory.read_8_bit(PC_value + 1);
+                PC_value += 2;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x1F:
+            {
+                spdlog::info("RRA {:X}", opcode);
+                
+                this -> registers.AF.A = this -> registers.AF.A >> 1;
+                if(get_flag(FLAG_C)){
+                    this -> registers.AF.A |= 1L;
+                }
+
+                clear_flag(FLAG_H);
+                clear_flag(FLAG_N);
+                this -> check_if_result_zero(this -> registers.AF.A);
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+            
             
 
             
@@ -583,125 +756,6 @@ this->set_flag(FLAG_C);
             }
 
 
-
-            case 0x14:
-            {
-                spdlog::info("INC D {:X}", opcode);
-                this -> check_H_8(this -> registers.DE.D, (u_int8_t) 1);
-                char result = ++this ->registers.DE.D;
-                this -> check_if_result_zero(result);
-                this -> clear_flag(FLAG_N);
-                PC_value += 1;
-                cycles--;
-                break;
-            }
-
-            case 0x15:
-            {
-                spdlog::info("DEC D {:X}", opcode);
-                this -> check_H_DEC(this -> registers.DE.D, (u_int8_t) 1);
-                char result = --this -> registers.DE.D;
-                this -> check_if_result_zero(result);
-                this -> set_flag(FLAG_N);
-                PC_value += 1;
-                cycles--;
-                break;
-            }
-
-            case 0x16:
-            {
-                spdlog::info("LD D, d8 {:X}", opcode);
-                this -> registers.DE.D = this -> memory.read_8_bit(PC_value +1);
-                PC_value += 2;
-                cycles -= 2;
-                break;
-            }
-
-            case 0x14:
-            {
-                spdlog::info("INC D {:X}", opcode);
-                this -> check_H_8(this -> registers.DE.D, (u_int8_t) 1);
-                char result = ++this ->registers.DE.D;
-                this -> check_if_result_zero(result);
-                this -> clear_flag(FLAG_N);
-                PC_value += 1;
-                cycles--;
-                break;
-            }
-
-            case 0x15:
-            {
-                spdlog::info("DEC D {:X}", opcode);
-                this -> check_H_DEC(this -> registers.DE.D, (u_int8_t) 1);
-                char result = --this -> registers.DE.D;
-                this -> check_if_result_zero(result);
-                this -> set_flag(FLAG_N);
-                PC_value += 1;
-                cycles--;
-                break;
-            }
-
-            case 0x16:
-            {
-                spdlog::info("LD D, d8 {:X}", opcode);
-                this -> registers.DE.D = this -> memory.read_8_bit(PC_value +1);
-                PC_value += 2;
-                cycles -= 2;
-                break;
-            }
-
-            case 0x17:
-            {
-                spdlog::info("RLA {:X}", opcode);
-                this -> registers.AF.A = this -> registers.AF.A<< 1;
-                if(get_flag(FLAG_C)){
-                   this -> registers.AF.A |= 1UL;
-                   
-                }
-                
-                this -> check_if_result_zero(this -> registers.AF.A);
-                this -> clear_flag(FLAG_N);
-                this -> clear_flag(FLAG_H);
-                break;
-            }
-
-            
-
-            case 0x10:
-            {
-                spdlog::info("STOP {:X} read", opcode);
-                exit(0);
-                cycles--;
-                PC_value += 2;
-                break;
-            }
-
-            case 0x11:
-            {
-                spdlog::info("LD DE, d16 {:X}", opcode);
-                this -> registers.DE_double = this -> memory.read_16_bit(PC_value + 1);
-                PC_value += 3;
-                cycles -= 3;
-                break;
-            }
-
-            case 0x12:
-            {
-                spdlog::info("LD (DE), A {:X}", opcode);
-                this -> memory.write_8_bit(this -> registers.DE_double, this -> registers.AF.A);
-                PC_value += 1;
-                cycles -= 2;
-                break;
-            }
-
-            case 0x13:
-            {
-                spdlog::info("INC DE {:X}", opcode);
-                this -> registers.DE_double++;
-                PC_value += 1;
-                cycles -= 2;
-                break;
-            }
             default:
                 break;
             }
