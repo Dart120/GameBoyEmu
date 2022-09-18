@@ -932,134 +932,305 @@ this->set_flag(FLAG_C);
                 cycles -= 2;
                 break;
             }
-            case 0x60:
-            {   
-                spdlog::info("LD H, B {:X}", opcode);
-                this -> registers.HL.H = this -> registers.BC.B;
+
+            case 0x50:
+            {
+                spdlog::info("LD D, B {:X}", opcode);
+                this -> registers.DE.D = this -> registers.BC.B;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x61:
-            {   
-                spdlog::info("LD H, C {:X}", opcode);
-                this -> registers.HL.H = this -> registers.BC.C;
+
+            case 0x51:
+            {
+                spdlog::info("LD D, C {:X}", opcode);
+                this -> registers.DE.D = this -> registers.BC.C;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x62:
-            {   
-                spdlog::info("LD H, D {:X}", opcode);
-                this -> registers.HL.H = this -> registers.DE.D;
+
+            case 0x52:
+            {
+                spdlog::info("LD D, D {:X}", opcode);
+                this -> registers.DE.D = this -> registers.DE.D;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x63:
-            {   
-                spdlog::info("LD H, E {:X}", opcode);
-                this -> registers.HL.H = this -> registers.DE.E;
+
+            case 0x53:
+            {
+                spdlog::info("LD D, E {:X}", opcode);
+                this -> registers.DE.D = this -> registers.DE.E;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x64:
-            {   
-                spdlog::info("LD H, H {:X}", opcode);
-                this -> registers.HL.H = this -> registers.HL.H;
+
+            case 0x54:
+            {
+                spdlog::info("LD D, H {:X}", opcode);
+                this -> registers.DE.D = this -> registers.HL.H;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x65:
-            {   
-                spdlog::info("LD H, L {:X}", opcode);
-                this -> registers.HL.H = this -> registers.HL.L;
+
+            case 0x55:
+            {
+                spdlog::info("LD D, L {:X}", opcode);
+                this -> registers.DE.D = this -> registers.HL.L;
                 PC_value += 1;
                 cycles -= 1;
                 break;
             }
-            case 0x66:
-            {   
-                spdlog::info("LD H, (HL) {:X}", opcode);
-                this -> registers.HL.H = this->read_8_bit(this->registers.HL_double);
+
+            case 0x56:
+            {
+                spdlog::info("LD D, (HL) {:X}", opcode);
+                this -> registers.DE.D = this -> registers.HL_double;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x57:
+            {
+                spdlog::info("LD D, A {:X}", opcode);
+                this -> registers.DE.D = this -> registers.AF.A;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x58:
+            {
+                spdlog::info("LD E, B {:X}", opcode);
+                this -> registers.DE.E = this -> registers.BC.B;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x59:
+            {
+                spdlog::info("LD E, C {:X}", opcode);
+                this -> registers.DE.E = this -> registers.BC.C;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x5A:
+            {
+                spdlog::info("LD E, D {:X}", opcode);
+                this -> registers.DE.E = this -> registers.DE.D;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x5B:
+            {
+                spdlog::info("LD E, E {:X}", opcode);
+                this -> registers.DE.E = this -> registers.DE.E;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x5C:
+            {
+                spdlog::info("LD E, H {:X}", opcode);
+                this -> registers.DE.E = this -> registers.HL.H;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x5D:
+            {
+                spdlog::info("LD E, L {:X}", opcode);
+                this -> registers.DE.E = this -> registers.HL.L;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x5E:
+            {
+                spdlog::info("LD E, (HL) {:X}", opcode);
+                this -> registers.DE.E = this -> registers.HL_double;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+
+            case 0x5F:
+            {
+                spdlog::info("LD E, A {:X}", opcode);
+                this -> registers.DE.E = this -> registers.AF.A;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+
+
+            case 0x70:
+            {
+                spdlog::info("LD (HL), B {:X}", opcode);
+                this -> registers.HL_double = this -> registers.BC.B;
                 PC_value += 1;
                 cycles -= 2;
                 break;
             }
-            case 0x67:
-            {   
-                spdlog::info("LD H, A {:X}", opcode);
-                this -> registers.HL.H = this -> registers.AF.A;
+
+            case 0x71:
+            {
+                spdlog::info("LD (HL), C {:X}", opcode);
+                this -> registers.HL_double = this -> registers.BC.C;
                 PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x68:
-            {   
-                spdlog::info("LD L, B {:X}", opcode);
-                this -> registers.HL.L = this -> registers.BC.B;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x69:
-            {   
-                spdlog::info("LD L, C {:X}", opcode);
-                this -> registers.HL.L = this -> registers.BC.C;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6A:
-            {   
-                spdlog::info("LD L, D {:X}", opcode);
-                this -> registers.HL.L = this -> registers.DE.D;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6B:
-            {   
-                spdlog::info("LD L, E {:X}", opcode);
-                this -> registers.HL.L = this -> registers.DE.E;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6C:
-            {   
-                spdlog::info("LD L, H {:X}", opcode);
-                this -> registers.HL.L = this -> registers.HL.H;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6D:
-            {   
-                spdlog::info("LD L, L {:X}", opcode);
-                this -> registers.HL.L = this -> registers.HL.L;
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6E:
-            {   
-                spdlog::info("LD L, (HL) {:X}", opcode);
-                this -> registers.HL.L = this->read_8_bit(this->registers.HL_double);
-                PC_value += 1;
-                cycles -= 1;
-                break;
-            }
-            case 0x6F:
-            {   
-                spdlog::info("LD L, A {:X}", opcode);
-                this -> registers.HL.L= this -> registers.AF.A;
-                PC_value += 2;
                 cycles -= 2;
                 break;
             }
+
+            case 0x72:
+            {
+                spdlog::info("LD (HL), D {:X}", opcode);
+                this -> registers.HL_double = this -> registers.DE.D;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x73:
+            {
+                spdlog::info("LD (HL), B {:X}", opcode);
+                this -> registers.HL_double = this -> registers.BC.B;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x74:
+            {
+                spdlog::info("LD (HL), H {:X}", opcode);
+                this -> registers.HL_double = this -> registers.HL.H;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x75:
+            {
+                spdlog::info("LD (HL), L {:X}", opcode);
+                this -> registers.HL_double = this -> registers.HL.L;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x76:
+            {
+                spdlog::info("HALT {:X}", opcode);
+                ;
+            }
+
+            case 0x77:
+            {
+                spdlog::info("LD (HL), A {:X}", opcode);
+                this -> registers.HL_double = this -> registers.AF.A;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            case 0x78:
+            {
+                spdlog::info("LD A, B {:X}", opcode);
+                this -> registers.AF.A = this -> registers.BC.B;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x79:
+            {
+                spdlog::info("LD A, C {:X}", opcode);
+                this -> registers.AF.A = this -> registers.BC.C;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7A:
+            {
+                spdlog::info("LD A, D {:X}", opcode);
+                this -> registers.AF.A = this -> registers.DE.D;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7B:
+            {
+                spdlog::info("LD A, E {:X}", opcode);
+                this -> registers.AF.A = this -> registers.DE.E;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7C:
+            {
+                spdlog::info("LD A, H {:X}", opcode);
+                this -> registers.AF.A = this -> registers.HL.H;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7D:
+            {
+                spdlog::info("LD A, L {:X}", opcode);
+                this -> registers.AF.A = this -> registers.HL.H;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7E:
+            {
+                spdlog::info("LD A, (HL) {:X}", opcode);
+                this -> registers.AF.A = this -> registers.HL_double;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x7F:
+            {
+                spdlog::info("LD A, A {:X}", opcode);
+                this -> registers.AF.A = this -> registers.AF.A;
+                PC_value += 1;
+                cycles -= 1;
+                break;
+            }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
