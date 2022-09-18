@@ -375,7 +375,7 @@ this->set_flag(FLAG_C);
             case 0x18:
             {
                 PC_value += this -> memory.read_8_bit(PC_value + 1);
-                cycles += 3;
+                cycles += 3;  
                 break;
             }
 
@@ -626,6 +626,184 @@ this->set_flag(FLAG_C);
                 cycles++;
                 break;
             }
+
+            case 0x30:
+            {
+                spdlog::info("JR NC s8 {:X}", opcode);
+                if (!this -> get_flag(FLAG_C)){
+                    PC_value += this -> memory.read_8_bit(PC_value + 1);
+                    cycles += 3;
+                } else{
+                    PC_value++;
+                    cycles += 2;
+                }
+            }
+
+            case 0x31:
+            {
+                spdlog::info("LD SP, d16 {:X}", opcode);
+                this -> registers.SP = this -> memory.read_16_bit(PC_value +1);
+                PC_value += 3;
+                cycles -= 3;
+                break;
+            }
+
+            case 0x32:
+            {
+                spdlog::info("LD (HL-), A {:X}", opcode);
+                this -> memory.write_8_bit(this -> registers.HL_double, this -> registers.AF.A);
+                this -> registers.HL_double--;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+
+            case 0x33:
+            {
+                spdlog::info("INC SP {:X}", opcode);
+                this -> registers.SP++;
+                PC_value += 1;
+                cycles -= 2;
+                break;
+            }
+
+            // case 0x34:
+            // {
+            //     spdlog::info("INC (HL) {:X}", opcode);
+            //     this->check_H_8_INC(this->registers.HL,(u_int8_t) 1);            ERROR HERE    
+            //     char result = ++this -> registers.HL;                            ERROR HERE
+            //     this -> check_if_result_zero(result);
+            //     this -> clear_flag(FLAG_N);
+            //     PC_value += 1;
+            //     cycles-= 3;
+            //     break;
+            // }
+
+            case 0x35:
+            {
+                spdlog::info("DEC (HL) {:X}", opcode);
+                // this -> check_H_8_DEC(this -> registers.HL, (u_int8_t) 1); ERRORS HERE
+                // char result = --this -> registers.HL;                      ERRORS HERE
+                //this -> check_if_result_zero(result);
+                this -> clear_flag(FLAG_N);
+                PC_value += 1;
+                cycles -= 3;
+                break;
+            }
+
+            case 0x36:
+            {
+                spdlog::info("LD (HL), d8 {:x}", opcode);
+                //this -> registers.HL = this -> memory.read_8_bit(PC_value + 1);       ERROR HERE??
+                PC_value += 2;
+                cycles -= 3;
+                break;
+            }
+
+            case 0x37:
+            {
+                spdlog::info("SCF {:X}", opcode);
+                ;
+            }
+
+            case 0x38:
+            {
+                spdlog::info("JR C, s8 {:X}", opcode);
+                if (this -> get_flag(FLAG_C)){
+                    PC_value += this -> memory.read_8_bit(PC_value + 1);
+                    cycles += 3;
+                } else{
+                    PC_value ++;
+                    cycles += 2;
+                }
+            }
+                
+
+            case 0x39:
+            {
+                spdlog::info("ADD HL, SP {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                this -> check_C_15_INC(this -> registers.SP, this -> registers.HL_double);
+                this -> registers.HL_double += this -> registers.HL_double;
+                cycles -= 2;
+                PC_value += 1;
+                break;
+            }
+
+            case 0x3A:
+            {
+                spdlog::info("LD A, (HL-) {:X}", opcode);
+                this -> registers.HL_double--;
+                this -> registers.AF.A = memory.read_8_bit(this -> registers.HL_double);
+                cycles -= 2;
+                PC_value += 1;
+                break;
+            }
+
+            case 0x3B:
+            {
+                spdlog::info("DEC SP {:x}", opcode);
+                this -> registers.SP --;
+                cycles -= 2;
+                PC_value++ ;
+                break;
+            }
+
+            case 0x3c:
+            {
+                spdlog::info("INC A {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                this -> check_H_8_INC(this -> registers.AF.A, (u_int8_t) 1);
+                char result = -- this -> registers.AF.A;
+                this -> check_if_result_zero(result);
+                PC_value++;
+                cycles -= 1;
+                break;
+            }
+
+            case 0x3D:
+            {
+                spdlog::info("DEC A {:x}", opcode);
+                this -> set_flag(FLAG_N);
+                this -> check_H_8_DEC(this -> registers.AF.A, (u_int8_t) 1);
+                char result = -- this -> registers.AF.A;
+                this -> check_if_result_zero(result);
+                PC_value ++;
+                cycles -= 1;
+                break;
+            }
+
+            case 0X3E:
+            {
+                spdlog::info("LD A, d8 {:X}", opcode);
+                this -> registers.AF.A = memory.read_8_bit(PC_value + 1);
+                PC_value += 2;
+                cycles -= 2;
+                break;   
+            }
+
+            case 0x3F:
+            {
+                spdlog::info("CCF {:X}", opcode);
+                this -> clear_flag(FLAG_N);
+                this -> clear_flag(FLAG_H);
+               // this -> ~set_flag(FLAG_C);            ONLY ERROR WHERE IM LIKE AIGHT FAIR ENOUGH, IDK IF I CAN DO THIS TO FLIP CARRY FLAG
+                PC_value += 1;
+                cycles -= 1;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             case 0x40:
             {   
                 spdlog::info("LD B, B {:X}", opcode);
