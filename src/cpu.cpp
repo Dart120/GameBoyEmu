@@ -1088,6 +1088,7 @@ this->set_flag(FLAG_C);
                 cycles -= 2;
                 break;
             }
+            
 
             case 0x71:
             {
@@ -1220,7 +1221,136 @@ this->set_flag(FLAG_C);
                 cycles -= 1;
                 break;
             }
-
+            case 0x80:
+            {
+                spdlog::info("ADD A, B {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.BC.B);
+                this->check_C_INC(this->registers.AF.A, this->registers.BC.B);
+                this->registers.AF.A += this->registers.BC.B;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x81:
+            {
+                spdlog::info("ADD A, C {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.BC.C);
+                this->check_C_INC(this->registers.AF.A, this->registers.BC.C);
+                this->registers.AF.A += this->registers.BC.C;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x82:
+            {
+                spdlog::info("ADD A, D {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.DE.D);
+                this->check_C_INC(this->registers.AF.A, this->registers.DE.D);
+                this->registers.AF.A += this->registers.DE.D;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x83:
+            {
+                spdlog::info("ADD A, E {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.DE.E);
+                this->check_C_INC(this->registers.AF.A, this->registers.DE.E);
+                this->registers.AF.A += this->registers.DE.E;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x84:
+            {
+                spdlog::info("ADD A, H {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.HL.H);
+                this->check_C_INC(this->registers.AF.A, this->registers.HL.H);
+                this->registers.AF.A += this->registers.HL.H;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x85:
+            {
+                spdlog::info("ADD A, L {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.HL.L);
+                this->check_C_INC(this->registers.AF.A, this->registers.HL.L);
+                this->registers.AF.A += this->registers.HL.L;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x86:
+            {
+                spdlog::info("ADD A, (HL) {:X}", opcode);
+                u_int8_t value = this->memory.read_8_bit(this->registers.HL_double);
+                this->check_H_8_INC(this->registers.AF.A, value);
+                this->check_C_INC(this->registers.AF.A, value);
+                this->registers.AF.A += value;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+            case 0x87:
+            {
+                spdlog::info("ADD A, A {:X}", opcode);
+                this->check_H_8_INC(this->registers.AF.A, this->registers.AF.A);
+                this->check_C_INC(this->registers.AF.A, this->registers.AF.A);
+                this->registers.AF.A += this->registers.AF.A;
+                this->check_if_result_zero(this->registers.AF.A);
+            }
+        case 0x88:
+        {
+            spdlog::info("ADC A, B {:X}", opcode);
+            this->check_H_8_INC(this->registers.AF.A, (u_int8_t) (this->registers.BC.B + this->get_flag(FLAG_C)));
+            this->check_C_INC(this->registers.AF.A, (u_int8_t) (this->registers.BC.B + this->get_flag(FLAG_C)));
+            this->registers.AF.A += (u_int8_t) (this->registers.BC.B + this->get_flag(FLAG_C));
+            this->check_if_result_zero(this->registers.AF.A);
+        }
+    case 0x89:
+    {
+        spdlog::info("ADC A, C {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A, (u_int8_t) (this->registers.BC.C + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A, (u_int8_t) (this->registers.BC.C + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.BC.C + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8A:
+    {
+        spdlog::info("ADC A, D {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A, (u_int8_t) (this->registers.DE.D + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A, (u_int8_t) (this->registers.DE.D + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.DE.D + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8B:
+    {
+        spdlog::info("ADC A, E {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A, (u_int8_t) (this->registers.DE.E + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A, (u_int8_t) (this->registers.DE.E + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.DE.E + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8C:
+    {
+        spdlog::info("ADC A, H {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A, (u_int8_t) (this->registers.HL.H + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A, (u_int8_t) (this->registers.HL.H + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.HL.H + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8D:
+    {
+        spdlog::info("ADC A, L {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A,(u_int8_t)  (this->registers.HL.L + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A,(u_int8_t)  (this->registers.HL.L + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.HL.L + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8E:
+    {
+        spdlog::info("ADC A, (HL) {:X}", opcode);
+        u_int8_t value = this->memory.read_8_bit(this->registers.HL_double);
+        this->check_H_8_INC(this->registers.AF.A,(u_int8_t)  (value + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A,(u_int8_t)  (value + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (value + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
+    case 0x8F:
+    {
+        spdlog::info("ADC A, A {:X}", opcode);
+        this->check_H_8_INC(this->registers.AF.A,(u_int8_t)  (this->registers.AF.A + this->get_flag(FLAG_C)));
+        this->check_C_INC(this->registers.AF.A,(u_int8_t)  (this->registers.AF.A + this->get_flag(FLAG_C)));
+        this->registers.AF.A += (u_int8_t) (this->registers.AF.A + this->get_flag(FLAG_C));
+        this->check_if_result_zero(this->registers.AF.A);
+    }
 
 
 
