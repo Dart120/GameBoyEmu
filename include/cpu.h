@@ -5,10 +5,7 @@
 // #define FMT_HEADER_ONLY
 #include "memory.h"
 #include <vector>
-struct double_register{
-    u_int8_t high;
-    u_int8_t low;
-};
+
 enum register_index {AF,BC,DE,HL,SP,PC};
 class CPU
 {
@@ -26,6 +23,10 @@ class CPU
     Memory memory;
 
     // Data Members
+    struct system_status{
+    u_int32_t cycles;
+    u_int16_t *PC_value;
+} system_status;  
     struct registers{
         union{
             struct {
