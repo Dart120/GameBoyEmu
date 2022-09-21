@@ -109,27 +109,27 @@ this->set_flag(FLAG_C);
             case 0x00:
                 {spdlog::info("NOP {:X}", opcode);
                 this->registers.PC += 1;
-                cycles--;
+               (*cycles)--;
                (*PC_value) += 1;
                 break;}
             // case 0x10:
             // // NOT IMPLEMENTED STOP
             //     {spdlog::info("STOP {:X}", opcode);
-            //     cycles--;
+            //    (*cycles)--;
             //     break;}
             // case 0x20:
             //     {spdlog::info("JR NZ, s8 {:X}", opcode);
-            //     cycles--;
+            //    (*cycles)--;
             //     break;}
             // case 0x40:
             //     {spdlog::info("LD B,B {:X}", opcode);
             //     this -> registers.BC.B = this->registers.BC.B;
-            //     cycles--;
+            //    (*cycles)--;
             //     break;}
             // case 0x50:
             //     {spdlog::info("LD D, B {:X}", opcode);
             //     this -> registers.BC.B = this ->registers.DE.D;
-            //     cycles--;
+            //    (*cycles)--;
 
                 // // this -> registers.BC.B = this->memory.mem[this->registers.HL_double];
 
@@ -138,21 +138,21 @@ this->set_flag(FLAG_C);
               {  spdlog::info("LD BC, d16 {:X}", opcode);
                 this -> registers.BC_double = this -> memory.read_16_bit(*PC_value + 1);
                (*PC_value) += 3;
-                cycles = cycles - 3;
+               (*cycles) =(*cycles) - 3;
                 break;}
         
             case 0x02:
                 {spdlog::info("LD (BC), A {:X}", opcode);
                 this->memory.write_8_bit(this->registers.BC_double, this->registers.AF.A);
                (*PC_value) += 1;
-                cycles = cycles - 2;
+               (*cycles) =(*cycles) - 2;
                 break;}
               
             case 0x03:
                 {spdlog::info("INC BC {:X}", opcode);
                 this->registers.BC_double++;
                (*PC_value) += 1;
-                cycles = cycles - 2;
+               (*cycles) =(*cycles) - 2;
                 break;}
              
             case 0x04:
@@ -162,7 +162,7 @@ this->set_flag(FLAG_C);
                 this->check_if_result_zero(result);
                 this->clear_flag(FLAG_N);
                (*PC_value) += 1;
-                cycles--;
+               (*cycles)--;
                 break;}
             case 0x05:
                 {spdlog::info("DEC B {:X}", opcode);
@@ -171,7 +171,7 @@ this->set_flag(FLAG_C);
                 this->check_if_result_zero(result);
                 this->check_H_8_DEC(this->registers.BC.B,(u_int8_t) 1);
                (*PC_value) += 1;
-                cycles--;
+               (*cycles)--;
                 break;}
 
 
@@ -179,7 +179,7 @@ this->set_flag(FLAG_C);
             {    spdlog::info("LD B, d8 {:X}", opcode);
                 this -> registers.BC.B = this -> memory.read_8_bit(*PC_value + 1);
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;}
 
             case 0x07:
@@ -195,7 +195,7 @@ this->set_flag(FLAG_C);
                 this->check_if_result_zero(this -> registers.AF.A);
                 this->clear_flag(FLAG_N);
                 this->clear_flag(FLAG_H);
-                cycles++;
+               (*cycles)++;
                (*PC_value) += 1;
                 break;}
                
@@ -204,7 +204,7 @@ this->set_flag(FLAG_C);
                 // in other words the least significant byte is first in memory. This scheme is known as little-endian and its opposite is known as big-endian.
                 {spdlog::info("LD (a16), SP {:X}", opcode);
                 this -> memory.write_16_bit(*PC_value + 1,(*this->memory.SP));
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 3;
                 break;}
             case 0x09:
@@ -213,7 +213,7 @@ this->set_flag(FLAG_C);
                 this->clear_flag(FLAG_N);
                 this->check_C_15_INC(this -> registers.HL_double,this->registers.BC_double);
                 this -> registers.HL_double += this->registers.BC_double;
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;}
             
@@ -221,7 +221,7 @@ this->set_flag(FLAG_C);
             {   
                 spdlog::info("LD A, (BC) {:X}", opcode);
                 this->registers.AF.A = memory.read_8_bit(this->registers.BC_double);
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;
             }
@@ -230,7 +230,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC BC {:X}", opcode);
                 this->registers.BC_double-- ; 
-                cycles -= 2;    
+               (*cycles) -= 2;    
                (*PC_value) += 1;   
                 break;     
             }
@@ -242,7 +242,7 @@ this->set_flag(FLAG_C);
                 this->check_H_8_INC(this ->registers.BC.C, (u_int8_t) 1);
                 char result = ++this ->registers.BC.C;
                 this->check_if_result_zero(result);
-                cycles -= 1;
+               (*cycles) -= 1;
                (*PC_value)++;
                 break;
                 
@@ -256,7 +256,7 @@ this->set_flag(FLAG_C);
                 char result = --this -> registers.BC.C;
                 this -> check_if_result_zero(result);
                (*PC_value)++;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -265,7 +265,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, d8 {:X}", opcode);
                 this -> registers.BC.C = memory.read_8_bit(*PC_value + 1 );
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -284,7 +284,7 @@ this->set_flag(FLAG_C);
                 this->clear_flag(FLAG_N);
                 this->clear_flag(FLAG_H);
                (*PC_value) += 1;
-                cycles++;
+               (*cycles)++;
                 break;
             }
 
@@ -292,7 +292,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("STOP {:X} read", opcode);
                 exit(0);
-                cycles--;
+               (*cycles)--;
                (*PC_value) += 2;
                 break;
             }
@@ -302,7 +302,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD DE, d16 {:X}", opcode);
                 this -> registers.DE_double = this -> memory.read_16_bit(*PC_value + 1);
                (*PC_value) += 3;
-                cycles -= 3;
+               (*cycles) -= 3;
                 break;
             }
 
@@ -311,7 +311,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (DE), A {:X}", opcode);
                 this -> memory.write_8_bit(this -> registers.DE_double, this -> registers.AF.A);
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -320,7 +320,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("INC DE {:X}", opcode);
                 this -> registers.DE_double++;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
              case 0x14:
@@ -331,7 +331,7 @@ this->set_flag(FLAG_C);
                 this -> check_if_result_zero(result);
                 this -> clear_flag(FLAG_N);
                (*PC_value) += 1;
-                cycles--;
+               (*cycles)--;
                 break;
             }
 
@@ -343,7 +343,7 @@ this->set_flag(FLAG_C);
                 this -> check_if_result_zero(result);
                 this -> set_flag(FLAG_N);
                (*PC_value) += 1;
-                cycles--;
+               (*cycles)--;
                 break;
             }
 
@@ -352,7 +352,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, d8 {:X}", opcode);
                 this -> registers.DE.D = this -> memory.read_8_bit(*PC_value +1);
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -369,14 +369,14 @@ this->set_flag(FLAG_C);
                 this -> clear_flag(FLAG_N);
                 this -> clear_flag(FLAG_H);
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
             case 0x18:
             {
                (*PC_value) += this -> memory.read_8_bit(*PC_value + 1);
-                cycles += 3;  
+               (*cycles) += 3;  
                 break;
             }
 
@@ -387,7 +387,7 @@ this->set_flag(FLAG_C);
                 this -> check_C_15_INC(this -> registers.HL_double, this -> registers.DE_double);
                 this -> registers.HL_double += this -> registers.DE_double;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -396,7 +396,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, (DE) {:X}", opcode);
                 this -> registers.AF.A = memory.read_8_bit(this -> registers.DE_double);
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -405,7 +405,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("DEC DE {:X}", opcode);
                 this -> registers.DE_double--;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -416,7 +416,7 @@ this->set_flag(FLAG_C);
                 this -> check_H_8_INC(this -> registers.DE.E, (u_int8_t) 1);
                 char result = ++this -> registers.DE.E;
                 this -> check_if_result_zero(result);
-                cycles -= 1;
+               (*cycles) -= 1;
                (*PC_value) += 1;
                 break;
             }
@@ -429,7 +429,7 @@ this->set_flag(FLAG_C);
                 char result = --this -> registers.DE.E;
                 this -> check_if_result_zero(result);
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -438,7 +438,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, d8 {:X}", opcode);
                 this -> registers.DE.E = memory.read_8_bit(*PC_value + 1);
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -455,7 +455,7 @@ this->set_flag(FLAG_C);
                 clear_flag(FLAG_N);
                 this -> check_if_result_zero(this -> registers.AF.A);
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             
@@ -465,30 +465,30 @@ this->set_flag(FLAG_C);
             case 0x20:{
                 if (!this->get_flag(FLAG_Z)){
                    (*PC_value) += this->memory.read_8_bit(*PC_value + 1);
-                    cycles += 3;
+                   (*cycles) += 3;
                 } else {
                    (*PC_value)++;
-                    cycles += 2;
+                   (*cycles) += 2;
                 }
             }
               case 0x21:
               {  spdlog::info("LD HL, d16 {:X}", opcode);
                 this -> registers.HL_double = this -> memory.read_16_bit(*PC_value + 1);
                (*PC_value) += 3;
-                cycles = cycles - 3;
+               (*cycles) =(*cycles) - 3;
                 break;}
             case 0x22:
                 {spdlog::info("LD (HL+), A {:X}", opcode);
                 this->memory.write_8_bit(this->registers.HL_double, this->registers.AF.A);
                 this->registers.HL_double++;
                (*PC_value) += 1;
-                cycles = cycles - 2;
+               (*cycles) =(*cycles) - 2;
                 break;}
             case 0x23:
                 {spdlog::info("INC HL {:X}", opcode);
                 this->registers.HL_double++;
                (*PC_value) += 1;
-                cycles = cycles - 2;
+               (*cycles) =(*cycles) - 2;
                 break;}
             case 0x24:
             {    spdlog::info("INC H {:X}", opcode);
@@ -497,7 +497,7 @@ this->set_flag(FLAG_C);
                 this->check_if_result_zero(result);
                 this->clear_flag(FLAG_N);
                (*PC_value) += 1;
-                cycles--;
+               (*cycles)--;
                 break;}
             case 0x25:
                 {
@@ -507,14 +507,14 @@ this->set_flag(FLAG_C);
                     this->check_if_result_zero(result);
                     this->check_H_8_DEC(this->registers.HL.H,(u_int8_t) 1);
                    (*PC_value) += 1;
-                    cycles--;
+                   (*cycles)--;
                     break;
                 }
             case 0x26:
             {    spdlog::info("LD H, d8 {:X}", opcode);
                 this -> registers.HL.H = this -> memory.read_8_bit(*PC_value + 1);
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;}
             case 0x27:
                 {spdlog::info("DAA {:X}", opcode);
@@ -541,17 +541,17 @@ this->set_flag(FLAG_C);
                 }else{
                     this->clear_flag(FLAG_C);
                 }
-                cycles++;
+               (*cycles)++;
                (*PC_value) += 1;
                 break;}
             case 0x28:
             {
                 if (this->get_flag(FLAG_Z)){
                    (*PC_value) += this->memory.read_8_bit(*PC_value + 1);
-                    cycles += 3;
+                   (*cycles) += 3;
                 } else {
                    (*PC_value)++;
-                    cycles += 2;
+                   (*cycles) += 2;
                 }
             }
             case 0x29:
@@ -561,7 +561,7 @@ this->set_flag(FLAG_C);
                 this->clear_flag(FLAG_N);
                 this->check_C_15_INC(this -> registers.HL_double,this->registers.HL_double);
                 this -> registers.HL_double += this->registers.HL_double;
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;
                 }
@@ -571,7 +571,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, (BC) LD A, (HL+) {:X}", opcode);
                 this->registers.HL_double++;
                 this->registers.AF.A = memory.read_8_bit(this->registers.HL_double);
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;
             }
@@ -579,7 +579,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC HL {:X}", opcode);
                 this->registers.HL_double-- ; 
-                cycles -= 2;  
+               (*cycles) -= 2;  
                (*PC_value)++;     
                 break;     
             }
@@ -591,7 +591,7 @@ this->set_flag(FLAG_C);
                 char result = ++this ->registers.HL.L;
                 this->check_if_result_zero(result);
                (*PC_value)++;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
                 
             }
@@ -604,7 +604,7 @@ this->set_flag(FLAG_C);
                 char result = --this -> registers.HL.L;
                 this -> check_if_result_zero(result);
                (*PC_value)++;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -613,7 +613,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD L, d8 {:X}", opcode);
                 this -> registers.HL.L = memory.read_8_bit(*PC_value + 1 );
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -624,7 +624,7 @@ this->set_flag(FLAG_C);
                 this->set_flag(FLAG_N);
                 this->set_flag(FLAG_H);
                (*PC_value) += 1;
-                cycles++;
+               (*cycles)++;
                 break;
             }
 
@@ -633,10 +633,10 @@ this->set_flag(FLAG_C);
                 spdlog::info("JR NC s8 {:X}", opcode);
                 if (!this -> get_flag(FLAG_C)){
                    (*PC_value) += this -> memory.read_8_bit(*PC_value + 1);
-                    cycles += 3;
+                   (*cycles) += 3;
                 } else{
                    (*PC_value)++;
-                    cycles += 2;
+                   (*cycles) += 2;
                 }
             }
 
@@ -645,7 +645,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD SP, d16 {:X}", opcode);
                 this -> registers.SP = this -> memory.read_16_bit(*PC_value +1);
                (*PC_value) += 3;
-                cycles -= 3;
+               (*cycles) -= 3;
                 break;
             }
 
@@ -655,7 +655,7 @@ this->set_flag(FLAG_C);
                 this -> memory.write_8_bit(this -> registers.HL_double, this -> registers.AF.A);
                 this -> registers.HL_double--;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -665,7 +665,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("INC SP {:X}", opcode);
                 this -> registers.SP++;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -677,7 +677,7 @@ this->set_flag(FLAG_C);
             //     this -> check_if_result_zero(result);
             //     this -> clear_flag(FLAG_N);
             //    (*PC_value) += 1;
-            //     cycles-= 3;
+            //    (*cycles)-= 3;
             //     break;
             // }
 
@@ -689,7 +689,7 @@ this->set_flag(FLAG_C);
                 //this -> check_if_result_zero(result);
                 this -> clear_flag(FLAG_N);
                (*PC_value) += 1;
-                cycles -= 3;
+               (*cycles) -= 3;
                 break;
             }
 
@@ -698,7 +698,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), d8 {:x}", opcode);
                 //this -> registers.HL = this -> memory.read_8_bit(*PC_value + 1);       ERROR HERE??
                (*PC_value) += 2;
-                cycles -= 3;
+               (*cycles) -= 3;
                 break;
             }
 
@@ -713,10 +713,10 @@ this->set_flag(FLAG_C);
                 spdlog::info("JR C, s8 {:X}", opcode);
                 if (this -> get_flag(FLAG_C)){
                    (*PC_value) += this -> memory.read_8_bit(*PC_value + 1);
-                    cycles += 3;
+                   (*cycles) += 3;
                 } else{
                    (*PC_value) ++;
-                    cycles += 2;
+                   (*cycles) += 2;
                 }
             }
                 
@@ -727,7 +727,7 @@ this->set_flag(FLAG_C);
                 this -> clear_flag(FLAG_N);
                 this -> check_C_15_INC(this -> registers.SP, this -> registers.HL_double);
                 this -> registers.HL_double += this -> registers.HL_double;
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;
             }
@@ -737,7 +737,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, (HL-) {:X}", opcode);
                 this -> registers.HL_double--;
                 this -> registers.AF.A = memory.read_8_bit(this -> registers.HL_double);
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value) += 1;
                 break;
             }
@@ -746,7 +746,7 @@ this->set_flag(FLAG_C);
             {
                 spdlog::info("DEC SP {:x}", opcode);
                 this -> registers.SP --;
-                cycles -= 2;
+               (*cycles) -= 2;
                (*PC_value)++ ;
                 break;
             }
@@ -759,7 +759,7 @@ this->set_flag(FLAG_C);
                 char result = -- this -> registers.AF.A;
                 this -> check_if_result_zero(result);
                (*PC_value)++;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -771,7 +771,7 @@ this->set_flag(FLAG_C);
                 char result = -- this -> registers.AF.A;
                 this -> check_if_result_zero(result);
                (*PC_value) ++;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -780,7 +780,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, d8 {:X}", opcode);
                 this -> registers.AF.A = memory.read_8_bit(*PC_value + 1);
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;   
             }
 
@@ -792,7 +792,7 @@ this->set_flag(FLAG_C);
                // this -> ~set_flag(FLAG_C);            ONLY ERROR WHERE IM LIKE AIGHT FAIR ENOUGH, IDK IF I CAN DO THIS TO FLIP CARRY FLAG
             //    You can, if the bit is set then clear it if the bit is clear then set it
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
             }
 
 
@@ -811,7 +811,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, B {:X}", opcode);
                 this -> registers.BC.B = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x41:
@@ -819,7 +819,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, C {:X}", opcode);
                 this -> registers.BC.B = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x42:
@@ -827,7 +827,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, D {:X}", opcode);
                 this -> registers.BC.B = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x43:
@@ -835,7 +835,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, E {:X}", opcode);
                 this -> registers.BC.B = this -> registers.DE.E;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x44:
@@ -843,7 +843,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, H {:X}", opcode);
                 this -> registers.BC.B = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x45:
@@ -851,7 +851,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, L {:X}", opcode);
                 this -> registers.BC.B = this -> registers.HL.L;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x46:
@@ -859,7 +859,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, (HL) {:X}", opcode);
                 this -> registers.BC.B = this->read_8_bit(this->registers.HL_double);
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
             case 0x47:
@@ -867,7 +867,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD B, A {:X}", opcode);
                 this -> registers.BC.B = this -> registers.AF.A;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x48:
@@ -875,7 +875,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, B {:X}", opcode);
                 this -> registers.BC.C = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x49:
@@ -883,7 +883,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, C {:X}", opcode);
                 this -> registers.BC.C = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4A:
@@ -891,7 +891,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, D {:X}", opcode);
                 this -> registers.BC.C = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4B:
@@ -899,7 +899,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, E {:X}", opcode);
                 this -> registers.BC.C = this -> registers.DE.E;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4C:
@@ -907,7 +907,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, H {:X}", opcode);
                 this -> registers.BC.C = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4D:
@@ -915,7 +915,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, L {:X}", opcode);
                 this -> registers.BC.C = this -> registers.HL.L;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4E:
@@ -923,7 +923,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, (HL) {:X}", opcode);
                 this -> registers.BC.B = this->read_8_bit(this->registers.HL_double);
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x4F:
@@ -931,7 +931,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD C, A {:X}", opcode);
                 this -> registers.BC.C= this -> registers.AF.A;
                (*PC_value) += 2;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -940,7 +940,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, B {:X}", opcode);
                 this -> registers.DE.D = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -949,7 +949,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, C {:X}", opcode);
                 this -> registers.DE.D = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -958,7 +958,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, D {:X}", opcode);
                 this -> registers.DE.D = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -967,7 +967,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, E {:X}", opcode);
                 this -> registers.DE.D = this -> registers.DE.E;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -976,7 +976,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, H {:X}", opcode);
                 this -> registers.DE.D = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -985,7 +985,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, L {:X}", opcode);
                 this -> registers.DE.D = this -> registers.HL.L;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -994,7 +994,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, (HL) {:X}", opcode);
                 this -> registers.DE.D = this -> registers.HL_double;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1003,7 +1003,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD D, A {:X}", opcode);
                 this -> registers.DE.D = this -> registers.AF.A;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1012,7 +1012,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, B {:X}", opcode);
                 this -> registers.DE.E = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1021,7 +1021,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, C {:X}", opcode);
                 this -> registers.DE.E = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1030,7 +1030,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, D {:X}", opcode);
                 this -> registers.DE.E = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1039,7 +1039,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, E {:X}", opcode);
                 this -> registers.DE.E = this -> registers.DE.E;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1048,7 +1048,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, H {:X}", opcode);
                 this -> registers.DE.E = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1057,7 +1057,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, L {:X}", opcode);
                 this -> registers.DE.E = this -> registers.HL.L;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1066,7 +1066,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, (HL) {:X}", opcode);
                 this -> registers.DE.E = this -> registers.HL_double;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1076,7 +1076,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD E, A {:X}", opcode);
                 this -> registers.DE.E = this -> registers.AF.A;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1087,7 +1087,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), B {:X}", opcode);
                 this -> registers.HL_double = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
             
@@ -1097,7 +1097,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), C {:X}", opcode);
                 this -> registers.HL_double = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1106,7 +1106,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), D {:X}", opcode);
                 this -> registers.HL_double = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1115,7 +1115,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), B {:X}", opcode);
                 this -> registers.HL_double = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1124,7 +1124,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), H {:X}", opcode);
                 this -> registers.HL_double = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1133,7 +1133,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), L {:X}", opcode);
                 this -> registers.HL_double = this -> registers.HL.L;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1148,7 +1148,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD (HL), A {:X}", opcode);
                 this -> registers.HL_double = this -> registers.AF.A;
                (*PC_value) += 1;
-                cycles -= 2;
+               (*cycles) -= 2;
                 break;
             }
 
@@ -1157,7 +1157,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, B {:X}", opcode);
                 this -> registers.AF.A = this -> registers.BC.B;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1166,7 +1166,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, C {:X}", opcode);
                 this -> registers.AF.A = this -> registers.BC.C;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1175,7 +1175,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, D {:X}", opcode);
                 this -> registers.AF.A = this -> registers.DE.D;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1184,7 +1184,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, E {:X}", opcode);
                 this -> registers.AF.A = this -> registers.DE.E;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1193,7 +1193,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, H {:X}", opcode);
                 this -> registers.AF.A = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1202,7 +1202,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, L {:X}", opcode);
                 this -> registers.AF.A = this -> registers.HL.H;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1211,7 +1211,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, (HL) {:X}", opcode);
                 this -> registers.AF.A = this -> registers.HL_double;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
 
@@ -1220,7 +1220,7 @@ this->set_flag(FLAG_C);
                 spdlog::info("LD A, A {:X}", opcode);
                 this -> registers.AF.A = this -> registers.AF.A;
                (*PC_value) += 1;
-                cycles -= 1;
+               (*cycles) -= 1;
                 break;
             }
             case 0x80:
