@@ -5,7 +5,10 @@
 // #define FMT_HEADER_ONLY
 #include "memory.h"
 #include <vector>
-
+struct system_status_struct{
+    u_int32_t cycles;
+    u_int16_t *PC_value;
+};
 enum register_index {AF,BC,DE,HL,SP,PC};
 class CPU
 {
@@ -21,12 +24,9 @@ class CPU
     // Access specifier
     private:
     Memory memory;
-
+    struct system_status_struct system_status;
     // Data Members
-    struct system_status{
-    u_int32_t cycles;
-    u_int16_t *PC_value;
-} system_status;  
+      
     struct registers{
         union{
             struct {
