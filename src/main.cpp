@@ -9,6 +9,7 @@
 #include "memory.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
+
 int main(int argc, char *argv[])
 {
    
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
         std::cout << "Please supply path to rom\n";
         exit(0);
     }
+    
     CPU GB_CPU(memory);
     int regTo = 255;
     if(!GB_CPU.set_registers(regTo)){
