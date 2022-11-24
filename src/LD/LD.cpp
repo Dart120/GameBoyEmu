@@ -1,60 +1,61 @@
-#include "LD.h"
 #include "cpu.h"
 #include "memory.h"
+#include "Registers.h"
 #include<iostream>
-void LD_instructions::LD_1B_2C_REG_TO_MEM(u_int16_t address, u_int8_t reg, system_status_struct* system_status, Memory* memory){
-     memory->write_8_bit(address, reg);
-    *(system_status->PC_value) += 1;
-    system_status->cycles = system_status->cycles - 2;
+void CPU::LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles){
+     this->memory.write_8_bit(address, reg);
+    this->registers.registers.PC++;
+    (*cycles) -= 2;
+
                
 }
 
-void LD_instructions::LD_1B_2C_MEM_TO_REG(u_int16_t address, u_int8_t* reg, system_status_struct* system_status, Memory* memory){
-     *(reg) = memory->read_8_bit(address);
-    *(system_status->PC_value) += 1;
-    system_status->cycles = system_status->cycles - 2;
+void CPU::LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles){
+     *(reg) = this->memory.read_8_bit(address);
+    this->registers.registers.PC++;
+    (*cycles) -= 2;
                
 }
 
 
 
-void LD_instructions::LD_1B_1C(u_int8_t* into, u_int8_t load, system_status_struct* system_status){
+void CPU::LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles){
     *into = load;
-    *(system_status->PC_value)++;
-    system_status->cycles--;
+    this->registers.registers.PC++;
+    (*cycles) -= 2;
 }
 
-void LD_instructions::LD_2B_2C(u_int8_t* into, system_status_struct* system_status, Memory* memory){
-        *into = memory->read_8_bit(*(system_status->PC_value) + 1);
-        *(system_status->PC_value) += 2;
-        system_status->cycles -= 2;
+void CPU::LD_2B_2C(uint8_t* into, uint32_t *cycles){
+        *into = this->memory.read_8_bit(this->registers.registers.PC + 1);
+        this->registers.registers.PC += 2;
+        (*cycles) -= 2;
 }
 
-void LD_instructions::LD_2B_3C(u_int16_t address, system_status_struct* system_status, Memory* memory){
+void CPU::LD_2B_3C(uint16_t address, uint32_t *cycles){
     
-        memory->write_8_bit(address,memory->read_8_bit(*(system_status->PC_value) + 1));
-        *(system_status->PC_value) += 2;
-        system_status->cycles -= 3;
+        this->memory.write_8_bit(address,this->memory.read_8_bit(this->registers.registers.PC + 1));
+       this->registers.registers.PC += 2;
+        (*cycles) -= 3;
 }
 
-void LD_instructions::LD_3B_5C(u_int16_t* SP,system_status_struct* system_status, Memory* memory){
-    memory->write_16_bit(*(system_status->PC_value) + 1,*SP);
-    system_status->cycles -= 5;
-    *(system_status->PC_value) += 3;
-
-}
-
-void LD_instructions::LD_3B_3C(u_int16_t* into, system_status_struct* system_status, Memory* memory){
-    *into = memory->read_16_bit(*(system_status->PC_value) + 1);
-    system_status->cycles -= 3;
-    *(system_status->PC_value) += 3;
+void CPU::LD_3B_5C(uint16_t* SP, uint32_t *cycles){
+    this->memory.write_16_bit(this->registers.registers.PC + 1,*SP);
+    (*cycles) -= 5;
+    this->registers.registers.PC += 3;
 
 }
 
-void LD_instructions::increment_HL(u_int16_t* HL){
+void CPU::LD_3B_3C(uint16_t* into, uint32_t *cycles){
+    *into = this->memory.read_16_bit(this->registers.registers.PC + 1);
+    this->registers.registers.PC += 3;
+        (*cycles) -= 3;
+
+}
+
+void CPU::increment_HL(uint16_t* HL){
     *(HL)++;
 }
 
-void LD_instructions::decrement_HL(u_int16_t* HL){
+void CPU::decrement_HL(uint16_t* HL){
     *(HL)--;
 }

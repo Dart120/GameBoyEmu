@@ -21,25 +21,25 @@
             spdlog::error("Memory not filled");
         }
     };
-   int Memory::fill_memory(u_int8_t num){
+   int Memory::fill_memory(uint8_t num){
        memset(this->mem,num,65536);
        return 1;
    }
-u_int8_t Memory::read_8_bit(u_int16_t address){
+uint8_t Memory::read_8_bit(uint16_t address){
        return this->mem[address];
    }
-int Memory::write_8_bit(u_int16_t address, u_int8_t data){
+int Memory::write_8_bit(uint16_t address, uint8_t data){
         this->mem[address] = data;
         return 0;
    }
-u_int16_t Memory::read_16_bit(u_int16_t address){
-    u_int8_t first = this->mem[address];
-    u_int8_t second = this->mem[address + 1];
+uint16_t Memory::read_16_bit(uint16_t address){
+    uint8_t first = this->mem[address];
+    uint8_t second = this->mem[address + 1];
     return (second << 8) & first;;
    }
-int Memory::write_16_bit(u_int16_t address, u_int16_t data){
-    u_int8_t first = 255 & data;
-    u_int8_t second = (65280 & data) >> 8;
+int Memory::write_16_bit(uint16_t address, uint16_t data){
+    uint8_t first = 255 & data;
+    uint8_t second = (65280 & data) >> 8;
     this->mem[address] = first;
     this->mem[address + 1] = second;
     return 0;

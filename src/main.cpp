@@ -6,6 +6,7 @@
 #include <fmt/core.h> 
 #include "main.h"
 #include "cpu.h"
+#include "Registers.h"
 #include "memory.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
         std::cout << "Log init failed: " << ex.what() << std::endl;
     }
     Memory memory;
+    Registers registers;
     if (argc == 2){
         if (!memory.read_rom(argv[1])){
             std::cout << "Rom read not working\n";
@@ -39,9 +41,9 @@ int main(int argc, char *argv[])
         exit(0);
     }
     
-    CPU GB_CPU(memory);
+    CPU GB_CPU(memory,registers);
     int regTo = 255;
-    if(!GB_CPU.set_registers(regTo)){
+    if(!GB_CPU.registers.set_registers(regTo)){
         spdlog::info("Registers not set");
         
     }

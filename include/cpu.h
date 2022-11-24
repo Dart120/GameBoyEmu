@@ -4,73 +4,55 @@
 // #include<iostream>
 // #define FMT_HEADER_ONLY
 #include "memory.h"
+#include "Registers/Registers.h"
 #include <vector>
 struct system_status_struct{
-    u_int32_t cycles;
-    u_int16_t *PC_value;
+    uint32_t cycles;
+    uint16_t *PC_value;
 };
-enum register_index {AF,BC,DE,HL,SP,PC};
+
 class CPU
 {
     
     public:
-    CPU(Memory memory);
-    u_int8_t read_8_bit(u_int16_t address);
-    int write_8_bit(u_int16_t address, u_int8_t data);
-    u_int16_t read_16_bit(u_int16_t address);
-    int write_16_bit(u_int16_t address, u_int16_t data);
+    CPU(Memory memory,Registers register);
+    uint8_t read_8_bit(uint16_t address);
+    int write_8_bit(uint16_t address, uint8_t data);
+    uint16_t read_16_bit(uint16_t address);
+    int write_16_bit(uint16_t address, uint16_t data);
     void FDE();
-    int set_registers(u_int16_t  num);
+    
     // Access specifier
-    private:
+    
     Memory memory;
+    Registers registers;
     struct system_status_struct system_status;
     // Data Members
+
+    // INCDEC
+    void INC_8_BIT(uint8_t* reg, uint32_t *cycles);
+    void DEC_8_BIT(uint8_t* reg, uint32_t *cycles);
+    void INC_16_BIT(uint16_t* reg, uint32_t *cycles);
+    void DEC_16_BIT(uint16_t* reg, uint32_t *cycles);
+    void INC_ADD(uint16_t address, uint32_t *cycles);
+    void DEC_ADD(uint16_t address, uint32_t *cycles);
+    // LD
+    void LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles);
+    void LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles);
+    void LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles);
+
+    void LD_2B_2C(uint8_t* into, uint32_t *cycles);
+    void LD_2B_3C(uint16_t address, uint32_t *cycles);
+    void LD_3B_5C(uint16_t* SP, uint32_t *cycles);
+    void LD_3B_3C(uint16_t* into, uint32_t *cycles);
+    void increment_HL(uint16_t* HL);
+
+    void decrement_HL(uint16_t* HL);
       
-    struct registers{
-        union{
-            struct {
-                u_int8_t A;
-                u_int8_t F;
-            } AF;
-            u_int16_t AF_double;
-        };
-        union{
-            struct {
-                u_int8_t B;
-                u_int8_t C;
-            } BC;
-            u_int16_t BC_double;
-        };
-        union{
-            struct {
-                u_int8_t D;
-                u_int8_t E;
-            } DE;
-            u_int16_t DE_double;
-        };
-        union{
-            struct {
-                u_int8_t H;
-                u_int8_t L;
-            } HL;
-            u_int16_t HL_double;
-        };
-        u_int16_t SP;
-        u_int16_t PC;
-    } registers;
+
     // Member Functions()
-    u_int16_t read_double_register(register_index index);
-    int set_flag(int index);
-    bool get_flag(int index);
-    int clear_flag(int index);
-    template <typename T> void check_if_result_zero (T result);
-    template <typename T> void check_H_8_INC(T a, T b);
-    template <typename T> void check_C_INC(T a, T b);
-    template <typename T> void check_H_11_INC(T a, T b);
-    template <typename T> void check_C_15_INC(T a, T b);
-    template <typename T> void check_H_8_DEC(T a, T b);
-    std::vector<int> num_to_list(int num);
+    
+    
 
 };
 #endif

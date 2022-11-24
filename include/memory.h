@@ -9,8 +9,8 @@ class Memory
     Memory();
     // Data Members
     
-    u_int8_t* mem;
-    u_int8_t* ROM;
+    uint8_t* mem;
+    uint8_t* ROM;
     uint8_t* SROMB;
     uint8_t* VRAM;
     uint8_t* SRAMB;
@@ -20,12 +20,12 @@ class Memory
     uint8_t* HR;
     uint8_t* IR;
     uint8_t* SP;
-    int fill_memory(u_int8_t num);
+    int fill_memory(uint8_t num);
     
-    u_int8_t read_8_bit(u_int16_t address);
-    int write_8_bit(u_int16_t address, u_int8_t data);
-    u_int16_t read_16_bit(u_int16_t address);
-    int write_16_bit(u_int16_t address, u_int16_t data);
+    uint8_t read_8_bit(uint16_t address);
+    int write_8_bit(uint16_t address, uint8_t data);
+    uint16_t read_16_bit(uint16_t address);
+    int write_16_bit(uint16_t address, uint16_t data);
     bool read_rom(char* name);
     // Member Functions()
  

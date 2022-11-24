@@ -16,7 +16,7 @@ HEADER_DIRECTORIES(header_dir_list)
 
 list(LENGTH header_dir_list header_dir_list_count)
 message(STATUS "[INFO] Found ${header_dir_list_count} header directories.")
-
+message("${header_dir_list}")
 include_directories(${header_dir_list})
 # include_directories(${PROJECT_SOURCE_DIR}/include/LD)
 add_subdirectory(src)
