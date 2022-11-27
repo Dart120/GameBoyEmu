@@ -75,28 +75,17 @@
               
             case 0x03:
                 {spdlog::info("INC BC {:X}", opcode);
-                this->registers.registers.BC_double++;
-               (this->registers.registers.PC) += 1;
-               (cycles) =(cycles) - 2;
-                break;}
+                this->INC_16_BIT(&this->registers.registers.BC_double,&cycles);
+                break;
+                }
              
             case 0x04:
             {    spdlog::info("INC B {:X}", opcode);
-                this->registers.check_H_8_INC(this->registers.registers.BC.B,(uint8_t) 1);
-                char result = ++this->registers.registers.BC.B;
-                this->registers.check_if_result_zero(result);
-                this->registers.clear_flag(FLAG_N);
-               (this->registers.registers.PC) += 1;
-               (cycles)--;
+                this->INC_8_BIT(&this->registers.registers.BC.B,&cycles);
                 break;}
             case 0x05:
                 {spdlog::info("DEC B {:X}", opcode);
-                char result = --this->registers.registers.BC.B;
-                this -> registers.set_flag(FLAG_N);
-                this->registers.check_if_result_zero(result);
-                this->registers.check_H_8_DEC(this->registers.registers.BC.B,(uint8_t) 1);
-               (this->registers.registers.PC) += 1;
-               (cycles)--;
+                this->DEC_8_BIT(&this->registers.registers.BC.B,&cycles);
                 break;}
 
 
@@ -137,11 +126,7 @@
             case 0x09:
             // Fix with info from manual, then go down
                 {spdlog::info("ADD HL, BC {:X}", opcode);
-                this->registers.clear_flag(FLAG_N);
-                this->registers.check_C_15_INC(this -> registers.registers.HL_double,this->registers.registers.BC_double);
-                this -> registers.registers.HL_double += this->registers.registers.BC_double;
-               (cycles) -= 2;
-               (this->registers.registers.PC) += 1;
+                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.BC_double,&cycles);
                 break;}
             
             case 0x0A:
@@ -157,21 +142,14 @@
             case 0x0B:                                  
             {
                 spdlog::info("DEC BC {:X}", opcode);
-                this->registers.registers.BC_double-- ; 
-               (cycles) -= 2;    
-               (this->registers.registers.PC) += 1;   
+                this->DEC_16_BIT(&this->registers.registers.BC_double,&cycles);
                 break;     
             }
 
             case 0x0C:                  //increment contents of register C by 1
             {
                 spdlog::info("INC C {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this->registers.check_H_8_INC(this ->registers.registers.BC.C, (uint8_t) 1);
-                char result = ++this ->registers.registers.BC.C;
-                this->registers.check_if_result_zero(result);
-               (cycles) -= 1;
-               (this->registers.registers.PC)++;
+                this->INC_8_BIT(&this->registers.registers.BC.C,&cycles);
                 break;
                 
             }
@@ -179,12 +157,7 @@
             case 0x0D:
             {
                 spdlog::info("DEC C {:X}", opcode);
-                this -> registers.set_flag(FLAG_N);
-                this -> registers.check_H_8_DEC(this -> registers.registers.BC.C, (uint8_t) 1);
-                char result = --this -> registers.registers.BC.C;
-                this -> registers.check_if_result_zero(result);
-               (this->registers.registers.PC)++;
-               (cycles) -= 1;
+                this->DEC_8_BIT(&this->registers.registers.BC.C,&cycles);
                 break;
             }
 
@@ -249,32 +222,20 @@
             case 0x13:
             {
                 spdlog::info("INC DE {:X}", opcode);
-                this -> registers.registers.DE_double++;
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 2;
+                this->INC_16_BIT(&this->registers.registers.DE_double,&cycles);
                 break;
             }
              case 0x14:
             {
                 spdlog::info("INC D {:X}", opcode);
-                this -> registers.check_H_8_INC(this -> registers.registers.DE.D, (uint8_t) 1);
-                char result = ++this ->registers.registers.DE.D;
-                this -> registers.check_if_result_zero(result);
-                this -> registers.clear_flag(FLAG_N);
-               (this->registers.registers.PC) += 1;
-               (cycles)--;
+                this->INC_8_BIT(&this->registers.registers.DE.D,&cycles);
                 break;
             }
 
             case 0x15:
             {
                 spdlog::info("DEC D {:X}", opcode);
-                this -> registers.check_H_8_DEC(this -> registers.registers.DE.D, (uint8_t) 1);
-                char result = --this -> registers.registers.DE.D;
-                this -> registers.check_if_result_zero(result);
-                this -> registers.set_flag(FLAG_N);
-               (this->registers.registers.PC) += 1;
-               (cycles)--;
+                this->DEC_8_BIT(&this->registers.registers.DE.D,&cycles);
                 break;
             }
 
@@ -317,11 +278,7 @@
             case 0x19:
             {
                 spdlog::info("ADD HL, DE {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this ->registers.check_C_15_INC(this -> registers.registers.HL_double, this -> registers.registers.DE_double);
-                this -> registers.registers.HL_double += this -> registers.registers.DE_double;
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 1;
+                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.DE_double,&cycles);
                 break;
             }
 
@@ -338,33 +295,21 @@
             case 0x1B:
             {
                 spdlog::info("DEC DE {:X}", opcode);
-                this -> registers.registers.DE_double--;
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 2;
+                this->DEC_16_BIT(&this->registers.registers.DE_double,&cycles);
                 break;
             }
 
             case 0x1C:
             {
                 spdlog::info("INC E {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this -> registers.check_H_8_INC(this -> registers.registers.DE.E, (uint8_t) 1);
-                char result = ++this -> registers.registers.DE.E;
-                this -> registers.check_if_result_zero(result);
-               (cycles) -= 1;
-               (this->registers.registers.PC) += 1;
+                this->INC_8_BIT(&this->registers.registers.DE.E,&cycles);
                 break;
             }
 
             case 0x1D:
             {
                 spdlog::info("DEC E {:X}", opcode);
-                this -> registers.set_flag(FLAG_N);
-                this -> registers.check_H_8_DEC(this -> registers.registers.DE.E, (uint8_t) 1);
-                char result = --this -> registers.registers.DE.E;
-                this -> registers.check_if_result_zero(result);
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 1;
+                this->DEC_8_BIT(&this->registers.registers.DE.E,&cycles);
                 break;
             }
 
@@ -428,28 +373,16 @@
                 break;}
             case 0x23:
                 {spdlog::info("INC HL {:X}", opcode);
-                this->registers.registers.HL_double++;
-               (this->registers.registers.PC) += 1;
-               (cycles) =(cycles) - 2;
+                this->INC_16_BIT(&this->registers.registers.HL_double,&cycles);
                 break;}
             case 0x24:
             {    spdlog::info("INC H {:X}", opcode);
-                this->registers.check_H_8_INC(this->registers.registers.HL.H,(uint8_t) 1);
-                char result = ++this->registers.registers.HL.H;
-                this->registers.check_if_result_zero(result);
-                this->registers.clear_flag(FLAG_N);
-               (this->registers.registers.PC) += 1;
-               (cycles)--;
+                this->INC_8_BIT(&this->registers.registers.HL.H,&cycles);
                 break;}
             case 0x25:
                 {
                     spdlog::info("DEC H {:X}", opcode);
-                    char result = --this->registers.registers.HL.H;
-                    this -> registers.set_flag(FLAG_N);
-                    this->registers.check_if_result_zero(result);
-                    this->registers.check_H_8_DEC(this->registers.registers.HL.H,(uint8_t) 1);
-                   (this->registers.registers.PC) += 1;
-                   (cycles)--;
+                    this->DEC_8_BIT(&this->registers.registers.HL.H,&cycles);
                     break;
                 }
             case 0x26:
@@ -502,11 +435,7 @@
             // Fix with info from manual, then go down
                 {
                 spdlog::info("ADD HL, HL {:X}", opcode);
-                this->registers.clear_flag(FLAG_N);
-                this->registers.check_C_15_INC(this -> registers.registers.HL_double,this->registers.registers.HL_double);
-                this -> registers.registers.HL_double += this->registers.registers.HL_double;
-               (cycles) -= 2;
-               (this->registers.registers.PC) += 1;
+                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.HL_double,&cycles);
                 break;
                 }
 
@@ -524,20 +453,13 @@
             case 0x2B:                                  
             {
                 spdlog::info("DEC HL {:X}", opcode);
-                this->registers.registers.HL_double-- ; 
-               (cycles) -= 2;  
-               (this->registers.registers.PC)++;     
+                this->DEC_16_BIT(&this->registers.registers.HL_double,&cycles);    
                 break;     
             }
             case 0x2C:                  //increment contents of register C by 1
             {
                 spdlog::info("INC L {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this->registers.check_H_8_INC(this -> registers.registers.HL.L, (uint8_t) 1);
-                char result = ++this -> registers.registers.HL.L;
-                this->registers.check_if_result_zero(result);
-               (this->registers.registers.PC)++;
-               (cycles) -= 1;
+                this->INC_8_BIT(&this->registers.registers.HL.L,&cycles);
                 break;
                 
             }
@@ -545,12 +467,7 @@
             case 0x2D:
             {
                 spdlog::info("DEC L {:X}", opcode);
-                this -> registers.set_flag(FLAG_N);
-                this -> registers.check_H_8_DEC(this -> registers.registers.HL.L, (uint8_t) 1);
-                char result = --this -> registers.registers.HL.L;
-                this -> registers.check_if_result_zero(result);
-               (this->registers.registers.PC)++;
-               (cycles) -= 1;
+                this->DEC_8_BIT(&this->registers.registers.HL.L,&cycles);
                 break;
             }
 
@@ -613,21 +530,14 @@
             case 0x33:
             {
                 spdlog::info("INC SP {:X}", opcode);
-                this -> registers.registers.SP++;
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 2;
+                this->INC_16_BIT(&this->registers.registers.SP,&cycles); 
                 break;
             }
 
             // case 0x34:
             // {
             //     spdlog::info("INC (HL) {:X}", opcode);
-            //     this->registers.check_H_8_INC(this->registers.registers.HL,(uint8_t) 1);            ERROR HERE This is because you need to cast 1 to uint16_t not 8 because HL is 16bits   all errors you are having stem from this
-            //     char result = ++this -> registers.registers.HL;                            ERROR HERE You cant store HL in a char as HL is 16bits and a char is 8 buits
-            //     this -> registers.check_if_result_zero(result);
-            //     this -> registers.clear_flag(FLAG_N);
-            //    (this->registers.registers.PC) += 1;
-            //    (cycles)-= 3;
+            //     this->INC_8_BIT(this->memory.read_8_bit(this->registers.registers.HL_double),&cycles);
             //     break;
             // }
 
@@ -675,11 +585,7 @@
             case 0x39:
             {
                 spdlog::info("ADD HL, SP {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this ->registers.check_C_15_INC(this -> registers.registers.SP, this -> registers.registers.HL_double);
-                this -> registers.registers.HL_double += this -> registers.registers.HL_double;
-               (cycles) -= 2;
-               (this->registers.registers.PC) += 1;
+                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.SP,&cycles);
                 break;
             }
 
@@ -698,33 +604,21 @@
             case 0x3B:
             {
                 spdlog::info("DEC SP {:x}", opcode);
-                this -> registers.registers.SP --;
-               (cycles) -= 2;
-               (this->registers.registers.PC)++ ;
+               this->DEC_16_BIT(&this->registers.registers.SP,&cycles);
                 break;
             }
 
             case 0x3c:
             {
                 spdlog::info("INC A {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this -> registers.check_H_8_INC(this -> registers.registers.AF.A, (uint8_t) 1);
-                char result = -- this -> registers.registers.AF.A;
-                this -> registers.check_if_result_zero(result);
-               (this->registers.registers.PC)++;
-               (cycles) -= 1;
+                this->INC_8_BIT(&this->registers.registers.AF.A,&cycles);
                 break;
             }
 
             case 0x3D:
             {
                 spdlog::info("DEC A {:x}", opcode);
-                this -> registers.set_flag(FLAG_N);
-                this -> registers.check_H_8_DEC(this -> registers.registers.AF.A, (uint8_t) 1);
-                char result = -- this -> registers.registers.AF.A;
-                this -> registers.check_if_result_zero(result);
-               (this->registers.registers.PC) ++;
-               (cycles) -= 1;
+                this->DEC_8_BIT(&this->registers.registers.AF.A,&cycles);
                 break;
             }
 
@@ -1261,7 +1155,7 @@
             {
                 spdlog::info("ADD A, (HL) {:X}", opcode);
                 
-                this->ADD_2B_2C(&this->registers.registers.AF.A,this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
+                this->ADD_1B_2C_8Bit(&this->registers.registers.AF.A,this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
             }
             case 0x87:
             {

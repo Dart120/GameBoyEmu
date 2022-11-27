@@ -34,8 +34,8 @@ class CPU
     void DEC_8_BIT(uint8_t* reg, uint32_t *cycles);
     void INC_16_BIT(uint16_t* reg, uint32_t *cycles);
     void DEC_16_BIT(uint16_t* reg, uint32_t *cycles);
-    void INC_ADD(uint16_t address, uint32_t *cycles);
-    void DEC_ADD(uint16_t address, uint32_t *cycles);
+    // void INC_ADD(uint16_t address, uint32_t *cycles);
+    // void DEC_ADD(uint16_t address, uint32_t *cycles);
     // LD
     void LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles);
     void LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles);
@@ -51,9 +51,10 @@ class CPU
       
 
     // Member Functions()
-    void ADD_1B_2C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADD_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADD_1B_2C_16Bit(uint16_t *reg1,uint16_t reg2, uint32_t *cycles);
     void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_2C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADC_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     
 
