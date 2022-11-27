@@ -51,7 +51,10 @@ class CPU
       
 
     // Member Functions()
-    
+    void ADD_1B_2C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADC_1B_2C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     
 
 };
