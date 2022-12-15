@@ -56,6 +56,12 @@ class CPU
     void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+
+
+    // Jumps
+
+    void JUMP_ON_COND(bool cond,  uint32_t* cycles);
+    void JUMP_UNCOND( uint32_t* cycles);
     
 
 };

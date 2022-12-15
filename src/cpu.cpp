@@ -269,9 +269,7 @@
             case 0x18:
             {
                 spdlog::info("JR s8 {:X}", opcode);
-                
-               (this->registers.registers.PC) += this -> memory.read_8_bit(this->registers.registers.PC + 1);
-               (cycles) += 3;  
+                this->JUMP_UNCOND(&cycles);
                 break;
             }
 
@@ -346,13 +344,14 @@
             case 0x20:
             {
                 spdlog::info("JR NZ, s8 {:X}", opcode);
-                if (!this->registers.get_flag(FLAG_Z)){
-                   (this->registers.registers.PC) += this->memory.read_8_bit(this->registers.registers.PC + 1);
-                   (cycles) += 3;
-                } else {
-                   (this->registers.registers.PC)++;
-                   (cycles) += 2;
-                }
+                this->JUMP_ON_COND(!this->registers.get_flag(FLAG_Z), &cycles);
+                // if (!this->registers.get_flag(FLAG_Z)){
+                //    (this->registers.registers.PC) += this->memory.read_8_bit(this->registers.registers.PC + 1);
+                //    (cycles) += 3;
+                // } else {
+                //    (this->registers.registers.PC)++;
+                //    (cycles) += 2;
+                // }
             }
               case 0x21:
               {  spdlog::info("LD HL, d16 {:X}", opcode);
@@ -495,13 +494,8 @@
             case 0x30:
             {
                 spdlog::info("JR NC s8 {:X}", opcode);
-                if (!this -> registers.get_flag(FLAG_C)){
-                   (this->registers.registers.PC) += this -> memory.read_8_bit(this->registers.registers.PC + 1);
-                   (cycles) += 3;
-                } else{
-                   (this->registers.registers.PC)++;
-                   (cycles) += 2;
-                }
+                this->JUMP_ON_COND(!this->registers.get_flag(FLAG_C), &cycles);
+                break;
             }
 
             case 0x31:
@@ -572,13 +566,8 @@
             case 0x38:
             {
                 spdlog::info("JR C, s8 {:X}", opcode);
-                if (this -> registers.get_flag(FLAG_C)){
-                   (this->registers.registers.PC) += this -> memory.read_8_bit(this->registers.registers.PC + 1);
-                   (cycles) += 3;
-                } else{
-                   (this->registers.registers.PC) ++;
-                   (cycles) += 2;
-                }
+                this->JUMP_ON_COND(this->registers.get_flag(FLAG_C), &cycles);
+                break;
             }
                 
 
