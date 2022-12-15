@@ -61,12 +61,32 @@ class Registers{
         return 1;
      }
 
-         template <typename T> void  check_H_8_INC(T a, T b){           
+    template <typename T> void  check_H_8_ADD(T a, T b){  
+        // This doesn't work as it ignores what occures before the bit in question, it might be 0         
+        // if (((a >> 3) & 1)  && ((b >> 3) & 1)){
+        //     this->set_flag(FLAG_H);
+        // }
         if ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
             this->set_flag(FLAG_H);
         }
      }
-     template <typename T> void  check_H_11_INC(T a, T b){
+    template <typename T> void  check_H_8_SUB(T a, T b){
+       
+        if (((a | 0xff) - (b & 0xf)) & 0x10 == 0x10){
+            this->set_flag(FLAG_H);
+        }
+     }
+    // template <typename T> void  check_H_8_INC(T a, T b){  
+    //     // This doesn't work as it ignores what occures before the bit in question, it might be 0         
+    //     // if (((a >> 3) & 1)  && ((b >> 3) & 1)){
+    //     //     this->set_flag(FLAG_H);
+    //     // }
+    //     if ((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
+    //         this->set_flag(FLAG_H);
+    //     }
+    //  }
+
+     template <typename T> void  check_H_16_INC(T a, T b){
         if ((((a & 0xfff) + (b & 0xfff)) & 0x800) == 0x800){
             this->set_flag(FLAG_H);
         }
@@ -76,15 +96,19 @@ class Registers{
             this->set_flag(FLAG_C);
         }
      }
-     template <typename T> void  check_H_8_DEC(T a, T b){
-       
-        if (!((a >> 3) & 1) && ((b >> 3) & 1)){
-this->set_flag(FLAG_H);
+
+     template <typename T> void  check_C_8_ADD(T a, T b){
+        a = (uint16_t) a;
+        b = (uint16_t) b;
+        if((((a & 0xff) + (b & 0xff)) & 0x100) == 0x100){
+            this->set_flag(FLAG_C);
         }
      }
-     template <typename T> void  check_C_INC(T a, T b){
-        if((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
-this->set_flag(FLAG_C);
+     template <typename T> void  check_C_8_SUB(T a, T b){
+        a = (uint16_t) a;
+        b = (uint16_t) b;
+        if (((a | 0xffff) - (b & 0xff)) & 0x200 == 0x200){
+            this->set_flag(FLAG_C);
         }
      }
      template <typename T> void  check_if_result_zero(T result){

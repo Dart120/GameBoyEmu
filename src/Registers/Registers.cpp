@@ -17,13 +17,13 @@
 //             this->set_flag(FLAG_C);
 //         }
 //      }
-//      template <typename T> void Registers::check_H_8_DEC(T a, T b){
+//      template <typename T> void Registers::check_H_8_SUB(T a, T b){
        
 //         if (!((a >> 3) & 1) && ((b >> 3) & 1)){
 // this->set_flag(FLAG_H);
 //         }
 //      }
-//      template <typename T> void Registers::check_C_INC(T a, T b){
+//      template <typename T> void Registers::check_C_8_ADD(T a, T b){
 //         if((((a & 0xf) + (b & 0xf)) & 0x10) == 0x10){
 // this->set_flag(FLAG_C);
 //         }
