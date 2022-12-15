@@ -75,6 +75,9 @@ class CPU
     void AND_1B_2C(uint16_t address, uint32_t *cycles);
     void XOR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void XOR_1B_2C(uint16_t address, uint32_t *cycles);
-
+    void OR_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void OR_1B_2C(uint16_t address, uint32_t *cycles);
+    void CP_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void CP_1B_2C(uint16_t address, uint32_t *cycles);
 };
 #endif

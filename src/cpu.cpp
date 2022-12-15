@@ -1344,6 +1344,86 @@
         spdlog::info("XOR A {:X}", opcode);
         this->XOR_1B_1C(this->registers.registers.AF.A, &cycles);
     }
+    case 0xB0:
+    {
+        spdlog::info("OR B {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0xB1:
+    {
+        spdlog::info("OR C {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0xB2:
+    {
+        spdlog::info("OR D {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0xB3:
+    {
+        spdlog::info("OR E {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0xB4:
+    {
+        spdlog::info("OR H {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0xB5:
+    {
+        spdlog::info("OR L {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0xB6:
+    {
+        spdlog::info("OR (HL) {:X}", opcode);
+        this->OR_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0xB7:
+    {
+        spdlog::info("OR A {:X}", opcode);
+        this->OR_1B_1C(this->registers.registers.AF.A, &cycles);
+    }
+    case 0xB8:
+    {
+        spdlog::info("CP B {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0xB9:
+    {
+        spdlog::info("CP C {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0xBA:
+    {
+        spdlog::info("CP D {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0xBB:
+    {
+        spdlog::info("CP E {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0xBC:
+    {
+        spdlog::info("CP H {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0xBD:
+    {
+        spdlog::info("CP L {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0xBE:
+    {
+        spdlog::info("CP (HL) {:X}", opcode);
+        this->CP_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0xBF:
+    {
+        spdlog::info("CP A {:X}", opcode);
+        this->CP_1B_1C(this->registers.registers.AF.A, &cycles);
+    }
 
 
 
