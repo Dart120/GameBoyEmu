@@ -422,13 +422,8 @@
                 break;}
             case 0x28:
             {
-                if (this->registers.get_flag(FLAG_Z)){
-                   (this->registers.registers.PC) += this->memory.read_8_bit(this->registers.registers.PC + 1);
-                   (cycles) += 3;
-                } else {
-                   (this->registers.registers.PC)++;
-                   (cycles) += 2;
-                }
+                spdlog::info("JR s8 {:X}", opcode);
+                this->JUMP_UNCOND(&cycles);
             }
             case 0x29:
             // Fix with info from manual, then go down
@@ -528,22 +523,17 @@
                 break;
             }
 
-            // case 0x34:
-            // {
-            //     spdlog::info("INC (HL) {:X}", opcode);
-            //     this->INC_8_BIT(this->memory.read_8_bit(this->registers.registers.HL_double),&cycles);
-            //     break;
-            // }
+            case 0x34:
+            {
+                spdlog::info("INC (HL) {:X}", opcode);
+                this->INC_FROM_MEMORY(this->registers.registers.HL_double,&cycles);
+                break;
+            }
 
             case 0x35:
             {
                 spdlog::info("DEC (HL) {:X}", opcode);
-                // this -> registers.check_H_8_DEC(this -> registers.registers.HL, (uint8_t) 1); ERRORS HERE
-                // char result = --this -> registers.registers.HL;                      ERRORS HERE
-                //this -> registers.check_if_result_zero(result);
-                this -> registers.clear_flag(FLAG_N);
-               (this->registers.registers.PC) += 1;
-               (cycles) -= 3;
+                this->DEC_FROM_MEMORY(this->registers.registers.HL_double,&cycles);
                 break;
             }
 
@@ -624,10 +614,13 @@
             case 0x3F:
             {
                 spdlog::info("CCF {:X}", opcode);
-                this -> registers.clear_flag(FLAG_N);
-                this -> registers.clear_flag(FLAG_H);
-               // this -> ~set_flag(FLAG_C);            ONLY ERROR WHERE IM LIKE AIGHT FAIR ENOUGH, IDK IF I CAN DO THIS TO FLIP CARRY FLAG
-            //    You can, if the bit is set then clear it if the bit is clear then set it
+                if (this->registers.get_flag(FLAG_C)){
+                    this->registers.clear_flag(FLAG_C);
+                }else{
+                    this->registers.set_flag(FLAG_C);
+                }
+                this->registers.clear_flag(FLAG_N);
+                this->registers.clear_flag(FLAG_H);
                (this->registers.registers.PC) += 1;
                (cycles) -= 1;
             }
@@ -1190,6 +1183,86 @@
     {
         spdlog::info("ADC A, A {:X}", opcode);
         this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.AF.A, &cycles);
+    }
+    case 0x90:
+    {
+        spdlog::info("SUB B {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0x91:
+    {
+        spdlog::info("SUB C {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0x92:
+    {
+        spdlog::info("SUB D {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0x93:
+    {
+        spdlog::info("SUB E {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0x94:
+    {
+        spdlog::info("SUB H {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0x95:
+    {
+        spdlog::info("SUB L {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0x96:
+    {
+        spdlog::info("SUB (HL) {:X}", opcode);
+        this->SUB_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0x97:
+    {
+        spdlog::info("SUB A {:X}", opcode);
+        this->SUB_1B_1C(this->registers.registers.AF.A, &cycles);
+    }
+    case 0x98:
+    {
+        spdlog::info("SBC B {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0x99:
+    {
+        spdlog::info("SBC C {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0x9A:
+    {
+        spdlog::info("SBC D {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0x9B:
+    {
+        spdlog::info("SBC E {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0x9C:
+    {
+        spdlog::info("SBC H {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0x9D:
+    {
+        spdlog::info("SBC L {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0x9E:
+    {
+        spdlog::info("SBC (HL) {:X}", opcode);
+        this->SBC_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0x9F:
+    {
+        spdlog::info("SBC A {:X}", opcode);
+        this->SBC_1B_1C(this->registers.registers.AF.A, &cycles);
     }
 
 

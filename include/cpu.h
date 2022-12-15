@@ -34,6 +34,9 @@ class CPU
     void DEC_8_BIT(uint8_t* reg, uint32_t *cycles);
     void INC_16_BIT(uint16_t* reg, uint32_t *cycles);
     void DEC_16_BIT(uint16_t* reg, uint32_t *cycles);
+    void INC_FROM_MEMORY(uint16_t address, uint32_t *cycles);
+    void DEC_FROM_MEMORY(uint16_t address, uint32_t *cycles);
+
     // void INC_ADD(uint16_t address, uint32_t *cycles);
     // void DEC_ADD(uint16_t address, uint32_t *cycles);
     // LD
@@ -50,18 +53,24 @@ class CPU
     void decrement_HL(uint16_t* HL);
       
 
-    // Member Functions()
+    // MATH
     void ADD_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     void ADD_1B_2C_16Bit(uint16_t *reg1,uint16_t reg2, uint32_t *cycles);
     void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
+    void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);\
+    void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void SUB_1B_2C(uint16_t address, uint32_t *cycles);
+    void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void SBC_1B_2C(uint16_t address, uint32_t *cycles);
 
 
     // Jumps
 
     void JUMP_ON_COND(bool cond,  uint32_t* cycles);
     void JUMP_UNCOND( uint32_t* cycles);
+    
+
     
 
 };
