@@ -59,7 +59,7 @@ void CPU::SUB_1B_2C(uint16_t address, uint32_t *cycles){
     this->registers.registers.AF.A = result;
     this->registers.check_if_result_zero(result);
     this->registers.set_flag(FLAG_N);
-    *cycles-=1;
+    *cycles-=2;
     this->registers.registers.PC++;
 }
 
@@ -83,6 +83,6 @@ void CPU::SBC_1B_2C(uint16_t address, uint32_t *cycles){
     this->registers.registers.AF.A = result;
     this->registers.check_if_result_zero(result);
     this->registers.set_flag(FLAG_N);
-    *cycles-=1;
+    *cycles-=2;
     this->registers.registers.PC++;
 }

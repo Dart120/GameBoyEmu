@@ -1264,6 +1264,86 @@
         spdlog::info("SBC A {:X}", opcode);
         this->SBC_1B_1C(this->registers.registers.AF.A, &cycles);
     }
+    case 0xA0:
+    {
+        spdlog::info("AND B {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0xA1:
+    {
+        spdlog::info("AND C {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0xA2:
+    {
+        spdlog::info("AND D {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0xA3:
+    {
+        spdlog::info("AND E {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0xA4:
+    {
+        spdlog::info("AND H {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0xA5:
+    {
+        spdlog::info("AND L {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0xA6:
+    {
+        spdlog::info("AND (HL) {:X}", opcode);
+        this->AND_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0xA7:
+    {
+        spdlog::info("AND A {:X}", opcode);
+        this->AND_1B_1C(this->registers.registers.AF.A, &cycles);
+    }
+    case 0xA8:
+    {
+        spdlog::info("XOR B {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.BC.B, &cycles);
+    }
+    case 0xA9:
+    {
+        spdlog::info("XOR C {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.BC.C, &cycles);
+    }
+    case 0xAA:
+    {
+        spdlog::info("XOR D {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.DE.D, &cycles);
+    }
+    case 0xAB:
+    {
+        spdlog::info("XOR E {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.DE.E, &cycles);
+    }
+    case 0xAC:
+    {
+        spdlog::info("XOR H {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.HL.H, &cycles);
+    }
+    case 0xAD:
+    {
+        spdlog::info("XOR L {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.HL.L, &cycles);
+    }
+    case 0xAE:
+    {
+        spdlog::info("XOR (HL) {:X}", opcode);
+        this->XOR_1B_2C(this->registers.registers.HL_double, &cycles);
+    }
+    case 0xAF:
+    {
+        spdlog::info("XOR A {:X}", opcode);
+        this->XOR_1B_1C(this->registers.registers.AF.A, &cycles);
+    }
 
 
 
