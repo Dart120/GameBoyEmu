@@ -79,14 +79,12 @@ set(CONAN_LIBS_SPDLOG ${CONAN_PKG_LIBS_SPDLOG} ${CONAN_SYSTEM_LIBS_SPDLOG} ${CON
 ###  FMT
 #################
 set(CONAN_FMT_ROOT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380")
-set(CONAN_INCLUDE_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include")
-set(CONAN_LIB_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib")
+set(CONAN_INCLUDE_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include")
+set(CONAN_LIB_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib")
 set(CONAN_BIN_DIRS_FMT )
 set(CONAN_RES_DIRS_FMT )
 set(CONAN_SRC_DIRS_FMT )
-set(CONAN_BUILD_DIRS_FMT "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/")
+set(CONAN_BUILD_DIRS_FMT )
 set(CONAN_FRAMEWORK_DIRS_FMT )
 set(CONAN_LIBS_FMT fmt)
 set(CONAN_PKG_LIBS_FMT fmt)
@@ -138,10 +136,8 @@ set(CONAN_CMD_C_FLAGS ${CONAN_C_FLAGS})
 # Defining accumulated conan variables for all deps
 
 set(CONAN_INCLUDE_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include"
 			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include" ${CONAN_INCLUDE_DIRS})
 set(CONAN_LIB_DIRS "/root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib"
-			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib"
 			"/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib" ${CONAN_LIB_DIRS})
 set(CONAN_BIN_DIRS  ${CONAN_BIN_DIRS})
 set(CONAN_RES_DIRS  ${CONAN_RES_DIRS})
@@ -154,7 +150,7 @@ set(CONAN_FRAMEWORKS_FOUND "")  # Will be filled later
 set(CONAN_DEFINES "-DSPDLOG_FMT_EXTERNAL"
 			"-DSPDLOG_COMPILED_LIB" ${CONAN_DEFINES})
 set(CONAN_BUILD_MODULES_PATHS  ${CONAN_BUILD_MODULES_PATHS})
-set(CONAN_CMAKE_MODULE_PATH "/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/" ${CONAN_CMAKE_MODULE_PATH})
+set(CONAN_CMAKE_MODULE_PATH  ${CONAN_CMAKE_MODULE_PATH})
 
 set(CONAN_CXX_FLAGS " ${CONAN_CXX_FLAGS}")
 set(CONAN_SHARED_LINKER_FLAGS " ${CONAN_SHARED_LINKER_FLAGS}")

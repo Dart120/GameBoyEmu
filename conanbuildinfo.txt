@@ -1,11 +1,9 @@
 [includedirs]
 /root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/include
 /root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include
 
 [libdirs]
 /root/.conan/data/spdlog/1.10.0/_/_/package/ebfe6bf659cecc24b8d46bc0138b61c2f32994c9/lib
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib
 /root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib
 
 [bindirs]
@@ -15,7 +13,7 @@
 
 
 [builddirs]
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/
+
 
 [libs]
 spdlog
@@ -122,10 +120,8 @@ cmake_find_package_multi=spdlog
 
 [includedirs_fmt]
 /root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/include
 
 [libdirs_fmt]
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib
 /root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/lib
 
 [bindirs_fmt]
@@ -135,7 +131,7 @@ cmake_find_package_multi=spdlog
 
 
 [builddirs_fmt]
-/root/.conan/data/fmt/8.1.1/_/_/package/75884ca7ea74925b5b3662be7401009979be1380/
+
 
 [libs_fmt]
 fmt
