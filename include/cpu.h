@@ -67,8 +67,10 @@ class CPU
 
     // Jumps
 
-    void JUMP_ON_COND(bool cond,  uint32_t* cycles);
-    void JUMP_UNCOND( uint32_t* cycles);
+    void JUMP_ON_COND_s8(bool cond,  uint32_t* cycles);
+    void JUMP_UNCOND_s8( uint32_t* cycles);
+    void JUMP_ON_COND_s16(bool cond,  uint32_t* cycles);
+    void JUMP_UNCOND_s16( uint32_t* cycles);
     
     // LOGIC
     void AND_1B_1C(uint8_t reg1,uint32_t *cycles);
