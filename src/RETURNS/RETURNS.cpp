@@ -3,6 +3,7 @@
 
 void CPU::RET_COND(uint8_t COND, uint32_t *cycles){
     if (COND){
+        this->registers.registers.SP++;
         uint8_t low = this->memory.read_8_bit(this->registers.registers.SP);
         this->registers.registers.SP++;
         uint8_t high = this->memory.read_8_bit(this->registers.registers.SP);
@@ -14,6 +15,7 @@ void CPU::RET_COND(uint8_t COND, uint32_t *cycles){
     }
 }
 void CPU::RET_UNCOND(uint32_t *cycles){
+    this->registers.registers.SP++;
     uint8_t low = this->memory.read_8_bit(this->registers.registers.SP);
     this->registers.registers.SP++;
     uint8_t high = this->memory.read_8_bit(this->registers.registers.SP);
