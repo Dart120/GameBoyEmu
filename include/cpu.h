@@ -81,6 +81,12 @@ class CPU
     void CP_1B_2C(uint16_t address, uint32_t *cycles);
 
 
+
+    // POPPUSH
+    void POP(uint16_t* reg ,  uint32_t* cycles);
+    void PUSH(uint16_t* reg , uint32_t* cycles);
+
+
     // Returns
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
