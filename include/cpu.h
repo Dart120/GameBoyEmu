@@ -92,5 +92,7 @@ class CPU
     // Returns
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
+
+    void CALL_COND(uint8_t COND, uint32_t *cycles);
 };
 #endif
