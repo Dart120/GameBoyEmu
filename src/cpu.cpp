@@ -9,7 +9,7 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
-
+// Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7                //00001111
 #define FLAG_N 6                //0000CHNZ
 #define FLAG_H 5                //00004567
@@ -1423,8 +1423,38 @@
     {
         spdlog::info("CP A {:X}", opcode);
         this->CP_1B_1C(this->registers.registers.AF.A, &cycles);
+        
     }
-
+    case 0xC0:
+    {
+        spdlog::info("RET NZ {:X}", opcode);
+        this->RET_COND(!this->registers.get_flag(FLAG_Z),&cycles);
+        
+    }
+    case 0xC1:
+    {
+        spdlog::info("POP BC {:X}", opcode);
+        this->POP(&this->registers.registers.BC_double,&cycles);
+        
+    }
+    case 0xC1:
+    {
+        spdlog::info("JP NZ, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(!this->registers.get_flag(FLAG_Z),&cycles);
+        
+    }
+    case 0xC2:
+    {
+        spdlog::info("JP a16 {:X}", opcode);
+        this->JUMP_UNCOND_a16(&cycles);
+        
+    }
+    case 0xC3:
+    {
+        spdlog::info("JP a16 {:X}", opcode);
+        this->JUMP_UNCOND_a16(&cycles);
+        
+    }
 
 
 
