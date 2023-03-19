@@ -99,7 +99,7 @@ class CPU
     void CALL_COND(uint8_t COND, uint32_t *cycles);
 
     // RST
-    void RST_UNCOND(uint8_t byte_address,uint32_t *cycles);
+    void RST_UNCOND(uint8_t number,uint32_t *cycles);
     void RST_COND(uint8_t COND, uint32_t *cycles);
 };
 #endif
