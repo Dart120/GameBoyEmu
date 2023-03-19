@@ -94,6 +94,12 @@ class CPU
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
 
+
+    // CALL
     void CALL_COND(uint8_t COND, uint32_t *cycles);
+
+    // RST
+    void RST_UNCOND(uint8_t byte_address,uint32_t *cycles);
+    void RST_COND(uint8_t COND, uint32_t *cycles);
 };
 #endif

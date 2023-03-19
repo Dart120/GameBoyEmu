@@ -1463,9 +1463,33 @@
     }
     case 0xC6:
     {
-        spdlog::info("PUSH BC {:X}", opcode);
-        this->PUSH(this->registers.registers.BC_double,&cycles);
-        
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC7:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC6:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC6:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC6:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC6:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
     }
 
 
