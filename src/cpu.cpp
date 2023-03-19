@@ -1469,7 +1469,7 @@
     case 0xC7:
     {
         spdlog::info("RST 0 {:X}", opcode);
-        this->RET_UNCOND(0,&cycles);
+        this->RST_UNCOND(0,&cycles);
     }
     case 0xC8:
     {
