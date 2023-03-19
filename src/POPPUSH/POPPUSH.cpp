@@ -11,6 +11,13 @@ void CPU::POP(uint16_t* reg, uint32_t *cycles){
     *cycles -= 3;
     this->registers.registers.PC++;
 }
-void CPU::PUSH(uint16_t* reg, uint32_t *cycles){
-    
+// TODO
+void CPU::PUSH(uint16_t reg, uint32_t *cycles){
+    this->registers.registers.SP--;
+    uint8_t high = reg >> 8;
+    this->memory.write_8_bit(this->registers.registers.SP--,high);
+    uint8_t low = reg & 0xFF;
+    this->memory.write_8_bit(this->registers.registers.SP,low);
+    *cycles -= 4;
+    this->registers.registers.PC++;
 }

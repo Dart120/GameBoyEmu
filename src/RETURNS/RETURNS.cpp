@@ -24,16 +24,3 @@ void CPU::RET_UNCOND(uint32_t *cycles){
     *cycles -= 4;
     this->registers.registers.SP++;
 }
-void CPU::CALL_COND(uint8_t COND, uint32_t *cycles){
-    if (COND){
-        uint16_t low = this->memory.read_8_bit(this->registers.registers.PC + 1);
-        uint16_t high = this->memory.read_8_bit(this->registers.registers.PC + 2);
-        this->registers.registers.SP--;
-        this->memory.write_8_bit(this->registers.registers.SP--,high);
-        this->memory.write_8_bit(this->registers.registers.SP,low);
-    } else {
-        uint16_t low = this->memory.read_8_bit(this->registers.registers.PC + 1);
-        uint16_t high = this->memory.read_8_bit(this->registers.registers.PC + 2);
-    }
-
-}

@@ -54,11 +54,12 @@ class CPU
       
 
     // MATH
-    void ADD_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADD_1B_2C_16Bit(uint16_t *reg1,uint16_t reg2, uint32_t *cycles);
-    void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);\
+    void ADD_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
+    void ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles);
+    void ADD_1B_1C(uint8_t reg1, uint32_t *cycles);
+    void ADD_2B_2C(uint32_t *cycles);
+    void ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
+    void ADC_1B_1C(uint8_t reg1, uint32_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
     void SUB_1B_2C(uint16_t address, uint32_t *cycles);
     void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
@@ -86,7 +87,7 @@ class CPU
 
     // POPPUSH
     void POP(uint16_t* reg ,  uint32_t* cycles);
-    void PUSH(uint16_t* reg , uint32_t* cycles);
+    void PUSH(uint16_t reg , uint32_t* cycles);
 
 
     // Returns
