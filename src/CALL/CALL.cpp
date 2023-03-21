@@ -20,3 +20,15 @@ void CPU::CALL_COND(uint8_t COND, uint32_t *cycles){
         *cycles -= 3;
     }
 }
+void CPU::CALL_UNCOND(uint32_t *cycles){
+    uint8_t low = this->memory.read_8_bit(this->registers.registers.PC +3);
+    uint8_t high = this->memory.read_8_bit(this->registers.registers.PC +4);
+    uint16_t new_PC = this->memory.read_16_bit(this->registers.registers.PC + 1);
+    this->registers.registers.SP++;
+    this->memory.write_8_bit(this->registers.registers.SP,low);
+    this->registers.registers.SP++;
+    this->memory.write_8_bit(this->registers.registers.SP,high);
+    this->registers.registers.PC = new_PC;
+    *cycles -= 6;
+}
+
