@@ -60,6 +60,7 @@ class CPU
     void ADD_2B_2C(uint32_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
     void ADC_1B_1C(uint8_t reg1, uint32_t *cycles);
+    void ADC_2B_2C(uint32_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
     void SUB_1B_2C(uint16_t address, uint32_t *cycles);
     void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
@@ -97,6 +98,7 @@ class CPU
 
     // CALL
     void CALL_COND(uint8_t COND, uint32_t *cycles);
+    void CALL_UNCOND(uint32_t *cycles);
 
     // RST
     void RST_UNCOND(uint8_t number,uint32_t *cycles);

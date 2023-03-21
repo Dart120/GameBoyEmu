@@ -1478,19 +1478,36 @@
     }
     case 0xC9:
     {
-        spdlog::info("ADD A, d8 {:X}", opcode);
-        this->ADD_2B_2C(&cycles);
+        spdlog::info("RET {:X}", opcode);
+        this->RET_UNCOND(&cycles);
     }
     case 0xCA:
     {
-        spdlog::info("ADD A, d8 {:X}", opcode);
-        this->ADD_2B_2C(&cycles);
+        spdlog::info("JP Z, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_Z),&cycles);
     }
-    case 0xCB:
+    case 0xCC:
     {
-        spdlog::info("ADD A, d8 {:X}", opcode);
-        this->ADD_2B_2C(&cycles);
+        spdlog::info("CALL Z, a16 {:X}", opcode);
+        this->CALL_COND(this->registers.get_flag(FLAG_Z),&cycles);
     }
+    case 0xCD:
+    {
+        spdlog::info("CALL a16 {:X}", opcode);
+        this->CALL_UNCOND(&cycles);
+    }
+    case 0xCE:
+    {
+        spdlog::info("ADC A, d8 {:X}", opcode);
+        this->ADC_2B_2C(&cycles);
+    }
+    case 0xCF:
+    {
+        spdlog::info("RST 1 {:X}", opcode);
+        this->RST_UNCOND(1,&cycles);
+    }
+
+
 
 
 
