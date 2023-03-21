@@ -54,11 +54,12 @@ class CPU
       
 
     // MATH
-    void ADD_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADD_1B_2C_16Bit(uint16_t *reg1,uint16_t reg2, uint32_t *cycles);
-    void ADD_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_2C_8Bit(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);
-    void ADC_1B_1C(uint8_t *reg1,uint8_t reg2, uint32_t *cycles);\
+    void ADD_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
+    void ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles);
+    void ADD_1B_1C(uint8_t reg1, uint32_t *cycles);
+    void ADD_2B_2C(uint32_t *cycles);
+    void ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
+    void ADC_1B_1C(uint8_t reg1, uint32_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
     void SUB_1B_2C(uint16_t address, uint32_t *cycles);
     void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
@@ -69,8 +70,8 @@ class CPU
 
     void JUMP_ON_COND_s8(bool cond,  uint32_t* cycles);
     void JUMP_UNCOND_s8( uint32_t* cycles);
-    void JUMP_ON_COND_s16(bool cond,  uint32_t* cycles);
-    void JUMP_UNCOND_s16( uint32_t* cycles);
+    void JUMP_ON_COND_a16(bool cond,  uint32_t* cycles);
+    void JUMP_UNCOND_a16( uint32_t* cycles);
     
     // LOGIC
     void AND_1B_1C(uint8_t reg1,uint32_t *cycles);
@@ -86,13 +87,19 @@ class CPU
 
     // POPPUSH
     void POP(uint16_t* reg ,  uint32_t* cycles);
-    void PUSH(uint16_t* reg , uint32_t* cycles);
+    void PUSH(uint16_t reg , uint32_t* cycles);
 
 
     // Returns
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
 
+
+    // CALL
     void CALL_COND(uint8_t COND, uint32_t *cycles);
+
+    // RST
+    void RST_UNCOND(uint8_t number,uint32_t *cycles);
+    void RST_COND(uint8_t COND, uint32_t *cycles);
 };
 #endif

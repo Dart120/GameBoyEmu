@@ -9,7 +9,7 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
-
+// Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7                //00001111
 #define FLAG_N 6                //0000CHNZ
 #define FLAG_H 5                //00004567
@@ -126,7 +126,7 @@
             case 0x09:
             // Fix with info from manual, then go down
                 {spdlog::info("ADD HL, BC {:X}", opcode);
-                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.BC_double,&cycles);
+                this->ADD_1B_2C_16Bit(this->registers.registers.BC_double,&cycles);
                 break;}
             
             case 0x0A:
@@ -276,7 +276,7 @@
             case 0x19:
             {
                 spdlog::info("ADD HL, DE {:X}", opcode);
-                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.DE_double,&cycles);
+                this->ADD_1B_2C_16Bit(this->registers.registers.DE_double,&cycles);
                 break;
             }
 
@@ -429,7 +429,7 @@
             // Fix with info from manual, then go down
                 {
                 spdlog::info("ADD HL, HL {:X}", opcode);
-                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.HL_double,&cycles);
+                this->ADD_1B_2C_16Bit(this->registers.registers.HL_double,&cycles);
                 break;
                 }
 
@@ -564,7 +564,7 @@
             case 0x39:
             {
                 spdlog::info("ADD HL, SP {:X}", opcode);
-                this->ADD_1B_2C_16Bit(&this->registers.registers.HL_double,this->registers.registers.SP,&cycles);
+                this->ADD_1B_2C_16Bit(this->registers.registers.SP,&cycles);
                 break;
             }
 
@@ -1106,83 +1106,83 @@
             case 0x80:
             {
                 spdlog::info("ADD A, B {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.BC.B, &cycles);
+                this->ADD_1B_1C(this->registers.registers.BC.B, &cycles);
             }
             case 0x81:
             {
                 spdlog::info("ADD A, C {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.BC.C, &cycles);
+                this->ADD_1B_1C(this->registers.registers.BC.C, &cycles);
             }
             case 0x82:
             {
                 spdlog::info("ADD A, D {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.DE.D, &cycles);
+                this->ADD_1B_1C(this->registers.registers.DE.D, &cycles);
             }
             case 0x83:
             {
                 spdlog::info("ADD A, E {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.DE.E, &cycles);
+                this->ADD_1B_1C(this->registers.registers.DE.E, &cycles);
             }
             case 0x84:
             {
                 spdlog::info("ADD A, H {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.HL.H, &cycles);
+                this->ADD_1B_1C(this->registers.registers.HL.H, &cycles);
             }
             case 0x85:
             {
                 spdlog::info("ADD A, L {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.HL.L, &cycles);
+                this->ADD_1B_1C(this->registers.registers.HL.L, &cycles);
             }
             case 0x86:
             {
                 spdlog::info("ADD A, (HL) {:X}", opcode);
                 
-                this->ADD_1B_2C_8Bit(&this->registers.registers.AF.A,this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
+                this->ADD_1B_2C_8Bit(this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
             }
             case 0x87:
             {
                 spdlog::info("ADD A, A {:X}", opcode);
-                this->ADD_1B_1C(&this->registers.registers.AF.A,this->registers.registers.AF.F, &cycles);
+                this->ADD_1B_1C(this->registers.registers.AF.F, &cycles);
             }
         case 0x88:
         {
             spdlog::info("ADC A, B {:X}", opcode);
-            this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.BC.B, &cycles);
+            this->ADC_1B_1C(this->registers.registers.BC.B, &cycles);
         }
     case 0x89:
     {
         spdlog::info("ADC A, C {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.BC.C, &cycles);
+        this->ADC_1B_1C(this->registers.registers.BC.C, &cycles);
     }
     case 0x8A:
     {
         spdlog::info("ADC A, D {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.DE.D, &cycles);
+        this->ADC_1B_1C(this->registers.registers.DE.D, &cycles);
     }
     case 0x8B:
     {
         spdlog::info("ADC A, E {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.DE.E, &cycles);
+        this->ADC_1B_1C(this->registers.registers.DE.E, &cycles);
     }
     case 0x8C:
     {
         spdlog::info("ADC A, H {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.HL.L, &cycles);
+        this->ADC_1B_1C(this->registers.registers.HL.L, &cycles);
     }
     case 0x8D:
     {
         spdlog::info("ADC A, L {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.HL.L, &cycles);
+        this->ADC_1B_1C(this->registers.registers.HL.L, &cycles);
     }
     case 0x8E:
     {
         spdlog::info("ADC A, (HL) {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
+        this->ADC_1B_1C(this->memory.read_8_bit(this->registers.registers.HL_double), &cycles);
     }
     case 0x8F:
     {
         spdlog::info("ADC A, A {:X}", opcode);
-        this->ADC_1B_1C(&this->registers.registers.AF.A,this->registers.registers.AF.A, &cycles);
+        this->ADC_1B_1C(this->registers.registers.AF.A, &cycles);
     }
     case 0x90:
     {
@@ -1423,8 +1423,74 @@
     {
         spdlog::info("CP A {:X}", opcode);
         this->CP_1B_1C(this->registers.registers.AF.A, &cycles);
+        
     }
-
+    case 0xC0:
+    {
+        spdlog::info("RET NZ {:X}", opcode);
+        this->RET_COND(!this->registers.get_flag(FLAG_Z),&cycles);
+        
+    }
+    case 0xC1:
+    {
+        spdlog::info("POP BC {:X}", opcode);
+        this->POP(&this->registers.registers.BC_double,&cycles);
+        
+    }
+    case 0xC2:
+    {
+        spdlog::info("JP NZ, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(!this->registers.get_flag(FLAG_Z),&cycles);
+        
+    }
+    case 0xC3:
+    {
+        spdlog::info("JP a16 {:X}", opcode);
+        this->JUMP_UNCOND_a16(&cycles);
+        
+    }
+    case 0xC4:
+    {
+        spdlog::info("CALL NZ, a16 {:X}", opcode);
+        this->CALL_COND(!this->registers.get_flag(FLAG_Z),&cycles);
+        
+    }
+    case 0xC5:
+    {
+        spdlog::info("PUSH BC {:X}", opcode);
+        this->PUSH(this->registers.registers.BC_double,&cycles);
+        
+    }
+    case 0xC6:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xC7:
+    {
+        spdlog::info("RST 0 {:X}", opcode);
+        this->RST_UNCOND(0,&cycles);
+    }
+    case 0xC8:
+    {
+        spdlog::info("RST Z {:X}", opcode);
+        this->RST_COND(this->registers.get_flag(FLAG_Z),&cycles);
+    }
+    case 0xC9:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xCA:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xCB:
+    {
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
 
 
 
