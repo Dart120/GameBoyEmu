@@ -45,7 +45,7 @@ class CPU
     void LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles);
 
     void LD_2B_2C(uint8_t* into, uint32_t *cycles);
-    void LD_2B_3C(uint16_t address, uint32_t *cycles);
+    void LD_2B_3C(uint16_t address, uint8_t data, uint32_t *cycles);
     void LD_3B_5C(uint16_t* SP, uint32_t *cycles);
     void LD_3B_3C(uint16_t* into, uint32_t *cycles);
     void increment_HL(uint16_t* HL);
@@ -79,6 +79,7 @@ class CPU
     // LOGIC
     void AND_1B_1C(uint8_t reg1,uint32_t *cycles);
     void AND_1B_2C(uint16_t address, uint32_t *cycles);
+    void AND_2B_2C(uint32_t *cycles);
     void XOR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void XOR_1B_2C(uint16_t address, uint32_t *cycles);
     void OR_1B_1C(uint8_t reg1,uint32_t *cycles);

@@ -31,9 +31,9 @@ void CPU::LD_2B_2C(uint8_t* into, uint32_t *cycles){
         (*cycles) -= 2;
 }
 
-void CPU::LD_2B_3C(uint16_t address, uint32_t *cycles){
+void CPU::LD_2B_3C(uint16_t address, uint8_t data, uint32_t *cycles){
     
-        this->memory.write_8_bit(address,this->memory.read_8_bit(this->registers.registers.PC + 1));
+        this->memory.write_8_bit(address,data);
        this->registers.registers.PC += 2;
         (*cycles) -= 3;
 }

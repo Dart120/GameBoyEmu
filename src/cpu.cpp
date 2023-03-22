@@ -540,7 +540,7 @@
             case 0x36:
             {
                 spdlog::info("LD (HL), d8 {:x}", opcode);
-                this->LD_2B_3C((this->registers.registers.HL_double),&cycles);
+                this->LD_2B_3C((this->registers.registers.HL_double),this->memory.read_8_bit(this->registers.registers.PC + 1),&cycles);
                 //this -> registers.registers.HL = this -> memory.read_8_bit(this->registers.registers.PC + 1);    
             //    (this->registers.registers.PC) += 2;
             //    (cycles) -= 3;
@@ -1574,6 +1574,72 @@
         this->SBC_2B_2C(&cycles);
     }
     case 0xDF:
+    {
+        spdlog::info("RST 3 {:X}", opcode);
+        this->RST_UNCOND(3,&cycles);
+    }
+    case 0xE0:
+    {
+        spdlog::info("LD (a8), A {:X}", opcode);
+        uint16_t address = 0xFF00 + this->memory.read_8_bit(this->registers.registers.PC + 1);
+        this->LD_2B_3C(address,this->registers.registers.AF.A, &cycles);
+    }
+    case 0xE1:
+    {
+        spdlog::info("POP HL {:X}", opcode);
+        this->POP(&this->registers.registers.HL_double,&cycles);
+        
+    }
+    case 0xE2:
+    {
+        spdlog::info("LD (C), A {:X}", opcode);
+        uint16_t address = 0xFF00 + this->registers.registers.BC.C;
+        this->LD_1B_2C_REG_TO_MEM(address,this->registers.registers.AF.A,&cycles);
+        
+    }
+    case 0xE5:
+    {
+        spdlog::info("PUSH HL {:X}", opcode);
+        this->PUSH(this->registers.registers.HL_double,&cycles);
+        
+    }
+    case 0xE6:
+    {
+        // Impl SUB d8
+        spdlog::info("AND d8 {:X}", opcode);
+        this->AND_2B_2C(&cycles);
+    }
+    case 0xE7:
+    {
+        spdlog::info("RST 4 {:X}", opcode);
+        this->RST_UNCOND(4,&cycles);
+    }
+    case 0xE8:
+    {
+        spdlog::info("RST C {:X}", opcode);
+        this->RST_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xE9:
+    { //Needs interrupt for RETI
+        spdlog::info("RETI {:X}", opcode);
+        this->RET_UNCOND(&cycles);
+    }
+    case 0xEA:
+    {
+        spdlog::info("JP C, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xEC:
+    {
+        spdlog::info("CALL C, a16 {:X}", opcode);
+        this->CALL_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xEE:
+    {
+        spdlog::info("SBC A, d8 {:X}", opcode);
+        this->SBC_2B_2C(&cycles);
+    }
+    case 0xEF:
     {
         spdlog::info("RST 3 {:X}", opcode);
         this->RST_UNCOND(3,&cycles);
