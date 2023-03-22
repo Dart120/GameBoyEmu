@@ -1506,6 +1506,78 @@
         spdlog::info("RST 1 {:X}", opcode);
         this->RST_UNCOND(1,&cycles);
     }
+    case 0xD0:
+    {
+        spdlog::info("RET NC {:X}", opcode);
+        this->RET_COND(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+    case 0xD1:
+    {
+        spdlog::info("POP DE {:X}", opcode);
+        this->POP(&this->registers.registers.DE_double,&cycles);
+        
+    }
+    case 0xD2:
+    {
+        spdlog::info("JP NC, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+
+    case 0xD4:
+    {
+        spdlog::info("CALL NC, a16 {:X}", opcode);
+        this->CALL_COND(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+    case 0xD5:
+    {
+        spdlog::info("PUSH DE {:X}", opcode);
+        this->PUSH(this->registers.registers.DE_double,&cycles);
+        
+    }
+    case 0xD6:
+    {
+        // Impl SUB d8
+        spdlog::info("ADD A, d8 {:X}", opcode);
+        this->ADD_2B_2C(&cycles);
+    }
+    case 0xD7:
+    {
+        spdlog::info("RST 2 {:X}", opcode);
+        this->RST_UNCOND(2,&cycles);
+    }
+    case 0xD8:
+    {
+        spdlog::info("RST C {:X}", opcode);
+        this->RST_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xD9:
+    { //Needs interrupt for RETI
+        spdlog::info("RETI {:X}", opcode);
+        this->RET_UNCOND(&cycles);
+    }
+    case 0xDA:
+    {
+        spdlog::info("JP C, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xDC:
+    {
+        spdlog::info("CALL C, a16 {:X}", opcode);
+        this->CALL_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xDE:
+    {
+        spdlog::info("SBC A, d8 {:X}", opcode);
+        this->SBC_2B_2C(&cycles);
+    }
+    case 0xDF:
+    {
+        spdlog::info("RST 3 {:X}", opcode);
+        this->RST_UNCOND(3,&cycles);
+    }
 
 
 

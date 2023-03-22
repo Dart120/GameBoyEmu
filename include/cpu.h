@@ -62,9 +62,11 @@ class CPU
     void ADC_1B_1C(uint8_t reg1, uint32_t *cycles);
     void ADC_2B_2C(uint32_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void SUB_2B_2C(uint32_t *cycles);
     void SUB_1B_2C(uint16_t address, uint32_t *cycles);
     void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
     void SBC_1B_2C(uint16_t address, uint32_t *cycles);
+    void SBC_2B_2C(uint32_t *cycles);
 
 
     // Jumps
