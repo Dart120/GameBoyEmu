@@ -43,6 +43,7 @@ class CPU
     void LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles);
     void LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles);
     void LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles);
+    void LD_3B_4C(uint8_t* into, uint8_t load, uint32_t *cycles);
 
     void LD_2B_2C(uint8_t* into, uint32_t *cycles);
     void LD_2B_3C(uint16_t address, uint8_t data, uint32_t *cycles);
@@ -56,6 +57,7 @@ class CPU
     // MATH
     void ADD_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
     void ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles);
+    void ADD_2B_4C(uint16_t* reg1, uint32_t *cycles);
     void ADD_1B_1C(uint8_t reg1, uint32_t *cycles);
     void ADD_2B_2C(uint32_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
@@ -72,7 +74,8 @@ class CPU
     // Jumps
 
     void JUMP_ON_COND_s8(bool cond,  uint32_t* cycles);
-    void JUMP_UNCOND_s8( uint32_t* cycles);
+    void JUMP_UNCOND_s8(uint32_t* cycles);
+    void JUMP_UNCOND_REG(uint16_t reg, uint32_t* cycles);
     void JUMP_ON_COND_a16(bool cond,  uint32_t* cycles);
     void JUMP_UNCOND_a16( uint32_t* cycles);
     
@@ -82,6 +85,7 @@ class CPU
     void AND_2B_2C(uint32_t *cycles);
     void XOR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void XOR_1B_2C(uint16_t address, uint32_t *cycles);
+    void XOR_2B_2C(uint32_t *cycles);
     void OR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void OR_1B_2C(uint16_t address, uint32_t *cycles);
     void CP_1B_1C(uint8_t reg1,uint32_t *cycles);

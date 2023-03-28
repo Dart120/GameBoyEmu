@@ -1,5 +1,5 @@
 [settings]
-    arch=x86_64
+    arch=armv8
     build_type=Release
     compiler=gcc
     compiler.libcxx=libstdc++11
@@ -14,8 +14,8 @@
 
 
 [full_settings]
-    arch=x86_64
-    arch_build=x86_64
+    arch=armv8
+    arch_build=armv8
     build_type=Release
     compiler=gcc
     compiler.libcxx=libstdc++11
@@ -24,8 +24,8 @@
     os_build=Linux
 
 [full_requires]
-    fmt/8.1.1:2c09c8f84c016041549fcee94e4caae5d89424b6
-    spdlog/1.10.0:4d2b231078dcc813aaf3eb5175bee272655efbc4
+    fmt/8.1.1:75884ca7ea74925b5b3662be7401009979be1380
+    spdlog/1.10.0:ebfe6bf659cecc24b8d46bc0138b61c2f32994c9
 
 [full_options]
     fmt:fPIC=True

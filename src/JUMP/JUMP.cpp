@@ -13,6 +13,9 @@ void CPU::JUMP_UNCOND_s8(uint32_t* cycles){
     this->registers.registers.PC += this -> memory.read_8_bit(this->registers.registers.PC + 1);
     (*cycles) += 3;  
 }
+void CPU::JUMP_UNCOND_REG(uint16_t reg, uint32_t* cycles){
+    this->registers.registers.PC = reg;
+}
 
 
 void CPU::JUMP_ON_COND_a16(bool cond, uint32_t* cycles){

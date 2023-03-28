@@ -1539,9 +1539,8 @@
     }
     case 0xD6:
     {
-        // Impl SUB d8
-        spdlog::info("ADD A, d8 {:X}", opcode);
-        this->ADD_2B_2C(&cycles);
+        spdlog::info("SUB A, d8 {:X}", opcode);
+        this->SUB_2B_2C(&cycles);
     }
     case 0xD7:
     {
@@ -1616,33 +1615,29 @@
     }
     case 0xE8:
     {
-        spdlog::info("RST C {:X}", opcode);
-        this->RST_COND(this->registers.get_flag(FLAG_C),&cycles);
+       
+        spdlog::info("ADD SP, s8 {:X}", opcode);
+        this->ADD_2B_4C(&this->registers.registers.SP,&cycles);
     }
     case 0xE9:
-    { //Needs interrupt for RETI
-        spdlog::info("RETI {:X}", opcode);
-        this->RET_UNCOND(&cycles);
+    { 
+        spdlog::info("JP HL {:X}", opcode);
+        this->JUMP_UNCOND_REG(this->registers.registers.HL_double,&cycles);
     }
     case 0xEA:
     {
         spdlog::info("JP C, a16 {:X}", opcode);
         this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_C),&cycles);
     }
-    case 0xEC:
-    {
-        spdlog::info("CALL C, a16 {:X}", opcode);
-        this->CALL_COND(this->registers.get_flag(FLAG_C),&cycles);
-    }
     case 0xEE:
     {
-        spdlog::info("SBC A, d8 {:X}", opcode);
-        this->SBC_2B_2C(&cycles);
+        spdlog::info("XOR d8 {:X}", opcode);
+        this->XOR_2B_2C(&cycles);
     }
     case 0xEF:
     {
-        spdlog::info("RST 3 {:X}", opcode);
-        this->RST_UNCOND(3,&cycles);
+        spdlog::info("RST 5 {:X}", opcode);
+        this->RST_UNCOND(5,&cycles);
     }
 
 
