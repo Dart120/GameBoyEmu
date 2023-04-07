@@ -540,7 +540,7 @@
             case 0x36:
             {
                 spdlog::info("LD (HL), d8 {:x}", opcode);
-                this->LD_2B_3C((this->registers.registers.HL_double),this->memory.read_8_bit(this->registers.registers.PC + 1),&cycles);
+                this->LD_2B_3C_HL(&cycles);
                 //this -> registers.registers.HL = this -> memory.read_8_bit(this->registers.registers.PC + 1);    
             //    (this->registers.registers.PC) += 2;
             //    (cycles) -= 3;
@@ -1580,8 +1580,8 @@
     case 0xE0:
     {
         spdlog::info("LD (a8), A {:X}", opcode);
-        uint16_t address = 0xFF00 + this->memory.read_8_bit(this->registers.registers.PC + 1);
-        this->LD_2B_3C(address,this->registers.registers.AF.A, &cycles);
+        
+        this->LD_2B_3C_ACC_TO_MEM(&cycles);
     }
     case 0xE1:
     {
@@ -1626,8 +1626,10 @@
     }
     case 0xEA:
     {
-        spdlog::info("JP C, a16 {:X}", opcode);
-        this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_C),&cycles);
+        // I forgor
+        spdlog::info("LD (a16), A {:X}", opcode);
+        this->LD_3B_4C_REG_TO_MEM(this->registers.registers.AF.A, &cycles);
+        
     }
     case 0xEE:
     {
@@ -1639,6 +1641,78 @@
         spdlog::info("RST 5 {:X}", opcode);
         this->RST_UNCOND(5,&cycles);
     }
+    case 0xF0:
+    {
+        spdlog::info("LD A, (a8) {:X}", opcode);
+        this->LD_2B_3C_MEM_TO_ACC(&cycles);
+    }
+    case 0xF1:
+    {
+        spdlog::info("POP AF {:X}", opcode);
+        this->POP(&this->registers.registers.AF_double,&cycles);
+        
+    }
+    case 0xF2:
+    {
+        spdlog::info("LD A, (C) {:X}", opcode);
+        uint16_t address = 0xFF00 + this->registers.registers.BC.C;
+        this->LD_1B_2C_MEM_TO_REG(address,&this->registers.registers.AF.A,&cycles);
+        
+    }
+    case 0xF3:
+    {
+        spdlog::info("DI {:X}", opcode);
+        // Requires interrupts
+        this->PUSH(this->registers.registers.HL_double,&cycles);
+        
+    }
+    case 0xF5:
+    {
+        spdlog::info("PUSH AF {:X}", opcode);
+        this->PUSH(this->registers.registers.AF_double,&cycles);
+    }
+    case 0xF6:
+    {
+        spdlog::info("OR d8 {:X}", opcode);
+        this->OR_2B_2C(&cycles);
+    }
+    case 0xF7:
+    {
+        spdlog::info("RST 6, s8 {:X}", opcode);
+        this->RST_UNCOND(6,&cycles);
+    }
+    case 0xF8:
+    { 
+        spdlog::info("LD HL, SP+s8 {:X}", opcode);
+        this->LD_2B_3C(&cycles);
+    }
+    case 0xF9:
+    {
+        spdlog::info("LD SP, HL {:X}", opcode);
+        this->LD_1B_2C_REG_TO_REG(&cycles);
+    }
+    case 0xFA:
+    {
+        spdlog::info("LD A, (a16)", opcode);
+        this->LD_3B_4C_MEM_TO_REG(&this->registers.registers.AF.A,&cycles);
+    }
+    case 0xFB:
+    {
+        // TODO implement interrupts
+        spdlog::info("EI {:X}", opcode);
+        this->RST_UNCOND(5,&cycles);
+    }
+    case 0xFE:
+    {
+        spdlog::info("CP d8 {:X}", opcode);
+        this->RST_UNCOND(5,&cycles);
+    }
+    case 0xFF:
+    {
+        spdlog::info("RST 7 {:X}", opcode);
+        this->RST_UNCOND(7,&cycles);
+    }
+
 
 
 

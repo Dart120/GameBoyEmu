@@ -42,11 +42,17 @@ class CPU
     // LD
     void LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles);
     void LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles);
+    void LD_1B_2C_REG_TO_REG(uint32_t *cycles);
     void LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles);
     void LD_3B_4C(uint8_t* into, uint8_t load, uint32_t *cycles);
+    void LD_3B_4C_MEM_TO_REG(uint8_t* reg, uint32_t *cycles);
+    void LD_3B_4C_REG_TO_MEM(uint8_t reg, uint32_t *cycles);
+    void LD_2B_3C_HL(uint32_t *cycles);
 
     void LD_2B_2C(uint8_t* into, uint32_t *cycles);
-    void LD_2B_3C(uint16_t address, uint8_t data, uint32_t *cycles);
+    void LD_2B_3C_ACC_TO_MEM(uint32_t *cycles);
+    void LD_2B_3C_MEM_TO_ACC(uint32_t *cycles);
+    void LD_2B_3C(uint32_t *cycles);
     void LD_3B_5C(uint16_t* SP, uint32_t *cycles);
     void LD_3B_3C(uint16_t* into, uint32_t *cycles);
     void increment_HL(uint16_t* HL);
@@ -88,7 +94,9 @@ class CPU
     void XOR_2B_2C(uint32_t *cycles);
     void OR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void OR_1B_2C(uint16_t address, uint32_t *cycles);
+    void OR_2B_2C(uint32_t *cycles);
     void CP_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void CP_2B_2C(uint32_t *cycles);
     void CP_1B_2C(uint16_t address, uint32_t *cycles);
 
 
