@@ -109,6 +109,7 @@ class CPU
     // Returns
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
+    void RETI(uint32_t *cycles);
 
 
     // CALL
@@ -118,5 +119,18 @@ class CPU
     // RST
     void RST_UNCOND(uint8_t number,uint32_t *cycles);
     void RST_COND(uint8_t COND, uint32_t *cycles);
+
+    // ROTATE
+    
+    void RLC_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RLC_2B_4C(uint32_t *cycles);
+    void RRC_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RRC_2B_4C(uint32_t *cycles);
+    void RL_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RL_2B_4C(uint32_t *cycles);
+    void RR_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RR_2B_4C(uint32_t *cycles);
+
+
 };
 #endif
