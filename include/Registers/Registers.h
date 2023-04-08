@@ -14,6 +14,7 @@ enum register_index {AF,BC,DE,HL,SP,PC};
 class Registers{
     
     public:
+    bool IME;
      struct registers{
         union{
             struct{

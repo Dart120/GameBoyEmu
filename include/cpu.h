@@ -42,10 +42,17 @@ class CPU
     // LD
     void LD_1B_2C_REG_TO_MEM(uint16_t address, uint8_t reg, uint32_t *cycles);
     void LD_1B_2C_MEM_TO_REG(uint16_t address, uint8_t* reg, uint32_t *cycles);
+    void LD_1B_2C_REG_TO_REG(uint32_t *cycles);
     void LD_1B_1C(uint8_t* into, uint8_t load, uint32_t *cycles);
+    void LD_3B_4C(uint8_t* into, uint8_t load, uint32_t *cycles);
+    void LD_3B_4C_MEM_TO_REG(uint8_t* reg, uint32_t *cycles);
+    void LD_3B_4C_REG_TO_MEM(uint8_t reg, uint32_t *cycles);
+    void LD_2B_3C_HL(uint32_t *cycles);
 
     void LD_2B_2C(uint8_t* into, uint32_t *cycles);
-    void LD_2B_3C(uint16_t address, uint32_t *cycles);
+    void LD_2B_3C_ACC_TO_MEM(uint32_t *cycles);
+    void LD_2B_3C_MEM_TO_ACC(uint32_t *cycles);
+    void LD_2B_3C(uint32_t *cycles);
     void LD_3B_5C(uint16_t* SP, uint32_t *cycles);
     void LD_3B_3C(uint16_t* into, uint32_t *cycles);
     void increment_HL(uint16_t* HL);
@@ -56,32 +63,40 @@ class CPU
     // MATH
     void ADD_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
     void ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles);
+    void ADD_2B_4C(uint16_t* reg1, uint32_t *cycles);
     void ADD_1B_1C(uint8_t reg1, uint32_t *cycles);
     void ADD_2B_2C(uint32_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles);
     void ADC_1B_1C(uint8_t reg1, uint32_t *cycles);
     void ADC_2B_2C(uint32_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void SUB_2B_2C(uint32_t *cycles);
     void SUB_1B_2C(uint16_t address, uint32_t *cycles);
     void SBC_1B_1C(uint8_t reg1,uint32_t *cycles);
     void SBC_1B_2C(uint16_t address, uint32_t *cycles);
+    void SBC_2B_2C(uint32_t *cycles);
 
 
     // Jumps
 
     void JUMP_ON_COND_s8(bool cond,  uint32_t* cycles);
-    void JUMP_UNCOND_s8( uint32_t* cycles);
+    void JUMP_UNCOND_s8(uint32_t* cycles);
+    void JUMP_UNCOND_REG(uint16_t reg, uint32_t* cycles);
     void JUMP_ON_COND_a16(bool cond,  uint32_t* cycles);
     void JUMP_UNCOND_a16( uint32_t* cycles);
     
     // LOGIC
     void AND_1B_1C(uint8_t reg1,uint32_t *cycles);
     void AND_1B_2C(uint16_t address, uint32_t *cycles);
+    void AND_2B_2C(uint32_t *cycles);
     void XOR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void XOR_1B_2C(uint16_t address, uint32_t *cycles);
+    void XOR_2B_2C(uint32_t *cycles);
     void OR_1B_1C(uint8_t reg1,uint32_t *cycles);
     void OR_1B_2C(uint16_t address, uint32_t *cycles);
+    void OR_2B_2C(uint32_t *cycles);
     void CP_1B_1C(uint8_t reg1,uint32_t *cycles);
+    void CP_2B_2C(uint32_t *cycles);
     void CP_1B_2C(uint16_t address, uint32_t *cycles);
 
 
@@ -94,6 +109,7 @@ class CPU
     // Returns
     void RET_COND(uint8_t COND, uint32_t *cycles);
     void RET_UNCOND(uint32_t *cycles);
+    void RETI(uint32_t *cycles);
 
 
     // CALL
@@ -103,5 +119,18 @@ class CPU
     // RST
     void RST_UNCOND(uint8_t number,uint32_t *cycles);
     void RST_COND(uint8_t COND, uint32_t *cycles);
+
+    // ROTATE
+    
+    void RLC_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RLC_2B_4C(uint32_t *cycles);
+    void RRC_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RRC_2B_4C(uint32_t *cycles);
+    void RL_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RL_2B_4C(uint32_t *cycles);
+    void RR_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void RR_2B_4C(uint32_t *cycles);
+
+
 };
 #endif

@@ -58,12 +58,11 @@
 
                 // break;}
             case 0x01:
-              {  spdlog::info("LD BC, d16 {:X}", opcode);
+              {  
+                spdlog::info("LD BC, d16 {:X}", opcode);
                  this->LD_3B_3C(&(this -> registers.registers.BC_double),&cycles);
-            //     this -> registers.registers.BC_double = this -> memory.read_16_bit(this->registers.registers.PC + 1);
-            //    (this->registers.registers.PC) += 3;
-            //    (cycles) =(cycles) - 3;
-                break;}
+                break;
+            }
         
             case 0x02:
                 {spdlog::info("LD (BC), A {:X}", opcode);
@@ -540,7 +539,7 @@
             case 0x36:
             {
                 spdlog::info("LD (HL), d8 {:x}", opcode);
-                this->LD_2B_3C((this->registers.registers.HL_double),&cycles);
+                this->LD_2B_3C_HL(&cycles);
                 //this -> registers.registers.HL = this -> memory.read_8_bit(this->registers.registers.PC + 1);    
             //    (this->registers.registers.PC) += 2;
             //    (cycles) -= 3;
@@ -1011,7 +1010,7 @@
             case 0x76:
             {
                 spdlog::info("HALT {:X}", opcode);
-                ;
+                exit(0);
             }
 
             case 0x77:
@@ -1506,6 +1505,419 @@
         spdlog::info("RST 1 {:X}", opcode);
         this->RST_UNCOND(1,&cycles);
     }
+    case 0xD0:
+    {
+        spdlog::info("RET NC {:X}", opcode);
+        this->RET_COND(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+    case 0xD1:
+    {
+        spdlog::info("POP DE {:X}", opcode);
+        this->POP(&this->registers.registers.DE_double,&cycles);
+        
+    }
+    case 0xD2:
+    {
+        spdlog::info("JP NC, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+
+    case 0xD4:
+    {
+        spdlog::info("CALL NC, a16 {:X}", opcode);
+        this->CALL_COND(!this->registers.get_flag(FLAG_C),&cycles);
+        
+    }
+    case 0xD5:
+    {
+        spdlog::info("PUSH DE {:X}", opcode);
+        this->PUSH(this->registers.registers.DE_double,&cycles);
+        
+    }
+    case 0xD6:
+    {
+        spdlog::info("SUB A, d8 {:X}", opcode);
+        this->SUB_2B_2C(&cycles);
+    }
+    case 0xD7:
+    {
+        spdlog::info("RST 2 {:X}", opcode);
+        this->RST_UNCOND(2,&cycles);
+    }
+    case 0xD8:
+    {
+        spdlog::info("RST C {:X}", opcode);
+        this->RST_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xD9:
+    { //Needs interrupt for RETI
+        spdlog::info("RETI {:X}", opcode);
+        this->RET_UNCOND(&cycles);
+    }
+    case 0xDA:
+    {
+        spdlog::info("JP C, a16 {:X}", opcode);
+        this->JUMP_ON_COND_a16(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xDC:
+    {
+        spdlog::info("CALL C, a16 {:X}", opcode);
+        this->CALL_COND(this->registers.get_flag(FLAG_C),&cycles);
+    }
+    case 0xDE:
+    {
+        spdlog::info("SBC A, d8 {:X}", opcode);
+        this->SBC_2B_2C(&cycles);
+    }
+    case 0xDF:
+    {
+        spdlog::info("RST 3 {:X}", opcode);
+        this->RST_UNCOND(3,&cycles);
+    }
+    case 0xE0:
+    {
+        spdlog::info("LD (a8), A {:X}", opcode);
+        
+        this->LD_2B_3C_ACC_TO_MEM(&cycles);
+    }
+    case 0xE1:
+    {
+        spdlog::info("POP HL {:X}", opcode);
+        this->POP(&this->registers.registers.HL_double,&cycles);
+        
+    }
+    case 0xE2:
+    {
+        spdlog::info("LD (C), A {:X}", opcode);
+        uint16_t address = 0xFF00 + this->registers.registers.BC.C;
+        this->LD_1B_2C_REG_TO_MEM(address,this->registers.registers.AF.A,&cycles);
+        
+    }
+    case 0xE5:
+    {
+        spdlog::info("PUSH HL {:X}", opcode);
+        this->PUSH(this->registers.registers.HL_double,&cycles);
+        
+    }
+    case 0xE6:
+    {
+        // Impl SUB d8
+        spdlog::info("AND d8 {:X}", opcode);
+        this->AND_2B_2C(&cycles);
+    }
+    case 0xE7:
+    {
+        spdlog::info("RST 4 {:X}", opcode);
+        this->RST_UNCOND(4,&cycles);
+    }
+    case 0xE8:
+    {
+       
+        spdlog::info("ADD SP, s8 {:X}", opcode);
+        this->ADD_2B_4C(&this->registers.registers.SP,&cycles);
+    }
+    case 0xE9:
+    { 
+        spdlog::info("JP HL {:X}", opcode);
+        this->JUMP_UNCOND_REG(this->registers.registers.HL_double,&cycles);
+    }
+    case 0xEA:
+    {
+        // I forgor
+        spdlog::info("LD (a16), A {:X}", opcode);
+        this->LD_3B_4C_REG_TO_MEM(this->registers.registers.AF.A, &cycles);
+        
+    }
+    case 0xEE:
+    {
+        spdlog::info("XOR d8 {:X}", opcode);
+        this->XOR_2B_2C(&cycles);
+    }
+    case 0xEF:
+    {
+        spdlog::info("RST 5 {:X}", opcode);
+        this->RST_UNCOND(5,&cycles);
+    }
+    case 0xF0:
+    {
+        spdlog::info("LD A, (a8) {:X}", opcode);
+        this->LD_2B_3C_MEM_TO_ACC(&cycles);
+    }
+    case 0xF1:
+    {
+        spdlog::info("POP AF {:X}", opcode);
+        this->POP(&this->registers.registers.AF_double,&cycles);
+        
+    }
+    case 0xF2:
+    {
+        spdlog::info("LD A, (C) {:X}", opcode);
+        uint16_t address = 0xFF00 + this->registers.registers.BC.C;
+        this->LD_1B_2C_MEM_TO_REG(address,&this->registers.registers.AF.A,&cycles);
+        
+    }
+    case 0xF3:
+    {
+        spdlog::info("DI {:X}", opcode);
+        // Requires interrupts
+        this->registers.IME = false;
+        
+    }
+    case 0xF5:
+    {
+        spdlog::info("PUSH AF {:X}", opcode);
+        this->PUSH(this->registers.registers.AF_double,&cycles);
+    }
+    case 0xF6:
+    {
+        spdlog::info("OR d8 {:X}", opcode);
+        this->OR_2B_2C(&cycles);
+    }
+    case 0xF7:
+    {
+        spdlog::info("RST 6, s8 {:X}", opcode);
+        this->RST_UNCOND(6,&cycles);
+    }
+    case 0xF8:
+    { 
+        spdlog::info("LD HL, SP+s8 {:X}", opcode);
+        this->LD_2B_3C(&cycles);
+    }
+    case 0xF9:
+    {
+        spdlog::info("LD SP, HL {:X}", opcode);
+        this->LD_1B_2C_REG_TO_REG(&cycles);
+    }
+    case 0xFA:
+    {
+        spdlog::info("LD A, (a16)", opcode);
+        this->LD_3B_4C_MEM_TO_REG(&this->registers.registers.AF.A,&cycles);
+    }
+    case 0xFB:
+    {
+        // TODO implement interrupts
+        spdlog::info("EI {:X}", opcode);
+        this->registers.IME=true;
+    }
+    case 0xFE:
+    {
+        spdlog::info("CP d8 {:X}", opcode);
+        this->RST_UNCOND(5,&cycles);
+    }
+    case 0xFF:
+    {
+        spdlog::info("RST 7 {:X}", opcode);
+        this->RST_UNCOND(7,&cycles);
+    }
+    case 0xCB:
+    {
+        switch (this->registers.registers.PC + 1)
+        {
+        case 0x00:
+            {
+                spdlog::info("RLC B {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x01:
+            {
+                spdlog::info("RLC C {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x02:
+            {
+                spdlog::info("RLC D {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x03:
+            {
+                spdlog::info("RLC E {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x04:
+            {
+                spdlog::info("RLC H {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x05:
+            {
+                spdlog::info("RLC L {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x06:
+            {
+                spdlog::info("RLC (HL) {:X}", opcode);
+                this->RLC_2B_4C(&cycles);
+                break;
+            }
+        case 0x07:
+            {
+                spdlog::info("RLC A {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
+        case 0x08:
+            {
+                spdlog::info("RRC B {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x09:
+            {
+                spdlog::info("RRC C {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x0A:
+            {
+                spdlog::info("RRC D {:X}", opcode);
+                this->RLC_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x0B:
+            {
+                spdlog::info("RRC E {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x0C:
+            {
+                spdlog::info("RRC H {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x0D:
+            {
+                spdlog::info("RRC L {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x0E:
+            {
+                spdlog::info("RRC (HL) {:X}", opcode);
+                this->RRC_2B_4C(&cycles);
+                break;
+            }
+        case 0x0F:
+            {
+                spdlog::info("RRC A {:X}", opcode);
+                this->RRC_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        case 0x10:
+            {
+                spdlog::info("RL B {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x11:
+            {
+                spdlog::info("RL C {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x12:
+            {
+                spdlog::info("RL D {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x13:
+            {
+                spdlog::info("RL E {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x14:
+            {
+                spdlog::info("RL H {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x15:
+            {
+                spdlog::info("RL L {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x16:
+            {
+                spdlog::info("RL (HL) {:X}", opcode);
+                this->RL_2B_4C(&cycles);
+                break;
+            }
+        case 0x17:
+            {
+                spdlog::info("RL A {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
+        case 0x18:
+            {
+                spdlog::info("RR B {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x19:
+            {
+                spdlog::info("RR C {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x1A:
+            {
+                spdlog::info("RR D {:X}", opcode);
+                this->RL_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x1B:
+            {
+                spdlog::info("RR E {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x1C:
+            {
+                spdlog::info("RR H {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x1D:
+            {
+                spdlog::info("RR L {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x1E:
+            {
+                spdlog::info("RR (HL) {:X}", opcode);
+                this->RR_2B_4C(&cycles);
+                break;
+            }
+        case 0x1F:
+            {
+                spdlog::info("RR A {:X}", opcode);
+                this->RR_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
+        
+            
+        
+        default:
+            break;
+        }
+    }
+
 
 
 
