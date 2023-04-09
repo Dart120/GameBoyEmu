@@ -146,6 +146,12 @@ class CPU
     void SWAP_2B_4C(uint32_t *cycles);
 
 
+    // BIT
+
+    void BIT_2B_2C(uint8_t bit_n,uint8_t reg,uint32_t *cycles);
+    void BIT_2B_3C(uint8_t bit_n,uint32_t *cycles);
+
+
 
 };
 #endif

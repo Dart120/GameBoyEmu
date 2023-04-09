@@ -2103,6 +2103,406 @@
                 this->SRA_2B_2C(&this->registers.registers.AF.A,&cycles);
                 break;
             }
+        case 0x40:
+            {
+                spdlog::info("BIT 1, B {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x41:
+            {
+                spdlog::info("BIT 1, C {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x42:
+            {
+                spdlog::info("BIT 1, D {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x43:
+            {
+                spdlog::info("BIT 1, E {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x44:
+            {
+                spdlog::info("BIT 1, H {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x45:
+            {
+                spdlog::info("BIT 1, L {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x46:
+            {
+                spdlog::info("BIT 1, L {:X}", opcode);
+                this->BIT_2B_3C(1, &cycles);
+                break;
+            }
+        case 0x47:
+            {
+                spdlog::info("BIT 1, A {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x48:
+            {
+                spdlog::info("BIT 1, B {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x49:
+            {
+                spdlog::info("BIT 1, C {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x4A:
+            {
+                spdlog::info("BIT 1, D {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x4B:
+            {
+                spdlog::info("BIT 1, E {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x4C:
+            {
+                spdlog::info("BIT 1, H {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x4D:
+            {
+                spdlog::info("BIT 1, L {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x4E:
+            {
+                spdlog::info("BIT 1, L {:X}", opcode);
+                this->BIT_2B_3C(1, &cycles);
+                break;
+            }
+        case 0x4F:
+            {
+                spdlog::info("BIT 1, A {:X}", opcode);
+                this->BIT_2B_2C(1,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x50:
+            {
+                spdlog::info("BIT 2, B {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x51:
+            {
+                spdlog::info("BIT 2, C {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x52:
+            {
+                spdlog::info("BIT 2, D {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x53:
+            {
+                spdlog::info("BIT 2, E {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x54:
+            {
+                spdlog::info("BIT 2, H {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x55:
+            {
+                spdlog::info("BIT 2, L {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x56:
+            {
+                spdlog::info("BIT 2, L {:X}", opcode);
+                this->BIT_2B_3C(2, &cycles);
+                break;
+            }
+        case 0x57:
+            {
+                spdlog::info("BIT 2, A {:X}", opcode);
+                this->BIT_2B_2C(2,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x58:
+            {
+                spdlog::info("BIT 3, B {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x59:
+            {
+                spdlog::info("BIT 3, C {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x5A:
+            {
+                spdlog::info("BIT 3, D {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x5B:
+            {
+                spdlog::info("BIT 3, E {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x5C:
+            {
+                spdlog::info("BIT 3, H {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x5D:
+            {
+                spdlog::info("BIT 3, L {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x5E:
+            {
+                spdlog::info("BIT 3, L {:X}", opcode);
+                this->BIT_2B_3C(3, &cycles);
+                break;
+            }
+        case 0x5F:
+            {
+                spdlog::info("BIT 3, A {:X}", opcode);
+                this->BIT_2B_2C(3,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x60:
+            {
+                spdlog::info("BIT 4, B {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x61:
+            {
+                spdlog::info("BIT 4, C {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x62:
+            {
+                spdlog::info("BIT 4, D {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x63:
+            {
+                spdlog::info("BIT 4, E {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x64:
+            {
+                spdlog::info("BIT 4, H {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x65:
+            {
+                spdlog::info("BIT 4, L {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x66:
+            {
+                spdlog::info("BIT 4, L {:X}", opcode);
+                this->BIT_2B_3C(4, &cycles);
+                break;
+            }
+        case 0x67:
+            {
+                spdlog::info("BIT 4, A {:X}", opcode);
+                this->BIT_2B_2C(4,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x68:
+            {
+                spdlog::info("BIT 5, B {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x69:
+            {
+                spdlog::info("BIT 5, C {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x6A:
+            {
+                spdlog::info("BIT 5, D {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x6B:
+            {
+                spdlog::info("BIT 5, E {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x6C:
+            {
+                spdlog::info("BIT 5, H {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x6D:
+            {
+                spdlog::info("BIT 5, L {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x6E:
+            {
+                spdlog::info("BIT 5, L {:X}", opcode);
+                this->BIT_2B_3C(5, &cycles);
+                break;
+            }
+        case 0x6F:
+            {
+                spdlog::info("BIT 5, A {:X}", opcode);
+                this->BIT_2B_2C(5,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x70:
+            {
+                spdlog::info("BIT 6, B {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x71:
+            {
+                spdlog::info("BIT 6, C {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x72:
+            {
+                spdlog::info("BIT 6, D {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x73:
+            {
+                spdlog::info("BIT 6, E {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x74:
+            {
+                spdlog::info("BIT 6, H {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x75:
+            {
+                spdlog::info("BIT 6, L {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x76:
+            {
+                spdlog::info("BIT 6, L {:X}", opcode);
+                this->BIT_2B_3C(6, &cycles);
+                break;
+            }
+        case 0x77:
+            {
+                spdlog::info("BIT 6, A {:X}", opcode);
+                this->BIT_2B_2C(6,this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x78:
+            {
+                spdlog::info("BIT 7, B {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x79:
+            {
+                spdlog::info("BIT 7, C {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x7A:
+            {
+                spdlog::info("BIT 7, D {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x7B:
+            {
+                spdlog::info("BIT 7, E {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x7C:
+            {
+                spdlog::info("BIT 7, H {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x7D:
+            {
+                spdlog::info("BIT 7, L {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x7E:
+            {
+                spdlog::info("BIT 7, L {:X}", opcode);
+                this->BIT_2B_3C(7, &cycles);
+                break;
+            }
+        case 0x7F:
+            {
+                spdlog::info("BIT 7, A {:X}", opcode);
+                this->BIT_2B_2C(7,this->registers.registers.AF.A, &cycles);
+                break;
+            }
         
         
         
