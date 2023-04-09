@@ -1876,7 +1876,7 @@
         case 0x1A:
             {
                 spdlog::info("RR D {:X}", opcode);
-                this->RL_2B_2C(&this->registers.registers.DE.D,&cycles);
+                this->RR_2B_2C(&this->registers.registers.DE.D,&cycles);
                 break;
             }
         case 0x1B:
@@ -1909,6 +1909,201 @@
                 this->RR_2B_2C(&this->registers.registers.AF.A,&cycles);
                 break;
             }
+        case 0x20:
+            {
+                spdlog::info("SLA B {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x21:
+            {
+                spdlog::info("SLA C {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x22:
+            {
+                spdlog::info("SLA D {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x23:
+            {
+                spdlog::info("SLA E {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x24:
+            {
+                spdlog::info("SLA H {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x25:
+            {
+                spdlog::info("SLA L {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x26:
+            {
+                spdlog::info("SLA (HL) {:X}", opcode);
+                this->SLA_2B_4C(&cycles);
+                break;
+            }
+        case 0x27:
+            {
+                spdlog::info("SLA A {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
+        case 0x28:
+            {
+                spdlog::info("SRA B {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x29:
+            {
+                spdlog::info("SRA C {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x2A:
+            {
+                spdlog::info("SRA D {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x2B:
+            {
+                spdlog::info("SRA E {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x2C:
+            {
+                spdlog::info("SRA H {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x2D:
+            {
+                spdlog::info("SRA L {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x2E:
+            {
+                spdlog::info("SRA (HL) {:X}", opcode);
+                this->SRA_2B_4C(&cycles);
+                break;
+            }
+        case 0x2F:
+            {
+                spdlog::info("SRA A {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        case 0x30:
+            {
+                spdlog::info("SWAP B {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x31:
+            {
+                spdlog::info("SWAP C {:X}", opcode);
+                this->SLA_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x32:
+            {
+                spdlog::info("SWAP D {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x33:
+            {
+                spdlog::info("SWAP E {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x34:
+            {
+                spdlog::info("SWAP H {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x35:
+            {
+                spdlog::info("SWAP L {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x36:
+            {
+                spdlog::info("SWAP (HL) {:X}", opcode);
+                this->SWAP_2B_4C(&cycles);
+                break;
+            }
+        case 0x37:
+            {
+                spdlog::info("SWAP A {:X}", opcode);
+                this->SWAP_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
+        case 0x38:
+            {
+                spdlog::info("SRA B {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.BC.B,&cycles);
+                break;
+            }
+        case 0x39:
+            {
+                spdlog::info("SRA C {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.BC.C,&cycles);
+                break;
+            }
+        case 0x3A:
+            {
+                spdlog::info("SRA D {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.DE.D,&cycles);
+                break;
+            }
+        case 0x3B:
+            {
+                spdlog::info("SRA E {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.DE.E,&cycles);
+                break;
+            }
+        case 0x3C:
+            {
+                spdlog::info("SRA H {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.HL.H,&cycles);
+                break;
+            }
+        case 0x3D:
+            {
+                spdlog::info("SRA L {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.HL.L,&cycles);
+                break;
+            }
+        case 0x3E:
+            {
+                spdlog::info("SRA (HL) {:X}", opcode);
+                this->SRA_2B_4C(&cycles);
+                break;
+            }
+        case 0x3F:
+            {
+                spdlog::info("SRA A {:X}", opcode);
+                this->SRA_2B_2C(&this->registers.registers.AF.A,&cycles);
+                break;
+            }
+        
         
         
             
