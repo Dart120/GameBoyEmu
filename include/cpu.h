@@ -131,6 +131,21 @@ class CPU
     void RR_2B_2C(uint8_t* reg,uint32_t *cycles);
     void RR_2B_4C(uint32_t *cycles);
 
+    // SHIFT
+
+    void SLA_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void SLA_2B_4C(uint32_t *cycles);
+    void SRA_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void SRA_2B_4C(uint32_t *cycles);
+    void SRL_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void SRL_2B_4C(uint32_t *cycles);
+
+    // SWAP
+
+    void SWAP_2B_2C(uint8_t* reg,uint32_t *cycles);
+    void SWAP_2B_4C(uint32_t *cycles);
+
+
 
 };
 #endif

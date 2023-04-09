@@ -59,7 +59,7 @@ void CPU::RR_2B_2C(uint8_t* reg, uint32_t *cycles){
 }
 void CPU::RR_2B_4C(uint32_t *cycles){
     uint8_t first_bit = this->registers.get_flag(FLAG_C);
-    uint8_t result = (this->memory.read_8_bit(this->registers.registers.HL_double) << 1)  + (first_bit << 7);
+    uint8_t result = (this->memory.read_8_bit(this->registers.registers.HL_double) >> 1)  + (first_bit << 7);
     this->registers.check_if_result_zero(result);
     this->memory.write_8_bit(this->registers.registers.HL_double, result);
     this->registers.registers.PC += 2;
