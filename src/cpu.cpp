@@ -2503,6 +2503,806 @@
                 this->BIT_2B_2C(7,this->registers.registers.AF.A, &cycles);
                 break;
             }
+                case 0x80:
+            {
+                spdlog::info("RES 1, B {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x81:
+            {
+                spdlog::info("RES 1, C {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x82:
+            {
+                spdlog::info("RES 1, D {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x83:
+            {
+                spdlog::info("RES 1, E {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x84:
+            {
+                spdlog::info("RES 1, H {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x85:
+            {
+                spdlog::info("RES 1, L {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x86:
+            {
+                spdlog::info("RES 1, L {:X}", opcode);
+                this->RES_2B_4C(1, &cycles);
+                break;
+            }
+        case 0x87:
+            {
+                spdlog::info("RES 1, A {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x88:
+            {
+                spdlog::info("RES 1, B {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x89:
+            {
+                spdlog::info("RES 1, C {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x8A:
+            {
+                spdlog::info("RES 1, D {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x8B:
+            {
+                spdlog::info("RES 1, E {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x8C:
+            {
+                spdlog::info("RES 1, H {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x8D:
+            {
+                spdlog::info("RES 1, L {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x8E:
+            {
+                spdlog::info("RES 1, L {:X}", opcode);
+                this->RES_2B_4C(1, &cycles);
+                break;
+            }
+        case 0x8F:
+            {
+                spdlog::info("RES 1, A {:X}", opcode);
+                this->RES_2B_2C(1,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x90:
+            {
+                spdlog::info("RES 2, B {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x91:
+            {
+                spdlog::info("RES 2, C {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x92:
+            {
+                spdlog::info("RES 2, D {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x93:
+            {
+                spdlog::info("RES 2, E {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x94:
+            {
+                spdlog::info("RES 2, H {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x95:
+            {
+                spdlog::info("RES 2, L {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x96:
+            {
+                spdlog::info("RES 2, L {:X}", opcode);
+                this->RES_2B_4C(2, &cycles);
+                break;
+            }
+        case 0x97:
+            {
+                spdlog::info("RES 2, A {:X}", opcode);
+                this->RES_2B_2C(2,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0x98:
+            {
+                spdlog::info("RES 3, B {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0x99:
+            {
+                spdlog::info("RES 3, C {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0x9A:
+            {
+                spdlog::info("RES 3, D {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0x9B:
+            {
+                spdlog::info("RES 3, E {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0x9C:
+            {
+                spdlog::info("RES 3, H {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0x9D:
+            {
+                spdlog::info("RES 3, L {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0x9E:
+            {
+                spdlog::info("RES 3, L {:X}", opcode);
+                this->RES_2B_4C(3, &cycles);
+                break;
+            }
+        case 0x9F:
+            {
+                spdlog::info("RES 3, A {:X}", opcode);
+                this->RES_2B_2C(3,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xA0:
+            {
+                spdlog::info("RES 4, B {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xA1:
+            {
+                spdlog::info("RES 4, C {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xA2:
+            {
+                spdlog::info("RES 4, D {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xA3:
+            {
+                spdlog::info("RES 4, E {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xA4:
+            {
+                spdlog::info("RES 4, H {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xA5:
+            {
+                spdlog::info("RES 4, L {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xA6:
+            {
+                spdlog::info("RES 4, L {:X}", opcode);
+                this->RES_2B_4C(4, &cycles);
+                break;
+            }
+        case 0xA7:
+            {
+                spdlog::info("RES 4, A {:X}", opcode);
+                this->RES_2B_2C(4,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xA8:
+            {
+                spdlog::info("RES 5, B {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xA9:
+            {
+                spdlog::info("RES 5, C {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xAA:
+            {
+                spdlog::info("RES 5, D {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xAB:
+            {
+                spdlog::info("RES 5, E {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xAC:
+            {
+                spdlog::info("RES 5, H {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xAD:
+            {
+                spdlog::info("RES 5, L {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xAE:
+            {
+                spdlog::info("RES 5, L {:X}", opcode);
+                this->RES_2B_4C(5, &cycles);
+                break;
+            }
+        case 0xAF:
+            {
+                spdlog::info("RES 5, A {:X}", opcode);
+                this->RES_2B_2C(5,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xB0:
+            {
+                spdlog::info("RES 6, B {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xB1:
+            {
+                spdlog::info("RES 6, C {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xB2:
+            {
+                spdlog::info("RES 6, D {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xB3:
+            {
+                spdlog::info("RES 6, E {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xB4:
+            {
+                spdlog::info("RES 6, H {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xB5:
+            {
+                spdlog::info("RES 6, L {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xB6:
+            {
+                spdlog::info("RES 6, L {:X}", opcode);
+                this->RES_2B_4C(6, &cycles);
+                break;
+            }
+        case 0xB7:
+            {
+                spdlog::info("RES 6, A {:X}", opcode);
+                this->RES_2B_2C(6,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xB8:
+            {
+                spdlog::info("RES 7, B {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xB9:
+            {
+                spdlog::info("RES 7, C {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xBA:
+            {
+                spdlog::info("RES 7, D {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xBB:
+            {
+                spdlog::info("RES 7, E {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xBC:
+            {
+                spdlog::info("RES 7, H {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xBD:
+            {
+                spdlog::info("RES 7, L {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xBE:
+            {
+                spdlog::info("RES 7, L {:X}", opcode);
+                this->RES_2B_4C(7, &cycles);
+                break;
+            }
+        case 0xBF:
+            {
+                spdlog::info("RES 7, A {:X}", opcode);
+                this->RES_2B_2C(7,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xC0:
+            {
+                spdlog::info("SET 1, B {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xC1:
+            {
+                spdlog::info("SET 1, C {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xC2:
+            {
+                spdlog::info("SET 1, D {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xC3:
+            {
+                spdlog::info("SET 1, E {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xC4:
+            {
+                spdlog::info("SET 1, H {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xC5:
+            {
+                spdlog::info("SET 1, L {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xC6:
+            {
+                spdlog::info("SET 1, L {:X}", opcode);
+                this->SET_2B_4C(1, &cycles);
+                break;
+            }
+        case 0xC7:
+            {
+                spdlog::info("SET 1, A {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xC8:
+            {
+                spdlog::info("SET 1, B {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xC9:
+            {
+                spdlog::info("SET 1, C {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xCA:
+            {
+                spdlog::info("SET 1, D {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xCB:
+            {
+                spdlog::info("SET 1, E {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xCC:
+            {
+                spdlog::info("SET 1, H {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xCD:
+            {
+                spdlog::info("SET 1, L {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xCE:
+            {
+                spdlog::info("SET 1, L {:X}", opcode);
+                this->SET_2B_4C(1, &cycles);
+                break;
+            }
+        case 0xCF:
+            {
+                spdlog::info("SET 1, A {:X}", opcode);
+                this->SET_2B_2C(1,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xD0:
+            {
+                spdlog::info("SET 2, B {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xD1:
+            {
+                spdlog::info("SET 2, C {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xD2:
+            {
+                spdlog::info("SET 2, D {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xD3:
+            {
+                spdlog::info("SET 2, E {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xD4:
+            {
+                spdlog::info("SET 2, H {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xD5:
+            {
+                spdlog::info("SET 2, L {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xD6:
+            {
+                spdlog::info("SET 2, L {:X}", opcode);
+                this->SET_2B_4C(2, &cycles);
+                break;
+            }
+        case 0xD7:
+            {
+                spdlog::info("SET 2, A {:X}", opcode);
+                this->SET_2B_2C(2,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xD8:
+            {
+                spdlog::info("SET 3, B {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xD9:
+            {
+                spdlog::info("SET 3, C {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xDA:
+            {
+                spdlog::info("SET 3, D {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xDB:
+            {
+                spdlog::info("SET 3, E {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xDC:
+            {
+                spdlog::info("SET 3, H {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xDD:
+            {
+                spdlog::info("SET 3, L {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xDE:
+            {
+                spdlog::info("SET 3, L {:X}", opcode);
+                this->SET_2B_4C(3, &cycles);
+                break;
+            }
+        case 0xDF:
+            {
+                spdlog::info("SET 3, A {:X}", opcode);
+                this->SET_2B_2C(3,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xE0:
+            {
+                spdlog::info("SET 4, B {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xE1:
+            {
+                spdlog::info("SET 4, C {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xE2:
+            {
+                spdlog::info("SET 4, D {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xE3:
+            {
+                spdlog::info("SET 4, E {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xE4:
+            {
+                spdlog::info("SET 4, H {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xE5:
+            {
+                spdlog::info("SET 4, L {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xE6:
+            {
+                spdlog::info("SET 4, L {:X}", opcode);
+                this->SET_2B_4C(4, &cycles);
+                break;
+            }
+        case 0xE7:
+            {
+                spdlog::info("SET 4, A {:X}", opcode);
+                this->SET_2B_2C(4,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xE8:
+            {
+                spdlog::info("SET 5, B {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xE9:
+            {
+                spdlog::info("SET 5, C {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xEA:
+            {
+                spdlog::info("SET 5, D {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xEB:
+            {
+                spdlog::info("SET 5, E {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xEC:
+            {
+                spdlog::info("SET 5, H {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xED:
+            {
+                spdlog::info("SET 5, L {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xEE:
+            {
+                spdlog::info("SET 5, L {:X}", opcode);
+                this->SET_2B_4C(5, &cycles);
+                break;
+            }
+        case 0xEF:
+            {
+                spdlog::info("SET 5, A {:X}", opcode);
+                this->SET_2B_2C(5,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xF0:
+            {
+                spdlog::info("SET 6, B {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xF1:
+            {
+                spdlog::info("SET 6, C {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xF2:
+            {
+                spdlog::info("SET 6, D {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xF3:
+            {
+                spdlog::info("SET 6, E {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xF4:
+            {
+                spdlog::info("SET 6, H {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xF5:
+            {
+                spdlog::info("SET 6, L {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xF6:
+            {
+                spdlog::info("SET 6, L {:X}", opcode);
+                this->SET_2B_4C(6, &cycles);
+                break;
+            }
+        case 0xF7:
+            {
+                spdlog::info("SET 6, A {:X}", opcode);
+                this->SET_2B_2C(6,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
+        case 0xF8:
+            {
+                spdlog::info("SET 7, B {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.BC.B, &cycles);
+                break;
+            }
+        
+        case 0xF9:
+            {
+                spdlog::info("SET 7, C {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.BC.C, &cycles);
+                break;
+            }
+        case 0xFA:
+            {
+                spdlog::info("SET 7, D {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.DE.D, &cycles);
+                break;
+            }
+        case 0xFB:
+            {
+                spdlog::info("SET 7, E {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.DE.E, &cycles);
+                break;
+            }
+        
+        case 0xFC:
+            {
+                spdlog::info("SET 7, H {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.HL.H, &cycles);
+                break;
+            }
+        case 0xFD:
+            {
+                spdlog::info("SET 7, L {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.HL.L, &cycles);
+                break;
+            }
+        case 0xFE:
+            {
+                spdlog::info("SET 7, L {:X}", opcode);
+                this->SET_2B_4C(7, &cycles);
+                break;
+            }
+        case 0xFF:
+            {
+                spdlog::info("SET 7, A {:X}", opcode);
+                this->SET_2B_2C(7,&this->registers.registers.AF.A, &cycles);
+                break;
+            }
         
         
         
