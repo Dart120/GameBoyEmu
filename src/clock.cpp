@@ -4,7 +4,7 @@
 #include <fmt/core.h> 
 #include <vector>
 #include <algorithm>
-#include "Clock.h"
+#include "clock.h"
 #include "memory.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
