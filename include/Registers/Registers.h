@@ -49,7 +49,7 @@ class Registers{
     } registers;
   
   
-       int  set_flag(int index){                       //set flag sets corresponding flag to true i.e. 1
+    int set_flag(int index){                       //set flag sets corresponding flag to true i.e. 1
         this->registers.AF.F |= 1UL << index;
         return 1;
      }
@@ -130,7 +130,7 @@ class Registers{
         }
         return result;
      }
-     int  set_registers(uint16_t num){
+     int set_registers(){
         this->registers.AF_double = 0x01B0;
         this->registers.BC_double = 0x0013;
         this->registers.DE_double = 0x00D8;

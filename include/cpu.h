@@ -4,6 +4,7 @@
 // #include<iostream>
 // #define FMT_HEADER_ONLY
 #include "memory.h"
+#include "clock.h"
 #include "Registers/Registers.h"
 #include <vector>
 struct system_status_struct{
@@ -15,7 +16,7 @@ class CPU
 {
     
     public:
-    CPU(Memory memory,Registers register);
+    CPU(Memory& memory, Clock& clock);
     uint8_t read_8_bit(uint16_t address);
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);
@@ -25,7 +26,8 @@ class CPU
     // Access specifier
     
     Memory memory;
-    Registers registers;
+    Registers* registers;
+    Clock clock;
     struct system_status_struct system_status;
     // Data Members
 
