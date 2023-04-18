@@ -1,12 +1,14 @@
-#pragma once
+
 #ifndef MEMORY_H
 #define MEMORY_H
 #include <stdint.h>
+
+
 class Memory
 {
     // Access specifier
     public:
-    Memory();
+    Memory(uint16_t* system_counter);
     // Data Members
     
     uint8_t* mem;
@@ -20,6 +22,8 @@ class Memory
     uint8_t* HR;
     uint8_t* IR;
     uint8_t* SP;
+  
+  
     int fill_memory(uint8_t num);
     
     uint8_t read_8_bit(uint16_t address);
