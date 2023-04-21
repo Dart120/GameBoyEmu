@@ -31,7 +31,9 @@
        return 1;
    }
 uint8_t Memory::read_8_bit(uint16_t address){
-    std::cout <<"hihjb"<< mem[0]<< mem[1]<< mem[2]<<std::endl;
+    if (address == 0xFF44){
+        return 0x90;
+    }
        return this->mem[address];
    }
 int Memory::write_8_bit(uint16_t address, uint8_t data){
@@ -43,9 +45,11 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     return 0;
    }
 uint16_t Memory::read_16_bit(uint16_t address){
-    uint8_t first = this->mem[address];
-    uint8_t second = this->mem[address + 1];
-    return (second << 8) & first;;
+
+    uint8_t low = this->mem[address];
+    uint8_t high = this->mem[address + 1];
+    spdlog::info("low {:B} high {:B} result {:B}",low,high,((high << 8) | low));
+    return ((high << 8) | low);
    }
 int Memory::write_16_bit(uint16_t address, uint16_t data){
     uint8_t first = 255 & data;

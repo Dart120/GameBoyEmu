@@ -7,7 +7,7 @@
 #include "cpu.h"
 #include "memory.h"
 #include "clock.h"
-
+#include "gb.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 // Because it's a little-endian processor you put least significant byte first.
@@ -27,9 +27,26 @@
      void CPU::FDE(){
          uint32_t cycles = 69905;
          while (cycles){
+            doctor->info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+         this->registers->registers.AF.A,
+         this->registers->registers.AF.F,
+         this->registers->registers.BC.B,
+         this->registers->registers.BC.C,
+         this->registers->registers.DE.D,
+         this->registers->registers.DE.E,
+         this->registers->registers.HL.H,
+         this->registers->registers.HL.L,
+         this->registers->registers.SP,
+         this->registers->registers.PC,
+         this->memory.read_8_bit(this->registers->registers.PC),
+         this->memory.read_8_bit(this->registers->registers.PC + 1),
+         this->memory.read_8_bit(this->registers->registers.PC + 2),
+         this->memory.read_8_bit(this->registers->registers.PC + 3)
+         );
+         doctor->flush();
             spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
             
-            spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
+            // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
             uint8_t opcode = this->memory.read_8_bit(this->registers->registers.PC);
             this->clock.TICK(4);
             // exit(0);
@@ -41,7 +58,7 @@
                 {spdlog::info("NOP {:X}", opcode);
                 this->registers->registers.PC += 1;
                (cycles)--;
-               (this->registers->registers.PC) += 1;
+              
                 break;}
    
             case 0x01:
@@ -925,6 +942,167 @@
             {
                 spdlog::info("LD E, A {:X}", opcode);
                 this->LD_1B_1C(&(this->registers->registers.DE.E),(this->registers->registers.AF.A),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.AF.A;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+            case 0x60:
+            {
+                spdlog::info("LD H, B {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.BC.B),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.BC.B;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x61:
+            {
+                spdlog::info("LD H, C {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.BC.C),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.BC.C;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x62:
+            {
+                spdlog::info("LD H, D {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.DE.D),&cycles );
+
+            //     this -> registers->registers.DE.D = this -> registers->registers.DE.D;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x63:
+            {
+                spdlog::info("LD H, E {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.DE.E),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.DE.E;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x64:
+            {
+                spdlog::info("LD H, H {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.HL.H),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.HL.H;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x65:
+            {
+                spdlog::info("LD H, L {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.HL.L),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.HL.L;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x66:
+            {
+                spdlog::info("LD H, (HL) {:X}", opcode);
+                this->LD_1B_2C_MEM_TO_REG((this->registers->registers.HL_double),&(this->registers->registers.HL.H),&cycles  );
+            //     this -> registers->registers.DE.D = this -> registers->registers.HL_double;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x67:
+            {
+                spdlog::info("LD H, A {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.H),(this->registers->registers.AF.A),&cycles );
+            //     this -> registers->registers.DE.D = this -> registers->registers.AF.A;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x68:
+            {
+                spdlog::info("LD L, B {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.BC.B),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.BC.B;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x69:
+            {
+                spdlog::info("LD L, C {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.BC.C),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.BC.C;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x6A:
+            {
+                spdlog::info("LD L, D {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.DE.D),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.DE.D;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x6B:
+            {
+                spdlog::info("LD L, E {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.DE.E),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.DE.E;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x6C:
+            {
+                spdlog::info("LD L, H {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.HL.H),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.HL.H;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x6D:
+            {
+                spdlog::info("LD L, L {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.HL.L),&cycles );
+            //     this -> registers->registers.DE.E = this -> registers->registers.HL.L;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+            case 0x6E:
+            {
+                spdlog::info("LD L, (HL) {:X}", opcode);
+                this->LD_1B_2C_MEM_TO_REG((this->registers->registers.HL_double),&(this->registers->registers.HL.L),&cycles  );
+            //     this -> registers->registers.DE.E = this -> registers->registers.HL_double;
+            //    (this->registers->registers.PC) += 1;
+            //    (cycles) -= 1;
+                break;
+            }
+
+
+            case 0x6F:
+            {
+                spdlog::info("LD L, A {:X}", opcode);
+                this->LD_1B_1C(&(this->registers->registers.HL.L),(this->registers->registers.AF.A),&cycles );
             //     this -> registers->registers.DE.E = this -> registers->registers.AF.A;
             //    (this->registers->registers.PC) += 1;
             //    (cycles) -= 1;
@@ -3457,6 +3635,24 @@
             spdlog::info("Unimplemented {:X}", opcode);
                 break;
             }
+         
+        
+        //  doctor->info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+        //  this->registers->registers.AF.A,
+        //  this->registers->registers.AF.F,
+        //  this->registers->registers.BC.B,
+        //  this->registers->registers.BC.C,
+        //  this->registers->registers.DE.D,
+        //  this->registers->registers.DE.E,
+        //  this->registers->registers.HL.H,
+        //  this->registers->registers.HL.L,
+        //  this->registers->registers.SP,
+        //  this->registers->registers.PC,
+        //  this->memory.read_8_bit(this->registers->registers.PC),
+        //  this->memory.read_8_bit(this->registers->registers.PC + 1),
+        //  this->memory.read_8_bit(this->registers->registers.PC + 2),
+        //  this->memory.read_8_bit(this->registers->registers.PC + 3)
+        //  );
          }
   
      }

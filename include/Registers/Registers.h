@@ -131,10 +131,10 @@ class Registers{
         return result;
      }
      int set_registers(){
-        this->registers.AF_double = 0x01B0;
-        this->registers.BC_double = 0x0013;
-        this->registers.DE_double = 0x00D8;
-        this->registers.HL_double = 0x014D;
+        this->registers.AF_double = 0xB001;
+        this->registers.BC_double = 0x1300;
+        this->registers.DE_double = 0xD800;
+        this->registers.HL_double = 0x4D01;
         this->registers.PC = 0x0100;
         this->registers.SP = 0xFFFE;
         return 1;

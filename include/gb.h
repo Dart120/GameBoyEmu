@@ -7,9 +7,9 @@
 #include "cpu.h"
 #include "gpu.h"
 #include "clock.h"
-
+#include <spdlog/spdlog.h>
 #include <vector>
-
+extern std::shared_ptr<spdlog::logger> doctor;
 
 class GB
 {

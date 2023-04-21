@@ -43,6 +43,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build/*
+doctor/*
 logs
 .cmake/**
 src/bin/main
