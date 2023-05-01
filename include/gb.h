@@ -15,7 +15,7 @@ class GB
 {
     
     public:
-    GB();
+    GB(std::string log_into);
     uint16_t system_counter;
     Memory* memory;
     Clock* clock;
