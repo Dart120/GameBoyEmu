@@ -8,12 +8,34 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-GB::GB(){
+
+GB::GB(std::string log_to){
     try 
     {
-        auto logger = spdlog::basic_logger_mt("basic_logger", "./logs/basic-log.txt");
+        auto logger = spdlog::basic_logger_mt("basic_logger", "./logs/"+log_to+"-basic.txt",true);
         spdlog::set_default_logger(logger);
         spdlog::flush_on(spdlog::level::info);
+        // Create file sinks for two separate log files
+        auto doctor_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("./logs/"+log_to+".txt", true);
+ 
+
+        // Create two separate loggers for each file sink
+        doctor = std::make_shared<spdlog::logger>("logger1", doctor_sink);
+      
+
+        // Set the logger level, e.g., info, warn, error, etc.
+        doctor->set_level(spdlog::level::info);
+        
+       
+
+        // Register the loggers
+        spdlog::register_logger(doctor);
+
+        doctor->set_pattern("%v");
+        // Log messages to each file separately
+        
+      
+     
     }
     catch (const spdlog::spdlog_ex &ex)
     {

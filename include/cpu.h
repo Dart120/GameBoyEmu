@@ -21,6 +21,7 @@ class CPU
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);
     int write_16_bit(uint16_t address, uint16_t data);
+    int8_t unsigned_8_to_signed_8(uint8_t n);
     void FDE();
     
     // Access specifier
@@ -158,6 +159,7 @@ class CPU
     void SET_2B_4C(uint8_t bit_n, uint32_t *cycles);
 
 
-
+    // ROTATES
+    void RRA(uint32_t *cycles);
 };
 #endif

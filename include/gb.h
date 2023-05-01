@@ -7,15 +7,15 @@
 #include "cpu.h"
 #include "gpu.h"
 #include "clock.h"
-
+#include <spdlog/spdlog.h>
 #include <vector>
-
+extern std::shared_ptr<spdlog::logger> doctor;
 
 class GB
 {
     
     public:
-    GB();
+    GB(std::string log_into);
     uint16_t system_counter;
     Memory* memory;
     Clock* clock;

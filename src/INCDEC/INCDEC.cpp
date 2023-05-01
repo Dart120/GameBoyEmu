@@ -1,24 +1,31 @@
 #include "Registers.h"
 #include "cpu.h"
 #include "memory.h"
-
+#include <spdlog/spdlog.h>
 #include<iostream>
 
 
 
 void CPU::INC_8_BIT(uint8_t* reg, uint32_t *cycles){
+    // spdlog::info("F: {:B}",this->registers->registers.AF.F);
     this->registers->check_H_8_ADD(*reg,(uint8_t) 1);
-    char result = ++*reg;
+    // spdlog::info("F: {:B}",this->registers->registers.AF.F);
+    char result = ++(*reg);
+    // spdlog::info("result  {:X}",result);
+    // spdlog::info("F: {:B}",this->registers->registers.AF.F);
     this->registers->check_if_result_zero(result);
+    // spdlog::info("F: {:B}",this->registers->registers.AF.F);
     this->registers->clear_flag(FLAG_N);
+    // spdlog::info("F: {:B}",this->registers->registers.AF.F);
     this->registers->registers.PC++;
     (*cycles)--;
 }
 void CPU::DEC_8_BIT(uint8_t* reg, uint32_t *cycles){
+    this->registers->check_H_8_SUB(*reg,(uint8_t) 1);
     char result = --*reg;
     this->registers->set_flag(FLAG_N);
     this->registers->check_if_result_zero(result);
-    this->registers->check_H_8_SUB(*reg,(uint8_t) 1);
+    
     this->registers->registers.PC++;
     (*cycles)--;
 }
