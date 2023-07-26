@@ -61,12 +61,18 @@ void CPU::ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles){
 void CPU::ADD_2B_4C(uint16_t* reg1, uint32_t *cycles){
     this->registers->clear_flag(FLAG_N);
     this->registers->clear_flag(FLAG_Z);
-    uint8_t s8 = this->memory.read_8_bit(this->registers->registers.PC + 1);
-    this->registers->check_C_16_INC(*reg1,(uint16_t) s8);
-    this->registers->check_H_16_INC(*reg1,(uint16_t) s8);
+    int8_t s8 = this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1));
+    if (s8 < 0){
+        this->registers->check_C_16_SUB(*reg1,-s8);
+        this->registers->check_H_16_SUB(*reg1,-s8);
+    } else {
+        this->registers->check_C_16_INC(*reg1,s8);
+        this->registers->check_H_16_INC(*reg1,s8);
+    }
+    
     *reg1 += s8;
     (*cycles) -= 2;
-    (this->registers->registers.PC) += 4;
+    (this->registers->registers.PC) += 2;
 }
 void CPU::ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles){
     uint8_t c = this->registers->get_flag(FLAG_C);

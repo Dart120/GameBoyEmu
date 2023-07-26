@@ -10,6 +10,8 @@
 #include "gb.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
+#include <bits/stdc++.h>
+using namespace std;
 // Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7                //00001111
 #define FLAG_N 6                //0000CHNZ
@@ -32,9 +34,18 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
    }
 
      void CPU::FDE(){
-         uint32_t cycles = 69905;
-         while (cycles){
-            doctor->info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+         uint32_t cycles = 100069905;
+         unordered_set<uint8_t> new_inst;
+         while (true){
+         uint8_t opcode = this->memory.read_8_bit(this->registers->registers.PC);
+         string log_string;
+         if (!new_inst.count(opcode)){
+            log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} NEW INSTRUCTION {:02X}";
+            new_inst.insert(opcode);
+         } else {
+            log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}";
+         }
+         doctor->info(log_string,
          this->registers->registers.AF.A,
          this->registers->registers.AF.F,
          this->registers->registers.BC.B,
@@ -48,7 +59,8 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
          this->memory.read_8_bit(this->registers->registers.PC),
          this->memory.read_8_bit(this->registers->registers.PC + 1),
          this->memory.read_8_bit(this->registers->registers.PC + 2),
-         this->memory.read_8_bit(this->registers->registers.PC + 3)
+         this->memory.read_8_bit(this->registers->registers.PC + 3),
+         opcode
          );
          doctor->flush();
         //  // spdlog::info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
@@ -70,7 +82,7 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             // // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
             
             // // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
-            uint8_t opcode = this->memory.read_8_bit(this->registers->registers.PC);
+            
             this->clock.TICK(4);
             // exit(0);
             // // spdlog::info("Opcode: {:X} read", opcode);
@@ -141,6 +153,7 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
                 break;}
                
             case 0x08:
+            // FIXME once the staack is out of tsack space should it still grow?
                 // The stack grows down
                 // in other words the least significant byte is first in memory. This scheme is known as little-endian and its opposite is known as big-endian.
                 {// spdlog::info("LD (a16), SP {:X}", opcode);
@@ -1192,7 +1205,8 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             case 0x76:
             {
                 // spdlog::info("HALT {:X}", opcode);
-                exit(0);
+                // exit(0);
+                break;
             }
 
             case 0x77:
@@ -1869,13 +1883,15 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
     {
         // spdlog::info("LD (C), A {:X}", opcode);
         uint16_t address = 0xFF00 + this->registers->registers.BC.C;
-        this->LD_1B_2C_REG_TO_MEM(address,this->registers->registers.AF.A,&cycles);break;
+        this->LD_1B_2C_REG_TO_MEM(address,this->registers->registers.AF.A,&cycles);
+        break;
         
     }
     case 0xE5:
     {
         // spdlog::info("PUSH HL {:X}", opcode);
-        this->PUSH(this->registers->registers.HL_double,&cycles);break;
+        this->PUSH(this->registers->registers.HL_double,&cycles);
+        break;
         
     }
     case 0xE6:
@@ -1893,7 +1909,9 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
     {
        
         // spdlog::info("ADD SP, s8 {:X}", opcode);
-        this->ADD_2B_4C(&this->registers->registers.SP,&cycles);break;
+        // FIXME cycles wrong in megans website
+        this->ADD_2B_4C(&this->registers->registers.SP,&cycles);
+        break;
     }
     case 0xE9:
     { 
@@ -2345,6 +2363,7 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
                 this->SWAP_2B_4C(&cycles);
                 break;
             }
+        
         case 0x37:
             {
                 // spdlog::info("SWAP A {:X}", prefixed_opcode);
@@ -3608,12 +3627,13 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
         default:
         {
             // spdlog::info("Unimplemented 16 bit {:X}", prefixed_opcode);
+            std::cout<<"Unimplemented 16 bit\n";
             break;
         }
         
         }
-        break;
     }
+    break;
 
 
 
@@ -3632,6 +3652,7 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             default:
             {
                 // spdlog::info("Unimplemented 8 bit {:X}", opcode);
+                cout<<"Unimplemented 8 bit " << (int) opcode << std::endl;
                 break;
             }
             

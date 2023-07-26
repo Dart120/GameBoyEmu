@@ -27,7 +27,7 @@ void CPU::JUMP_ON_COND_a16(bool cond, uint32_t* cycles){
         (this->registers->registers.PC) = this->memory.read_16_bit(this->registers->registers.PC + 1);
         (*cycles) += 4;
     } else {
-        (this->registers->registers.PC)++;
+        (this->registers->registers.PC) += 3;
         (*cycles) += 3;
     }
 }

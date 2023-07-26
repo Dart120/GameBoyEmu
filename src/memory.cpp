@@ -51,20 +51,17 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     return 0;
    }
 uint16_t Memory::read_16_bit(uint16_t address){
-    if (address == 0xD943){
-        spdlog::info("r*e*a*d {:X}", address);
-    }
     uint8_t low = this->mem[address];
     uint8_t high = this->mem[address + 1];
-    // spdlog::info("low {:B} high {:B} result {:B}",low,high,((high << 8) | low));
-    return ((high << 8) | low);
+    // spdlog::info("low {:X} high {:X} result {:X}",low,high,((high << 8) | low));
+    return ((high << 8) + low);
    }
 int Memory::write_16_bit(uint16_t address, uint16_t data){
     if (address == 0xD943){
         spdlog::info("w*r*o*t*e {:X} ", data);
     }
-    uint8_t first = 255 & data;
-    uint8_t second = (65280 & data) >> 8;
+    uint8_t first = 0x00ff & data;
+    uint8_t second = (0xff00 & data) >> 8;
     this->mem[address] = first;
     this->mem[address + 1] = second;
     return 0;

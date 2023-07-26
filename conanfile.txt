@@ -4,3 +4,8 @@ spdlog/1.10.0
 
 [generators]
 cmake
+
+[env]
+CC=gcc
+CXX=g++
+CMAKE_BUILD_TYPE=Release

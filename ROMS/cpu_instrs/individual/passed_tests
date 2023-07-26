@@ -1,0 +1,31 @@
+6,8, doing 3 now breaks with 
+Mismatch in CPU state at line 621013:
+
+MINE:   A:12 F:-H-- B:56 C:91 D:9A E:BC H:00 L:00 SP:0010 PC:DEFA PCMEM:00,C3,42,C6
+YOURS:  A:12 F:---- B:56 C:91 D:9A E:BC H:00 L:00 SP:0010 PC:DEFA PCMEM:00,C3,42,C6
+
+The CPU state before this (at line 621012) was:
+
+        A:12 F:00 B:56 C:91 D:9A E:BC H:00 L:00 SP:000F PC:DEF8 PCMEM:E8,01,00,C3
+
+The last operation executed (in between lines 621012 and 621013) was:
+
+        0xE8 ADD SP r8
+
+Perhaps the problem is with this opcode, or with your interrupt handling?
+
+2 breaks at
+Mismatch in CPU state at line 151340:
+
+MINE:   A:04 F:C-NZ B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B6 PCMEM:01,00,00,C5
+YOURS:  A:04 F:C-NZ B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B5 PCMEM:FB,01,00,00
+
+The CPU state before this (at line 151339) was:
+
+        A:04 F:D0 B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B5 PCMEM:FB,01,00,00
+
+The last operation executed (in between lines 151339 and 151340) was:
+
+        0xFB EI
+
+Perhaps the problem is with this opcode, or with your interrupt handling?
