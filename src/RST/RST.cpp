@@ -12,16 +12,17 @@ void CPU::RST_COND(uint8_t COND, uint32_t *cycles){
         this->registers->registers.SP++;
     } else {
         *cycles -= 2;
+        this->registers->registers.PC++;
     }
 }
 void CPU::RST_UNCOND(uint8_t number,uint32_t *cycles){
     uint16_t byte_address = number * 8;
     uint16_t curr_pc = this->registers->registers.PC;
-    uint8_t low = curr_pc & 0xFF;
-    uint8_t high = curr_pc >> 8;
+    uint8_t high = curr_pc & 0xFF;
+    uint8_t low = curr_pc & 0x00FF;
     this->memory.write_8_bit(--this->registers->registers.SP,high);
     this->memory.write_8_bit(--this->registers->registers.SP,low);
-    uint8_t new_pc_low = this->memory.read_8_bit(byte_address);
-    this->registers->registers.PC = (uint16_t) new_pc_low;
+    uint16_t new_pc = this->memory.read_16_bit(byte_address);
+    this->registers->registers.PC = new_pc;
     *cycles -= 4;
 }

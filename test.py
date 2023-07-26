@@ -1,26 +1,2 @@
-def simulation(maxi,stones):
-    tabu = set()
-    # forward_pass
-    p1 = 0
-    print(maxi)
-    while p1 < len(stones) - 1:
-        start = stones[p1]
-        if (stones[p1 + 1] - start) > maxi:
-            return False
-        while p1 < len(stones) - 1 and (stones[p1 + 1] - start) <= maxi:
-            p1 += 1
-        
-        tabu.add(p1)
-        
-   
-    # print(tabu,maxi)
-    # exit()
-    res = []
-    for idx,i in enumerate(stones):
-        if idx not in tabu:
-            res.append(i)
-    for i in range(1,len(res)):
-        if abs(res[i] - res[i-1]) > maxi:
-            return False
-    return True
-print(simulation(5,[0,2,5,6,7]))
+for i in [[7,44,15,31,2,40,36],[21,40,42,5,41,30,45],[20,42,27,8,9,3,20],[32,8,7,16,35,9,25],[30,24,43,48,45,35,27],[38,48,47,10,27,42,7],[32,40,27,18,3,45,24],[14,29,16,24,7,44,35]]:
+    print(i)

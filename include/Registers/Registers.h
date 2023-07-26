@@ -50,6 +50,12 @@ class Registers{
     } registers;
   
   
+    int dont_touch_F(u_int16_t* reg, u_int8_t low){                       //set flag sets corresponding flag to true i.e. 1
+        if (reg == &this->registers.AF_double){
+            return low & 0b11110000;
+        }
+        return low;
+     }
     int set_flag(int index){                       //set flag sets corresponding flag to true i.e. 1
         this->registers.AF.F |= 1UL << index;
         return 1;
@@ -83,6 +89,32 @@ class Registers{
             this->clear_flag(FLAG_H);
         }
      }
+     template <typename T> void  check_C_8_SUB(T a, T b){
+        a = (uint16_t) a;
+        b = (uint16_t) b;
+        if (a < b){
+            this->set_flag(FLAG_C);
+        } else {
+            this->clear_flag(FLAG_C);
+        }
+     }
+    template <typename T,typename J> void  check_H_16_SUB(T a, J b){
+        
+      
+        if ((a & 0xfff) < (b & 0xfff)){
+            this->set_flag(FLAG_H);
+        } else {
+            this->clear_flag(FLAG_H);
+        }
+     }
+     template <typename T, typename J> void  check_C_16_SUB(T a, J b){
+      
+        if (a < b){
+            this->set_flag(FLAG_C);
+        } else {
+            this->clear_flag(FLAG_C);
+        }
+     }
     // template <typename T> void  check_H_8_INC(T a, T b){  
     //     // This doesn't work as it ignores what occures before the bit in question, it might be 0         
     //     // if (((a >> 3) & 1)  && ((b >> 3) & 1)){
@@ -93,14 +125,14 @@ class Registers{
     //     }
     //  }
 
-     template <typename T> void check_H_16_INC(T a, T b){
+     template <typename T, typename J> void check_H_16_INC(T a, J b){
         if ((((a & 0xfff) + (b & 0xfff)) & 0x1000) == 0x1000){
             this->set_flag(FLAG_H);
         } else {
             this->clear_flag(FLAG_H);
         }
      }
-     template <typename T> void check_C_16_INC(T a, T b){
+     template <typename T, typename J> void check_C_16_INC(T a, J b){
         if ((((a & 0xffff) + (b & 0xffff)) & 0x10000) == 0x10000){
             this->set_flag(FLAG_C);
         } else {
@@ -117,15 +149,7 @@ class Registers{
             this->clear_flag(FLAG_C);
         }
      }
-     template <typename T> void  check_C_8_SUB(T a, T b){
-        a = (uint16_t) a;
-        b = (uint16_t) b;
-        if (a < b){
-            this->set_flag(FLAG_C);
-        } else {
-            this->clear_flag(FLAG_C);
-        }
-     }
+     
      template <typename T> void check_if_result_zero(T result){
         if (result == 0){
             this->set_flag(FLAG_Z);

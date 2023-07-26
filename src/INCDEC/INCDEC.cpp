@@ -35,7 +35,7 @@ void CPU::INC_16_BIT(uint16_t* reg, uint32_t *cycles){
     (*cycles) -= 2;
 }
 void CPU::DEC_16_BIT(uint16_t* reg, uint32_t *cycles){
-    *reg-- ; 
+    (*reg)--; 
     this->registers->registers.PC++;
     (*cycles) -= 2;
                 

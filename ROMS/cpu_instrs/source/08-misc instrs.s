@@ -3,7 +3,7 @@
 ;.define PRINT_CHECKSUMS 1
 .include "shell.inc"
 .include "instr_test.s"
-
+; FIXME check these instructions for 8
 instrs:
      .byte $F0,$91,0   ; LDH  A,($91)
      .byte $E0,$91,0   ; LDH  ($91),A
