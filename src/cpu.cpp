@@ -545,6 +545,7 @@ void CPU::handle_interrupts(){
                 }else{
                     this->registers->clear_flag(FLAG_C);
                 }
+                this->registers->check_if_result_zero(this->registers->registers.AF.A);
                (cycles)++;
                (this->registers->registers.PC) += 1;
                 break;}
