@@ -522,30 +522,35 @@ void CPU::handle_interrupts(){
                 break;}
             case 0x27:
                 {// spdlog::info("DAA {:X}", opcode);
-                std::vector<int> digits = this->registers->num_to_list(this->registers->registers.AF.A);
-                reverse(digits.begin(),digits.end());
-                if (this->registers->get_flag(FLAG_N)){
-                    if (digits[0] > 9 || this->registers->get_flag(FLAG_C)){
-                        digits[0] -= 6; 
-                    }
-                    if (digits[1] > 9 || this->registers->get_flag(FLAG_H)){
-                        digits[1] -= 6; 
-                    }
-                }else{
-                    if (digits[0] > 9 || this->registers->get_flag(FLAG_C)){
-                        digits[0] += 6; 
-                    }
-                    if (digits[1] > 9 || this->registers->get_flag(FLAG_H)){
-                        digits[1] += 6; 
-                    }
-                }
-                this->registers->registers.AF.A = (digits[0] * 10) + digits[1];
-                if (this->registers->registers.AF.A > 0x99){
-                    this -> registers->set_flag(FLAG_C);
-                }else{
-                    this->registers->clear_flag(FLAG_C);
-                }
-                this->registers->check_if_result_zero(this->registers->registers.AF.A);
+                int a = this->registers->registers.AF.A;
+
+            if (!this->registers->get_flag(FLAG_N))
+            {
+                if (this->registers->get_flag(FLAG_H) || (a & 0xF) > 9)
+                    a += 0x06;
+
+                if (this->registers->get_flag(FLAG_C) || a > 0x9F)
+                    a += 0x60;
+            }
+            else
+            {
+                if (this->registers->get_flag(FLAG_H))
+                    a = (a - 6) & 0xFF;
+
+                if (this->registers->get_flag(FLAG_C))
+                    a -= 0x60;
+            }
+            this->registers->clear_flag(FLAG_H);
+            this->registers->clear_flag(FLAG_Z);
+            if ((a & 0x100) == 0x100)
+                this->registers->set_flag(FLAG_C);
+
+            a &= 0xFF;
+
+            if (a == 0)
+                this->registers->set_flag(FLAG_Z);
+
+            this->registers->registers.AF.A = (uint8_t) a;
                (cycles)++;
                (this->registers->registers.PC) += 1;
                 break;}
