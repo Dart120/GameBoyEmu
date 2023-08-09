@@ -68,13 +68,14 @@ void CPU::LD_2B_3C(uint32_t *cycles){
     int8_t s8 = this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1));
     
     u_int16_t old_sp = this->registers->registers.SP;
-    u_int16_t new_sp = this->registers->registers.SP + s8;
-    if ((((old_sp & 0xff) + (((int16_t) s8) & 0xff)) & 0x100)){
-        this->registers->set_flag(FLAG_C);
-    } else {
-        this->registers->clear_flag(FLAG_C);
-    }
-    this->registers->check_H_8_ADD((uint8_t) old_sp, this->memory.read_8_bit(this->registers->registers.PC + 1));
+    // u_int16_t new_sp = this->registers->registers.SP + s8;
+    // if ((((old_sp & 0xff) + (((int16_t) s8) & 0xff)) & 0x100)){
+    //     this->registers->set_flag(FLAG_C);
+    // } else {
+    //     this->registers->clear_flag(FLAG_C);
+    // }
+    this->registers->check_C_8_ADD(old_sp,(int16_t) s8);
+    this->registers->check_H_8_ADD((uint8_t) old_sp, s8);
     this->registers->registers.HL_double = this->registers->registers.SP + (int16_t) s8;
     (*cycles) -= 3;
     (this->registers->registers.PC) += 2;
