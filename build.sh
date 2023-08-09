@@ -6,5 +6,5 @@ apt install -y pkg-config
 apt install -y cmake
 conan install . --build=missing -c tools.system.package_manager:mode=install
 # https://bugs.gentoo.org/827889
-cmake .
+cmake -DCMAKE_CXX_FLAGS="-pg -std=c++11 -Wall -O3" -DCMAKE_EXE_LINKER_FLAGS="-pg" -DCMAKE_SHARED_LINKER_FLAGS="-pg" .
 make

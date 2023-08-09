@@ -20,12 +20,18 @@ class Memory
     uint8_t* SA;
     uint8_t* IO;
     uint8_t* HR;
-    uint8_t* IR;
+    uint8_t* IE;
+    uint8_t* IF;
     uint8_t* SP;
+    uint8_t* DIV;
+    uint8_t* TAC;
+    uint8_t* TMA;
+    uint8_t* TIMA;
   
   
     int fill_memory(uint8_t num);
-    
+    uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);
+    uint8_t set_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t read_8_bit(uint16_t address);
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);

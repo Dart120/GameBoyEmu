@@ -15,7 +15,7 @@ void CPU::POP(uint16_t* reg, uint32_t *cycles){
     *cycles -= 3;
     this->registers->registers.PC++;
 }
-// TODO
+
 void CPU::PUSH(uint16_t reg, uint32_t *cycles){
     this->registers->registers.SP--;
     uint8_t high = reg >> 8;

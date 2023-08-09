@@ -15,9 +15,14 @@
         IRAM = mem + 0xC000;
         SA = mem + 0xFE00;
         IO = mem + 0xFF00;
+        IF = mem + 0xFF0F;
         HR = mem + 0xFF80;
-        IR = mem + 0xFFFF;
+        IE = mem + 0xFFFF;
         SP = mem + 0xFFFE;
+        DIV = mem + 0xFF04;
+        TAC = mem + 0xFF07;
+        TMA = mem + 0xFF06;
+        TIMA = mem + 0xFF05;
  
         // if(!this->fill_memory(76)){
         //     spdlog::error("Memory not filled");
@@ -30,12 +35,17 @@
        memset(this->mem,num,65536);
        return 1;
    }
+   uint8_t Memory::get_bit_from_addr(uint16_t address, uint8_t bit){
+       return (this->mem[address] >> bit) & 1;
+   }
+   uint8_t Memory::set_bit_from_addr(uint16_t address, uint8_t bit){
+        (this->mem[address]) |= (1 << bit);
+        return 0;
+   }
+
 uint8_t Memory::read_8_bit(uint16_t address){
     if (address == 0xFF44){
         return 0x90;
-    }
-    if (address == 0xD943){
-        spdlog::info("r*e*a*d {:X}", address);
     }
        return this->mem[address];
    }
@@ -43,9 +53,6 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     if (address == 0xFF04){
         this->mem[address] = 0;
         return 0;
-    }
-    if (address == 0xD943){
-        spdlog::info("w*r*o*t*e {:X} ", data);
     }
     this->mem[address] = data;
     return 0;
@@ -57,13 +64,18 @@ uint16_t Memory::read_16_bit(uint16_t address){
     return ((high << 8) + low);
    }
 int Memory::write_16_bit(uint16_t address, uint16_t data){
-    if (address == 0xD943){
-        spdlog::info("w*r*o*t*e {:X} ", data);
-    }
     uint8_t first = 0x00ff & data;
     uint8_t second = (0xff00 & data) >> 8;
     this->mem[address] = first;
     this->mem[address + 1] = second;
+    if (address == 0xFF04){
+        this->mem[address] = 0;
+        return 0;
+    }
+    if (address + 1 == 0xFF04){
+        this->mem[address + 1] = 0;
+        return 0;
+    }
     return 0;
    }
 
