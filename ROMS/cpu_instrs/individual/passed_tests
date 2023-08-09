@@ -1,4 +1,4 @@
-6,8, doing 3 now breaks with 
+6,8,5 doing 3 now breaks with 
 Mismatch in CPU state at line 621013:
 
 MINE:   A:12 F:-H-- B:56 C:91 D:9A E:BC H:00 L:00 SP:0010 PC:DEFA PCMEM:00,C3,42,C6
@@ -15,17 +15,21 @@ The last operation executed (in between lines 621012 and 621013) was:
 Perhaps the problem is with this opcode, or with your interrupt handling?
 
 2 breaks at
-Mismatch in CPU state at line 151340:
+============== ERROR ==============
 
-MINE:   A:04 F:C-NZ B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B6 PCMEM:01,00,00,C5
-YOURS:  A:04 F:C-NZ B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B5 PCMEM:FB,01,00,00
+Mismatch in CPU state at line 151347:
 
-The CPU state before this (at line 151339) was:
+MINE:   A:04 F:C--- B:01 C:00 D:C7 E:BA H:90 L:00 SP:9000 PC:0051 PCMEM:2E,0F,18,F3
+YOURS:  A:04 F:C-NZ B:00 C:00 D:C7 E:BA H:90 L:00 SP:DFFD PC:C2C1 PCMEM:C2,B9,C1,F8
 
-        A:04 F:D0 B:00 C:FF D:C7 E:BA H:90 L:00 SP:DFFD PC:C2B5 PCMEM:FB,01,00,00
+The CPU state before this (at line 151346) was:
 
-The last operation executed (in between lines 151339 and 151340) was:
+        A:04 F:10 B:01 C:00 D:C7 E:BA H:90 L:00 SP:DFFD PC:C2C0 PCMEM:05,C2,B9,C1
 
-        0xFB EI
+The last operation executed (in between lines 151346 and 151347) was:
+
+        0x05 DEC B
 
 Perhaps the problem is with this opcode, or with your interrupt handling?
+
+Its deffo a problem with interrupt handling

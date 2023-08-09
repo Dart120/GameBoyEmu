@@ -69,7 +69,7 @@ class Registers{
         return 1;
      }
 
-    template <typename T> void check_H_8_ADD(T a, T b){  
+    template <typename T, typename U> void check_H_8_ADD(T a, U b){  
         // This doesn't work as it ignores what occures before the bit in question, it might be 0         
         // if (((a >> 3) & 1)  && ((b >> 3) & 1)){
         //     this->set_flag(FLAG_H);
@@ -140,9 +140,7 @@ class Registers{
         }
      }
 
-     template <typename T> void  check_C_8_ADD(T a, T b){
-        a = (uint16_t) a;
-        b = (uint16_t) b;
+     template <typename T, typename U> void  check_C_8_ADD(T a, U b){
         if((((a & 0xff) + (b & 0xff)) & 0x100) == 0x100){
             this->set_flag(FLAG_C);
         } else {
@@ -178,6 +176,7 @@ class Registers{
         this->registers.HL_double = 0x014D;
         this->registers.PC = 0x0100;
         this->registers.SP = 0xFFFE;
+        this->IME = true;
         return 1;
     }
 

@@ -12,6 +12,7 @@
 #include <spdlog/spdlog.h>
 #include <bits/stdc++.h>
 using namespace std;
+// TODO ensure no instruction can modify 0-3 on F
 // Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7                //00001111
 #define FLAG_N 6                //0000CHNZ
@@ -32,19 +33,97 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
         return n;
     }    
    }
+void CPU::handle_interrupts(){
+      if (this->registers->IME){
+        
+        uint8_t todo = (*this->memory.IE) & (*this->memory.IF);
+        uint8_t target = 7;
+        std::map<uint8_t, uint16_t> bit_to_isr = {
+            { 0, 0x0040 },
+            { 1, 0x0048 },
+            { 2, 0x0050 },
+            { 3, 0x0058 },
+            { 4, 0x0060 }
+        };
+        for (size_t i = 0; i < 5; i++)
+        {
+            if ((todo >> i) & 1){
+                target = i;
+            }
+        }
+        u_int32_t trash = 10;
+        
+        if (bit_to_isr.find(target) != bit_to_isr.end()){
+            *this->memory.IF &=  ~(1<<target);
+            this->PUSH(this->registers->registers.PC,&trash);
+            this->registers->registers.PC = bit_to_isr[target];
+            this->registers->IME = false;
+        }
+        
+        
+        
+      }
+   }
 
      void CPU::FDE(){
-         uint32_t cycles = 100069905;
+         uint32_t cycles = 500000000;
+         int p = 180000000;
+         uint32_t c = 0;
+         uint32_t timer_interval = 0;
          unordered_set<uint8_t> new_inst;
-         while (true){
+         bool enable_IME_next_flag_one = false;
+         bool enable_IME_next_flag_two = false;
+         while (p > 0){
+            p--;
          uint8_t opcode = this->memory.read_8_bit(this->registers->registers.PC);
          string log_string;
-         if (!new_inst.count(opcode)){
-            log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} NEW INSTRUCTION {:02X}";
-            new_inst.insert(opcode);
-         } else {
-            log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}";
+        c++;
+        log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} TAC:{:02X} TMA:{:02X} DIV:{:02X} TIMA:{:02X} r8:{}";
+        // std::cout <<"cycle "<< std::dec << c 
+        //   << " IME: " << this->registers->IME 
+        //   << " IF: " << std::hex << this->memory.read_8_bit(0xFF0F) 
+        //   << " IE: " << this->memory.read_8_bit(0xFFFF) 
+        //   << std::endl;
+         if (enable_IME_next_flag_one){
+            enable_IME_next_flag_one = false;
+            enable_IME_next_flag_two = true;
          }
+        //  timing
+         if (cycles % 256 == 0){
+            (*this->memory.DIV)++;
+         }
+         if (cycles % timer_interval == 0){
+            if (*this->memory.TIMA == 0xFF){
+                *this->memory.TIMA = *this->memory.TMA;
+                this->memory.set_bit_from_addr(0xFF0F,2);
+            }
+            // (*this->memory.TIMA)++;
+         }
+
+        if (this->memory.get_bit_from_addr(0xFF07,2) == 1){
+            switch ((*this->memory.TAC) & 3)
+            {
+            case 0:
+                timer_interval = 4096;
+                break;
+            case 1:
+                timer_interval = 262144;
+                break;
+            case 2:
+                timer_interval = 65536;
+                break;
+            case 3:
+                timer_interval =  16384;
+                break;
+            
+            default:
+                break;
+            }
+
+        } else {
+            timer_interval = 0;
+        }
+
          doctor->info(log_string,
          this->registers->registers.AF.A,
          this->registers->registers.AF.F,
@@ -60,10 +139,18 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
          this->memory.read_8_bit(this->registers->registers.PC + 1),
          this->memory.read_8_bit(this->registers->registers.PC + 2),
          this->memory.read_8_bit(this->registers->registers.PC + 3),
-         opcode
+        *this->memory.TAC,
+        *this->memory.TMA,
+        *this->memory.DIV,
+        *this->memory.TIMA,
+        this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1))
          );
-         doctor->flush();
-        //  // spdlog::info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+        if (p%60000 == 0){
+            doctor->flush();
+        }
+         
+      
+        //  spdlog::info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
         //  this->registers->registers.AF.A,
         //  this->registers->registers.AF.F,
         //  this->registers->registers.BC.B,
@@ -82,7 +169,13 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             // // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
             
             // // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
-            
+            if (this->memory.read_8_bit(0xff02) == 0x81) {
+                char c = this->memory.read_8_bit(0xff01);
+
+                printf("%c", c);
+                this->memory.write_8_bit(0xff02,0);
+            }
+
             this->clock.TICK(4);
             // exit(0);
             // // spdlog::info("Opcode: {:X} read", opcode);
@@ -90,11 +183,13 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             switch (opcode)
             {
             case 0x00:
-                {// spdlog::info("NOP {:X}", opcode);
+                {
+                    // spdlog::info("NOP {:X}", opcode);
                 this->registers->registers.PC += 1;
                (cycles)--;
               
-                break;}
+                break;
+                }
    
             case 0x01:
               {  
@@ -124,7 +219,8 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
             case 0x05:
                 {// spdlog::info("DEC B {:X}", opcode);
                 this->DEC_8_BIT(&this->registers->registers.BC.B,&cycles);
-                break;}
+                break;
+                }
 
 
             case 0x06:
@@ -1964,7 +2060,9 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
     {
         // spdlog::info("DI {:X}", opcode);
         // Requires interrupts
-        this->registers->IME = false;
+        this->registers->IME = 0;
+        enable_IME_next_flag_one = false;
+        enable_IME_next_flag_two = false;
         this->registers->registers.PC++;
         break;
         
@@ -2009,7 +2107,10 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
     {
         
         // spdlog::info("EI {:X}", opcode);
-        this->registers->IME=true;
+        // enable_IME_next_flag_one = true;
+        this->registers->IME = true;
+        this->registers->registers.PC++;
+        cycles--;
         break;
     }
     case 0xFE:
@@ -3675,8 +3776,16 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n){
         //  this->memory.read_8_bit(this->registers->registers.PC + 2),
         //  this->memory.read_8_bit(this->registers->registers.PC + 3)
         //  );
+
+    this->handle_interrupts();
+
+    if (enable_IME_next_flag_two){
+        this->registers->IME = true;
+        enable_IME_next_flag_two = false;
+    }
          }
-  
+
+    
      }
 
  

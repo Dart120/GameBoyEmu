@@ -1,5 +1,6 @@
 #include "cpu.h"
-
+#include<iostream>
+using namespace std;
 
 void CPU::ADD_2B_2C(uint32_t *cycles){
     uint8_t data =  this->memory.read_8_bit(this->registers->registers.PC + 1);
@@ -58,20 +59,23 @@ void CPU::ADD_1B_2C_16Bit(uint16_t reg1, uint32_t *cycles){
     (*cycles) -= 2;
     (this->registers->registers.PC) += 1;
 }
+// TODO another problem with megs website, this requires 8 bit check for flags but is noted as 16
 void CPU::ADD_2B_4C(uint16_t* reg1, uint32_t *cycles){
     this->registers->clear_flag(FLAG_N);
     this->registers->clear_flag(FLAG_Z);
     int8_t s8 = this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1));
-    if (s8 < 0){
-        this->registers->check_C_16_SUB(*reg1,-s8);
-        this->registers->check_H_16_SUB(*reg1,-s8);
-    } else {
-        this->registers->check_C_16_INC(*reg1,s8);
-        this->registers->check_H_16_INC(*reg1,s8);
-    }
-    
+    // this->registers->check_H_8_ADD((uint8_t) *reg1, this->memory.read_8_bit(this->registers->registers.PC + 1));
+    // u_int16_t old_sp = *reg1;
+    this->registers->check_C_8_ADD(*reg1,(int16_t) s8);
+    this->registers->check_H_8_ADD((uint8_t) *reg1, s8);
     *reg1 += s8;
-    (*cycles) -= 2;
+    // if ((*reg1&0xFF) < (old_sp&0xFF)){
+    //     this->registers->set_flag(FLAG_C);
+    // } else {
+    //     this->registers->clear_flag(FLAG_C);
+    // }
+    
+    (*cycles) -= 4;
     (this->registers->registers.PC) += 2;
 }
 void CPU::ADC_1B_2C_8Bit(uint8_t reg1, uint32_t *cycles){

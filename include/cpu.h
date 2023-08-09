@@ -31,6 +31,8 @@ class CPU
     Clock clock;
     struct system_status_struct system_status;
     // Data Members
+    void handle_interrupts();
+
 
     // INCDEC
     void INC_8_BIT(uint8_t* reg, uint32_t *cycles);
