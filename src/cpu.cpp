@@ -145,7 +145,7 @@ void CPU::handle_interrupts(){
         *this->memory.TIMA,
         this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1))
          );
-        if (p%60000 == 0){
+        if (p%1000000 == 0){
             doctor->flush();
         }
          
@@ -546,9 +546,7 @@ void CPU::handle_interrupts(){
                 this->registers->set_flag(FLAG_C);
 
             a &= 0xFF;
-
-            if (a == 0)
-                this->registers->set_flag(FLAG_Z);
+            this->registers->check_if_result_zero(a);
 
             this->registers->registers.AF.A = (uint8_t) a;
                (cycles)++;
@@ -2529,51 +2527,51 @@ void CPU::handle_interrupts(){
         case 0x40:
             {
                 // spdlog::info("BIT 1, B {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.BC.B, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.BC.B, &cycles);
                 break;
             }
         
         case 0x41:
             {
                 // spdlog::info("BIT 1, C {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.BC.C, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.BC.C, &cycles);
                 break;
             }
         case 0x42:
             {
                 // spdlog::info("BIT 1, D {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.DE.D, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.DE.D, &cycles);
                 break;
             }
         case 0x43:
             {
                 // spdlog::info("BIT 1, E {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.DE.E, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.DE.E, &cycles);
                 break;
             }
         
         case 0x44:
             {
                 // spdlog::info("BIT 1, H {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.HL.H, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.HL.H, &cycles);
                 break;
             }
         case 0x45:
             {
                 // spdlog::info("BIT 1, L {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.HL.L, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.HL.L, &cycles);
                 break;
             }
         case 0x46:
             {
                 // spdlog::info("BIT 1, L {:X}", prefixed_opcode);
-                this->BIT_2B_3C(1, &cycles);
+                this->BIT_2B_3C(0, &cycles);
                 break;
             }
         case 0x47:
             {
                 // spdlog::info("BIT 1, A {:X}", prefixed_opcode);
-                this->BIT_2B_2C(1,this->registers->registers.AF.A, &cycles);
+                this->BIT_2B_2C(0,this->registers->registers.AF.A, &cycles);
                 break;
             }
         case 0x48:
@@ -2926,54 +2924,54 @@ void CPU::handle_interrupts(){
                 this->BIT_2B_2C(7,this->registers->registers.AF.A, &cycles);
                 break;
             }
-                case 0x80:
+        case 0x80:
             {
                 // spdlog::info("RES 1, B {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.BC.B, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.BC.B, &cycles);
                 break;
             }
         
         case 0x81:
             {
                 // spdlog::info("RES 1, C {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.BC.C, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.BC.C, &cycles);
                 break;
             }
         case 0x82:
             {
                 // spdlog::info("RES 1, D {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.DE.D, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.DE.D, &cycles);
                 break;
             }
         case 0x83:
             {
                 // spdlog::info("RES 1, E {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.DE.E, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.DE.E, &cycles);
                 break;
             }
         
         case 0x84:
             {
                 // spdlog::info("RES 1, H {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.HL.H, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.HL.H, &cycles);
                 break;
             }
         case 0x85:
             {
                 // spdlog::info("RES 1, L {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.HL.L, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.HL.L, &cycles);
                 break;
             }
         case 0x86:
             {
                 // spdlog::info("RES 1, L {:X}", prefixed_opcode);
-                this->RES_2B_4C(1, &cycles);
+                this->RES_2B_4C(0, &cycles);
                 break;
             }
         case 0x87:
             {
                 // spdlog::info("RES 1, A {:X}", prefixed_opcode);
-                this->RES_2B_2C(1,&this->registers->registers.AF.A, &cycles);
+                this->RES_2B_2C(0,&this->registers->registers.AF.A, &cycles);
                 break;
             }
         case 0x88:
@@ -3329,51 +3327,51 @@ void CPU::handle_interrupts(){
         case 0xC0:
             {
                 // spdlog::info("SET 1, B {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.BC.B, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.BC.B, &cycles);
                 break;
             }
         
         case 0xC1:
             {
                 // spdlog::info("SET 1, C {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.BC.C, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.BC.C, &cycles);
                 break;
             }
         case 0xC2:
             {
                 // spdlog::info("SET 1, D {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.DE.D, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.DE.D, &cycles);
                 break;
             }
         case 0xC3:
             {
                 // spdlog::info("SET 1, E {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.DE.E, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.DE.E, &cycles);
                 break;
             }
         
         case 0xC4:
             {
                 // spdlog::info("SET 1, H {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.HL.H, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.HL.H, &cycles);
                 break;
             }
         case 0xC5:
             {
                 // spdlog::info("SET 1, L {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.HL.L, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.HL.L, &cycles);
                 break;
             }
         case 0xC6:
             {
                 // spdlog::info("SET 1, L {:X}", prefixed_opcode);
-                this->SET_2B_4C(1, &cycles);
+                this->SET_2B_4C(0, &cycles);
                 break;
             }
         case 0xC7:
             {
                 // spdlog::info("SET 1, A {:X}", prefixed_opcode);
-                this->SET_2B_2C(1,&this->registers->registers.AF.A, &cycles);
+                this->SET_2B_2C(0,&this->registers->registers.AF.A, &cycles);
                 break;
             }
         case 0xC8:
