@@ -5,6 +5,7 @@
 #include <spdlog/spdlog.h>
 void CPU::RRA(uint32_t *cycles){
     uint8_t first_bit = this -> registers->registers.AF.A & 1;
+    // bool p_c = this->registers->get_flag(FLAG_C);
     this -> registers->registers.AF.A = this -> registers->registers.AF.A >> 1;
     if(this->registers->get_flag(FLAG_C)){
         this -> registers->registers.AF.A |= (1 << 7);

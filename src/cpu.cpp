@@ -145,7 +145,7 @@ void CPU::handle_interrupts(){
         *this->memory.TIMA,
         this->unsigned_8_to_signed_8(this->memory.read_8_bit(this->registers->registers.PC + 1))
          );
-        if (p%1000000 == 0){
+        if (p%600000 == 0){
             doctor->flush();
         }
          
@@ -241,9 +241,10 @@ void CPU::handle_interrupts(){
                 }else{
                     this->registers->clear_flag(FLAG_C);
                 }
-                this->registers->check_if_result_zero(this -> registers->registers.AF.A);
+                // this->registers->check_if_result_zero(this -> registers->registers.AF.A);
                 this->registers->clear_flag(FLAG_N);
                 this->registers->clear_flag(FLAG_H);
+                this->registers->clear_flag(FLAG_Z);
                (cycles)++;
                (this->registers->registers.PC) += 1;
                 break;}
@@ -317,8 +318,9 @@ void CPU::handle_interrupts(){
                 }else{
                     this->registers->clear_flag(FLAG_C);
                 }
-                this->registers->check_if_result_zero(this -> registers->registers.AF.A);
+                
                 this->registers->clear_flag(FLAG_N);
+                this->registers->clear_flag(FLAG_Z);
                 this->registers->clear_flag(FLAG_H);
                (this->registers->registers.PC) += 1;
                (cycles)++;
@@ -387,14 +389,20 @@ void CPU::handle_interrupts(){
             case 0x17:
             {
                 // spdlog::info("RLA {:X}", opcode);
-                this -> registers->registers.AF.A = this -> registers->registers.AF.A<< 1;
-                if(this -> registers->get_flag(FLAG_C)){
+                bool p_c = this -> registers->get_flag(FLAG_C);
+                if (this -> registers->registers.AF.A >> 7){
+                    this -> registers->set_flag(FLAG_C);
+                } else {
+                    this -> registers->clear_flag(FLAG_C);
+                }
+                this -> registers->registers.AF.A = this -> registers->registers.AF.A << 1;
+                if(p_c){
                    this -> registers->registers.AF.A |= 1UL;
-                   
                 }
                 
-                this -> registers->check_if_result_zero(this -> registers->registers.AF.A);
+                
                 this -> registers->clear_flag(FLAG_N);
+                this -> registers->clear_flag(FLAG_Z);
                 this -> registers->clear_flag(FLAG_H);
                (this->registers->registers.PC) += 1;
                (cycles) -= 1;
@@ -681,7 +689,11 @@ void CPU::handle_interrupts(){
             case 0x37:
             {
                 // spdlog::info("SCF {:X}", opcode);
-                this -> registers->set_flag(FLAG_C);
+                this ->registers->set_flag(FLAG_C);
+                this ->registers->clear_flag(FLAG_N);
+                this ->registers->clear_flag(FLAG_H);
+                (this->registers->registers.PC) += 1;
+                (cycles) -= 1;
                 break;
             }
 
@@ -1445,7 +1457,7 @@ void CPU::handle_interrupts(){
             case 0x87:
             {
                 // spdlog::info("ADD A, A {:X}", opcode);
-                this->ADD_1B_1C(this->registers->registers.AF.F, &cycles);
+                this->ADD_1B_1C(this->registers->registers.AF.A, &cycles);
                 break;
             }
         case 0x88:
@@ -1475,7 +1487,7 @@ void CPU::handle_interrupts(){
     case 0x8C:
     {
         // spdlog::info("ADC A, H {:X}", opcode);
-        this->ADC_1B_1C(this->registers->registers.HL.L, &cycles);
+        this->ADC_1B_1C(this->registers->registers.HL.H, &cycles);
         break;
     }
     case 0x8D:
@@ -2199,7 +2211,7 @@ void CPU::handle_interrupts(){
         case 0x0A:
             {
                 // spdlog::info("RRC D {:X}", prefixed_opcode);
-                this->RLC_2B_2C(&this->registers->registers.DE.D,&cycles);
+                this->RRC_2B_2C(&this->registers->registers.DE.D,&cycles);
                 break;
             }
         case 0x0B:
@@ -2435,7 +2447,7 @@ void CPU::handle_interrupts(){
         case 0x31:
             {
                 // spdlog::info("SWAP C {:X}", prefixed_opcode);
-                this->SLA_2B_2C(&this->registers->registers.BC.C,&cycles);
+                this->SWAP_2B_2C(&this->registers->registers.BC.C,&cycles);
                 break;
             }
         case 0x32:
