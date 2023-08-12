@@ -23,8 +23,16 @@ void CPU::ADD_1B_1C(uint8_t reg1, uint32_t *cycles){
 }
 void CPU::ADC_1B_1C(uint8_t reg1, uint32_t *cycles){
     uint8_t c = this->registers->get_flag(FLAG_C);
-    this->registers->check_H_8_ADD(this->registers->registers.AF.A,(uint8_t)  (reg1 + c));
-    this->registers->check_C_8_ADD(this->registers->registers.AF.A,(uint8_t)  (reg1 + c));
+    this->registers->clear_flag(FLAG_N);
+    this->registers->check_H_8_ADD(reg1,(uint8_t)  (c));
+    this->registers->check_C_8_ADD(reg1,(uint8_t)  (c));
+    uint8_t to_add = (reg1 + c);
+    if (!this->registers->get_flag(FLAG_H)){
+        this->registers->check_H_8_ADD(this->registers->registers.AF.A,to_add);
+    }
+    if (!this->registers->get_flag(FLAG_C)){
+        this->registers->check_C_8_ADD(this->registers->registers.AF.A,to_add);
+    }
     this->registers->registers.AF.A += (uint8_t) (reg1 + c);
     this->registers->check_if_result_zero(this->registers->registers.AF.A);
     *cycles--;
@@ -121,10 +129,17 @@ void CPU::SUB_1B_2C(uint16_t address, uint32_t *cycles){
 }
 
 void CPU::SBC_1B_1C(uint8_t reg1, uint32_t *cycles){
-    uint8_t C = this->registers->get_flag(FLAG_C);
-    this->registers->check_H_8_SUB(this->registers->registers.AF.A,(uint8_t) (reg1 + C));
-    this->registers->check_C_8_SUB(this->registers->registers.AF.A,(uint8_t) (reg1 + C));
-    char result = this->registers->registers.AF.A - reg1 + C;
+    uint8_t c = this->registers->get_flag(FLAG_C);
+    this->registers->check_H_8_ADD(reg1,(uint8_t)  (c));
+    this->registers->check_C_8_ADD(reg1,(uint8_t)  (c));
+    uint8_t to_sub = (reg1 + c);
+    if (!this->registers->get_flag(FLAG_H)){
+        this->registers->check_H_8_SUB(this->registers->registers.AF.A,to_sub);
+    }
+    if (!this->registers->get_flag(FLAG_C)){
+        this->registers->check_C_8_SUB(this->registers->registers.AF.A,to_sub);
+    }
+    char result = this->registers->registers.AF.A - to_sub;
     this->registers->registers.AF.A = result;
     this->registers->check_if_result_zero(result);
     this->registers->set_flag(FLAG_N);

@@ -1,2 +1,2 @@
 #!/bin/sh
-./src/bin/main ROMS/cpu_instrs/individual/10-bit_ops.gb 10
+./src/bin/main ROMS/cpu_instrs/individual/11-op_a,\(hl\).gb 11
