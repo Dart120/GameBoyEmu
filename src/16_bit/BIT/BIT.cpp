@@ -13,6 +13,7 @@ void CPU::BIT_2B_3C(uint8_t bit_n, uint32_t *cycles){
     bool bit = (this->memory.read_8_bit(this->registers->registers.HL_double) >> bit_n) & 1;
     bit ? this->registers->clear_flag(FLAG_Z) : this->registers->set_flag(FLAG_Z);
     this->registers->set_flag(FLAG_H);
+    this->registers->clear_flag(FLAG_N);
     this->registers->registers.PC += 2;
     *cycles -= 3;
 }

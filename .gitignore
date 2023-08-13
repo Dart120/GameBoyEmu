@@ -47,3 +47,4 @@ doctor/*
 logs
 .cmake/**
 src/bin/main.DS_Store
+**/.DS_Store
