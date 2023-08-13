@@ -101,6 +101,7 @@ bool Memory::read_rom(char* path){
         exit(1);
         return 0;
     }
+    std::cout<<"Cartridge Type: "<<std::hex<<(int)this->mem[0x0147]<< std::endl;
     return 1;
 }
 
