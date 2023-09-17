@@ -23,6 +23,7 @@ void CPU::RET_UNCOND(uint16_t *cycles){
     uint16_t result = low + (uint16_t) (high << 8);
     // spdlog::info("ret high: {:X}, low: {:X}",high,low);
     // spdlog::info("Fool: {:X}",result);
+  
     this->registers->registers.PC = result;
     *cycles += 4;
     this->registers->registers.SP++;

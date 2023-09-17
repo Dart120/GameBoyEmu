@@ -1,21 +1,2 @@
-1 3 6 8 10  
+1 3 6 8 10  2
 
-2 breaks at
-============== ERROR ==============
-
-Mismatch in CPU state at line 151347:
-
-MINE:   A:04 F:C--- B:01 C:00 D:C7 E:BA H:90 L:00 SP:9000 PC:0051 PCMEM:2E,0F,18,F3
-YOURS:  A:04 F:C-NZ B:00 C:00 D:C7 E:BA H:90 L:00 SP:DFFD PC:C2C1 PCMEM:C2,B9,C1,F8
-
-The CPU state before this (at line 151346) was:
-
-        A:04 F:10 B:01 C:00 D:C7 E:BA H:90 L:00 SP:DFFD PC:C2C0 PCMEM:05,C2,B9,C1
-
-The last operation executed (in between lines 151346 and 151347) was:
-
-        0x05 DEC B
-
-Perhaps the problem is with this opcode, or with your interrupt handling?
-
-Its deffo a problem with interrupt handling

@@ -1,69 +1,34 @@
-
-def findPermutation(s: str):
-    if len(s) == 1:
-        if s[0] == 'I':
-            return [1,2]
-        else:
-            return [2,1]
-    p1 = 0
-    counts = []
-    res = []
-    while p1 < len(s):
-        count = 0
-        curr_letter = s[p1]
-        while p1 < len(s) and curr_letter == s[p1]:
-            count += 1
-            p1 += 1
-        counts.append(count)
-    
-    if s[0] == 'I':
-        res.append(1)
-        highest = 1
-        I_now = True
-    else:
-        res.append(1 + counts[0])
-        highest = 1 + counts[0]
-        I_now = False
-
-    for idx,i in enumerate(counts):
-        if I_now:
-            res,highest = I(idx,counts,res,highest)
-            I_now = False
-            highest = res[-1]
+def reformat_line(line):
+    # Splitting by ': ' handles 'A:', 'F:', etc.
+    # Splitting by ' ' handles 'SP:', 'PC:', etc.
+    components = line.split(': ')
+    components = [i.split(' ') for i in components]
+    components = [item for sublist in components for item in sublist]
+    line = ""
+ 
+    for idx,i in enumerate(components):
+        # print(idx)
+        if idx % 2 == 0:
+            # Handle the PC memory separately
+            if components[idx] == "PC":
         
-        else:
-            res,highest = D(idx,counts,res,highest)
-            I_now = True
+                pc_mem = components[2].strip().split(" ")
+                pc_mem_formatted = ','.join(pc_mem)
+                line += f"{components[idx]}:{components[idx + 1][3:]} PCMEM:{components[idx+2][1:]+',' + components[idx+3]+',' + components[idx+4]+',' + components[idx+5][:-2]}"
+                break
+               
             
-    return res
-def I(idx,counts,res,highest):
-    how_many = counts[idx]
-    start = highest
-    if idx == len(counts) - 1:
+            # Reformat other lines
+            line += f"{components[idx]}:{components[idx + 1]} "
+      
+    return line
 
-        for i in range(how_many):
-            start += 1
-            res.append(start)
-            highest = max(start,highest)
-        return res,highest
-    else:
-        for i in range(how_many - 1):
-            start += 1
-            res.append(start)
-            highest = max(start,highest)
-        if idx + 1 <= len(counts) - 1:
-            print(highest + 1 + counts[idx + 1],'begin d')
-            res.append(highest + 1 + counts[idx + 1])
-            highest = max(highest + 1 + counts[idx + 1],highest)
-    
-    return res, highest
+def main():
+    with open("7.txt", "r") as infile, open("7e.log", "a") as outfile:
+        for line in infile:
+          
+            outfile.write(reformat_line(line) + "\n")
+            # exit(0)
 
-        
-def D(idx,counts,res,highest):
-    how_many = counts[idx]
-    start = highest
-    for i in range(how_many):
-        start -= 1
-        res.append(start)
-    return res,highest
-print(Solution().findPermutation('IIDDIIDD'))
+if __name__ == "__main__":
+    main()
