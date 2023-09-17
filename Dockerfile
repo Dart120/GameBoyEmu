@@ -16,7 +16,7 @@ RUN apt-get install -y clang-tidy
 RUN apt-get install -y vim
 RUN vim build.sh -c "set ff=unix" -c ":wq"
 RUN vim run.sh -c "set ff=unix" -c ":wq"
-RUN ./build.sh
+# RUN ./build.sh
 # RUN yarn install --production
 # CMD ["node", "src/index.js"]
 # EXPOSE 3000
