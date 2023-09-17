@@ -115,7 +115,7 @@ void CPU::FDE() {
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
 
-        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} IME:{} IF:{:08b} IE:{:08b} TAC:{:02X} TMA:{:02X} DIV:{:02X} TIMA:{:02X} d_cycles:{} cycles:{} 0x0051: {:02X}";
+        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} IME:{} IF:{:08b} IE:{:08b} TAC:{:02X} TMA:{:02X} DIV:{:02X} TIMA:{:02X} d_cycles:{} cycles:{} 0x0000: {:04X}";
         // std::cout <<"cycle "<< std::dec << c 
         //   << " IME: " << this->registers->IME 
         //   << " IF: " << std::hex << this->memory.read_8_bit(0xFF0F) 
@@ -195,7 +195,7 @@ void CPU::FDE() {
             * this -> memory.TIMA,
             cycles - this -> old_cycles,
             cycles,
-            this -> memory.read_8_bit(0x0051)
+            this -> memory.read_16_bit(0x0000)
         );
         this -> old_cycles = cycles;
         // m_old = m;

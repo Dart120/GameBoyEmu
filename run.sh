@@ -1,2 +1,2 @@
 #!/bin/sh
-./src/bin/main ROMS/cpu_instrs/individual/02-interrupts.gb 2
+./src/bin/main ROMS/cpu_instrs/individual/07-jr,jp,call,ret,rst.gb 7
