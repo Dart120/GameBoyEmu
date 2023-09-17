@@ -2,11 +2,10 @@
 #define GB_H
 // #include<iostream>
 // #define FMT_HEADER_ONLY
-
 #include "memory.h"
 #include "cpu.h"
 #include "gpu.h"
-#include "clock.h"
+#include "system_status.h"
 #include <spdlog/spdlog.h>
 #include <vector>
 extern std::shared_ptr<spdlog::logger> doctor;
@@ -18,7 +17,6 @@ class GB
     GB(std::string log_into);
     uint16_t system_counter;
     Memory* memory;
-    Clock* clock;
     GPU* gpu;
     CPU* cpu;
 

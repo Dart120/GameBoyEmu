@@ -4,7 +4,7 @@
 #define FMT_HEADER_ONLY
 #include <fmt/core.h> 
 #include "gb.h"
-
+#include "system_status.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
@@ -24,7 +24,7 @@ GB::GB(std::string log_to){
       
 
         // Set the logger level, e.g., info, warn, error, etc.
-        doctor->set_level(spdlog::level::off);
+        doctor->set_level(spdlog::level::info);
         logger->set_level(spdlog::level::off);
         
        
@@ -42,8 +42,12 @@ GB::GB(std::string log_to){
     {
         std::cout << "Log init failed: " << ex.what() << std::endl;
     }
+    system_status_struct* system = new system_status_struct;
+    system->t_cycles = 0;
+    system->m_cycles = 0;
+    // System.cycles = 0;
     this->system_counter = 0;
-    this->memory = new Memory(&this->system_counter);
-    this->clock = new Clock(*memory,&this->system_counter);
-    this->cpu = new CPU(*memory, *this->clock);
+    this->memory = new Memory(system);
+    // this->clock = new Clock();
+    this->cpu = new CPU(*memory,system);
 }
