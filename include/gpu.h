@@ -4,7 +4,9 @@
 // #include<iostream>
 // #define FMT_HEADER_ONLY
 #include "memory.h"
+#include "tiledata.h"
 #include <vector>
+#include <map>
 
 
 class GPU
@@ -14,10 +16,9 @@ class GPU
     GPU(Memory& memory);
 
     Memory memory;
-    std::vector<uint8_t> bg_1; 
-    std::vector<uint8_t> bg_2; 
-    void READ_BACKGROUND(uint16_t starting_at);
-    void READ_BACKGROUNDS();
+    // Going to point to the actual memory in my computer coz i want to read more than eight bits of this at a time and using the 16 bit idx of the array might make that a faff
+    TileData tiledata;
+    void read_tilemaps();
 
 
 
