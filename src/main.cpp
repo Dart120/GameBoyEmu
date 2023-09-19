@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
     // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", gb.memory->mem[0], gb.memory->mem[1], gb.memory->mem[2], gb.memory->mem[3]);
-    gb.gpu->read_tilemaps();
+    gb.gpu->read_tiledata();
     gb.cpu->FDE();
     
 

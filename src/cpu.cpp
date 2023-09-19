@@ -101,7 +101,7 @@ void CPU::FDE() {
     //  uint32_t m_old = 0;
 
     uint32_t timer_interval = 0;
-    unordered_set < uint8_t > new_inst;
+    
     bool enable_IME_next_flag_one = false;
     bool enable_IME_next_flag_two = false;
     while (1) {

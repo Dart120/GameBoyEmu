@@ -5,17 +5,18 @@
 #include <vector>
 #include <algorithm>
 #include "gpu.h"
+#include "tiledata.h"
 #include "memory.h"
+#include "background.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <map>
-// TODO finish this
-// TODO Read tile data for objects into a map, this will have tile address as keys and mem addresses as values
-GPU::GPU(Memory& memory): memory(memory){
-        this->memory = memory;
-        this->tiledata = new TileData(*memory);
+GPU::GPU(Memory& memory): memory(memory),tiledata(memory),background(memory,tiledata){
+        // this->memory = memory;
+        // this->tiledata = tiledata;
+        // this->background = new Background(&memory,&tiledata);
     }
-void GPU::read_tilemaps(){
-    this->tiledata.read_tilemaps();
+void GPU::read_tiledata(){
+    this->tiledata.read_tiledata();
 }

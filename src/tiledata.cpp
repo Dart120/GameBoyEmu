@@ -10,8 +10,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <map>
-// TODO finish this
-// TODO Read tile data for objects into a map, this will have tile address as keys and mem addresses as values
+
 TileData::TileData(Memory& memory): memory(memory){
         this->memory = memory;
     }
@@ -25,7 +24,7 @@ void TileData::read_block_n(u_int16_t starting_at, u_int16_t ending_at, u_int8_t
         curr_idx++;
     }
 }
-void TileData::read_tilemaps(){
+void TileData::read_tiledata(){
     this->read_block_n(0x8000, 0x87FF, 0, this->object_tile_address_mem_address);
     this->read_block_n(0x8800, 0x8FFF, 128, this->object_tile_address_mem_address);
     this->read_block_n(0x9000, 0x97FF, 0, this->bg_tile_address_mem_address);
