@@ -17,7 +17,7 @@ class Layer
 
     Memory memory;
     // Going to point to the actual memory in my computer coz i want to read more than eight bits of this at a time and using the 16 bit idx of the array might make that a faff
-    TileData tiledata;
+    TileData* tiledata;
     u_int16_t tilemap_starts_at;
     uint8_t* tilemap = new uint8_t[1024];
     uint8_t* colour_map = new uint8_t[65536];

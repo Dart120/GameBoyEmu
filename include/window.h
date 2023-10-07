@@ -1,6 +1,6 @@
 
-#ifndef Background_H
-#define Background_H
+#ifndef Window_H
+#define Window_H
 // #include<iostream>
 // #define FMT_HEADER_ONLY
 #include "memory.h"

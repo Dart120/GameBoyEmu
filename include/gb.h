@@ -19,6 +19,7 @@ class GB
     Memory* memory;
     GPU* gpu;
     CPU* cpu;
+    void go();
 
     
     // CPU cpu;

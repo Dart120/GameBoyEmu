@@ -14,7 +14,8 @@
 
 // TODO Translate tiledata to colour map
 u_int8_t* Background::get_tile_data(u_int8_t address) {
-        return this->tiledata.getBGTile(address);
+    // std::cout << this->memory.mem[0]<<std::endl;
+        return this->tiledata->getBGTile(address);
     }
 u_int8_t Background::read_tilemap_n(u_int8_t x, u_int8_t y){
     u_int8_t idx = x + (y * 32);

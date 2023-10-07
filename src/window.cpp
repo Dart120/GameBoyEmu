@@ -13,7 +13,7 @@
 #include <map>
 
 u_int8_t* Window::get_tile_data(u_int8_t address) {
-        return this->tiledata.getBGTile(address);
+        return this->tiledata->getBGTile(address);
     }
 u_int8_t Window::read_tilemap_n(u_int8_t x, u_int8_t y){
     u_int8_t idx = x + (y * 32);

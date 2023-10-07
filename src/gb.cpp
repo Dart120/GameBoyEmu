@@ -52,3 +52,10 @@ GB::GB(std::string log_to){
     // this->clock = new Clock();
     this->cpu = new CPU(*memory,system);
 }
+void GB::go() {
+    while(1){
+        this->gpu->read_tiledata();
+        this->cpu->FDE();
+        
+    }
+}

@@ -96,15 +96,10 @@ void CPU::FDE() {
 
     uint16_t & cycles = this -> system -> m_cycles;
     uint16_t & t_cycles = this -> system -> t_cycles;
-    //  uint32_t cycles_old = 500000000;
-    //  uint32_t m = 0;
-    //  uint32_t m_old = 0;
+  
+    bool &enable_IME_next_flag_one = this->system->enable_IME_next_flag_one;
+    bool &enable_IME_next_flag_two = this->system->enable_IME_next_flag_two;
 
-    uint32_t timer_interval = 0;
-    
-    bool enable_IME_next_flag_one = false;
-    bool enable_IME_next_flag_two = false;
-    while (1) {
 
         //  m += (cycles - cycles_old);
         //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
@@ -3330,6 +3325,6 @@ void CPU::FDE() {
             this -> registers -> IME = true;
             enable_IME_next_flag_two = false;
         }
-    }
+    
 
 }
