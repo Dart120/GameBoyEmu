@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include "layer.h"
-#include "object.h"
+#include "objects.h"
 #include "memory.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
@@ -34,7 +34,19 @@ void Objects::ingest_objects(){
         u_int8_t* addr = this->object_n_data_ptr(i);
         objects[i][0] = addr;
         objects[i][1] = addr + 1;
-        objects[i][0] = addr + 2;
+        objects[i][2] = addr + 2;
+        objects[i][3] = addr + 3;
+    }
+    
+}
+void Objects::scanline_emulator(){
+    for (size_t LY = 0; LY < 154; LY++)
+    {
+        u_int8_t objects_drawn = 0;
+        while (objects_drawn < 10){
+            
+        }
+
     }
     
 }

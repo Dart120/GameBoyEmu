@@ -100,8 +100,16 @@ void CPU::LD_3B_5C(uint16_t* SP, uint16_t *cycles){
     this->registers->registers.PC += 3;
 }
 
-void CPU::LD_3B_3C(uint16_t* into, uint16_t *cycles){
-    *into = this->memory.read_16_bit(this->registers->registers.PC + 1);
+void CPU::LD_3B_3C(uint16_t* into, uint16_t *cycles, std::function<void()> process_t_cycle){
+    process_t_cycle();
+    u_int8_t low = this->memory.read_8_bit(this->registers->registers.PC + 1);
+    u_int8_t high = this->memory.read_8_bit(this->registers->registers.PC + 2);
+    *into = (*into) & 0xFF00;
+    *into = (*into) | low;
+    process_t_cycle();
+    *into = (*into) & 0x00FF;
+    *into = (*into) | (high << 8);
+    process_t_cycle();
     this->registers->registers.PC += 3;
     (*cycles) += 3;
 }

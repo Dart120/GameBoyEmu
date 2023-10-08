@@ -20,8 +20,10 @@ class Objects
     TileData* tiledata;
     u_int8_t* object_n_data_ptr(u_int8_t idx);
     u_int8_t* get_object_tiledata(u_int8_t idx);
+    uint8_t* object_map = new uint8_t[65536];
     void ingest_objects();
-    std::array<std::array<u_int8_t*,3>,40> objects;
-    std::array<std::array<u_int8_t,3>,40>* objects_ptr;
+    void scanline_emulator();
+    std::array<std::array<u_int8_t*,4>,40> objects;
+    std::array<std::array<u_int8_t,4>,40>* objects_ptr;
 };
 #endif 

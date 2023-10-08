@@ -54,8 +54,13 @@ GB::GB(std::string log_to){
 }
 void GB::go() {
     while(1){
-        this->gpu->read_tiledata();
-        this->cpu->FDE();
+        std::function<void()> func = [this](){ this->process_t_cycle(); };
+        this->cpu->FDE(func);
+        
         
     }
+}
+void GB::process_t_cycle(){
+    // this->gpu->process_t_cycle();
+
 }

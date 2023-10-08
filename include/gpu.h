@@ -7,7 +7,7 @@
 #include "tiledata.h"
 #include "background.h"
 #include "window.h"
-#include "object.h"
+#include "objects.h"
 #include <vector>
 #include <map>
 
@@ -25,7 +25,7 @@ class GPU
     Objects object;
     // Going to point to the actual memory in my computer coz i want to read more than eight bits of this at a time and using the 16 bit idx of the array might make that a faff
     
-    void read_tiledata();
+    void process_t_cycle();
 
 
 

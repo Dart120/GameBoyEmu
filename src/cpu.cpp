@@ -24,7 +24,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+// TODO pass a callback so every t cycle we can do ppu can do one cycle of stuff, the ppu can have a state machine to ensure it cyucles through its modes
 // Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7 //00001111
 #define FLAG_N 6 //0000CHNZ
@@ -92,8 +92,8 @@ if (this -> registers -> IME) {
     
 }
 
-void CPU::FDE() {
-
+void CPU::FDE(std::function<void()> process_t_cycle){
+    
     uint16_t & cycles = this -> system -> m_cycles;
     uint16_t & t_cycles = this -> system -> t_cycles;
   
@@ -104,8 +104,9 @@ void CPU::FDE() {
         //  m += (cycles - cycles_old);
         //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
         t_cycles += (cycles - this -> old_cycles) * 4;
-        this -> system -> m_cycles = cycles;
-        this -> system -> t_cycles = t_cycles;
+        // FIXME Uncomment below if breaking blarrgs tests
+        // this -> system -> m_cycles = cycles;
+        // this -> system -> t_cycles = t_cycles;
         
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
@@ -240,7 +241,7 @@ void CPU::FDE() {
 
         case 0x01: {
             // spdlog::info("LD BC, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.BC_double), & cycles);
+            this -> LD_3B_3C( & (this -> registers -> registers.BC_double), & cycles, process_t_cycle);
             break;
         }
 
@@ -377,7 +378,7 @@ void CPU::FDE() {
 
         case 0x11: {
             // spdlog::info("LD DE, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.DE_double), & cycles);
+            this -> LD_3B_3C( & (this -> registers -> registers.DE_double), & cycles, process_t_cycle);
             //     this -> registers->registers.DE_double = this -> memory.read_16_bit(this->registers->registers.PC + 1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) -= 3;
@@ -508,7 +509,7 @@ void CPU::FDE() {
             break;
         }
         case 0x21: { // spdlog::info("LD HL, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.HL_double), & cycles);
+            this -> LD_3B_3C( & (this -> registers -> registers.HL_double), & cycles, process_t_cycle);
             //     this -> registers->registers.HL_double = this -> memory.read_16_bit(this->registers->registers.PC + 1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) =(cycles) - 3;
@@ -641,7 +642,7 @@ void CPU::FDE() {
 
         case 0x31: {
             // spdlog::info("LD SP, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.SP), & cycles);
+            this -> LD_3B_3C( & (this -> registers -> registers.SP), & cycles, process_t_cycle);
             //     this -> registers->registers.SP = this -> memory.read_16_bit(this->registers->registers.PC +1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) -= 3;

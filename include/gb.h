@@ -20,6 +20,7 @@ class GB
     GPU* gpu;
     CPU* cpu;
     void go();
+    void process_t_cycle();
 
     
     // CPU cpu;
