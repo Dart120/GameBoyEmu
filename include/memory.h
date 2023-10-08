@@ -8,7 +8,7 @@ class Memory
 {
     // Access specifier
     public:
-    Memory(system_status_struct* system);
+    Memory(system_status_struct& system);
     // Data Members
     
     uint8_t* mem;
@@ -28,7 +28,7 @@ class Memory
     uint8_t* TMA;
     uint8_t* TIMA;
   
-    system_status_struct* system;
+    system_status_struct& system;
     int fill_memory(uint8_t num);
     uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t set_bit_from_addr(uint16_t address, uint8_t bit);

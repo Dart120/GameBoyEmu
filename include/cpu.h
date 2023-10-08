@@ -14,17 +14,21 @@ class CPU
 {
     
     public:
-    CPU(Memory& memory, system_status_struct* system);
+    CPU(Memory& memory, system_status_struct& system, std::function<void()> process_4t_cycles);
     uint8_t read_8_bit(uint16_t address);
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);
     int write_16_bit(uint16_t address, uint16_t data);
     int8_t unsigned_8_to_signed_8(uint8_t n);
-    void FDE(std::function<void()> process_t_cycle);
+    void FDE();
+    
     
     // Access specifier
-    system_status_struct* system;
     Memory memory;
+
+    system_status_struct& system;
+    std::function<void()> process_4t_cycles;
+    
     Registers* registers;
     int old_cycles;
     uint16_t ms_6_time;
@@ -63,7 +67,7 @@ class CPU
     void LD_2B_3C_MEM_TO_ACC(uint16_t *cycles);
     void LD_2B_3C(uint16_t *cycles);
     void LD_3B_5C(uint16_t* SP, uint16_t *cycles);
-    void LD_3B_3C(uint16_t* into, uint16_t *cycles,std::function<void()> process_t_cycle);
+    void LD_3B_3C(uint16_t* into, uint16_t *cycles);
     void increment_HL(uint16_t* HL);
 
     void decrement_HL(uint16_t* HL);

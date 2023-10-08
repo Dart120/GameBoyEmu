@@ -18,7 +18,7 @@ class GPU
     public:
     GPU(Memory& memory);
 
-    Memory memory;
+    Memory& memory;
     TileData tiledata;
     Background background;
     Window window;

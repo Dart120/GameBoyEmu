@@ -30,9 +30,9 @@ using namespace std;
 #define FLAG_N 6 //0000CHNZ
 #define FLAG_H 5 //00004567
 #define FLAG_C 4
-CPU::CPU(Memory & memory, system_status_struct * system): memory(memory) {
-    this -> memory = memory;
-    this -> system = system;
+CPU::CPU(Memory & memory, system_status_struct & system, std::function<void()> process_4t_cycles): memory(memory), system(system), process_4t_cycles(process_4t_cycles) {
+    // this -> memory = memory;
+    // this -> system = system;
     this -> registers = new Registers();
     this -> registers -> set_registers();
     this -> old_cycles = 0;
@@ -92,21 +92,21 @@ if (this -> registers -> IME) {
     
 }
 
-void CPU::FDE(std::function<void()> process_t_cycle){
+void CPU::FDE(){
     
-    uint16_t & cycles = this -> system -> m_cycles;
-    uint16_t & t_cycles = this -> system -> t_cycles;
+    uint16_t & cycles = this -> system. m_cycles;
+    uint16_t & t_cycles = this -> system. t_cycles;
   
-    bool &enable_IME_next_flag_one = this->system->enable_IME_next_flag_one;
-    bool &enable_IME_next_flag_two = this->system->enable_IME_next_flag_two;
+    bool &enable_IME_next_flag_one = this->system.enable_IME_next_flag_one;
+    bool &enable_IME_next_flag_two = this->system.enable_IME_next_flag_two;
 
 
         //  m += (cycles - cycles_old);
         //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
         t_cycles += (cycles - this -> old_cycles) * 4;
         // FIXME Uncomment below if breaking blarrgs tests
-        // this -> system -> m_cycles = cycles;
-        // this -> system -> t_cycles = t_cycles;
+        // this -> system. m_cycles = cycles;
+        // this -> system. t_cycles = t_cycles;
         
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
@@ -241,7 +241,7 @@ void CPU::FDE(std::function<void()> process_t_cycle){
 
         case 0x01: {
             // spdlog::info("LD BC, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.BC_double), & cycles, process_t_cycle);
+            this -> LD_3B_3C( & (this -> registers -> registers.BC_double), & cycles);
             break;
         }
 
@@ -378,7 +378,7 @@ void CPU::FDE(std::function<void()> process_t_cycle){
 
         case 0x11: {
             // spdlog::info("LD DE, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.DE_double), & cycles, process_t_cycle);
+            this -> LD_3B_3C( & (this -> registers -> registers.DE_double), & cycles);
             //     this -> registers->registers.DE_double = this -> memory.read_16_bit(this->registers->registers.PC + 1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) -= 3;
@@ -509,7 +509,7 @@ void CPU::FDE(std::function<void()> process_t_cycle){
             break;
         }
         case 0x21: { // spdlog::info("LD HL, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.HL_double), & cycles, process_t_cycle);
+            this -> LD_3B_3C( & (this -> registers -> registers.HL_double), & cycles);
             //     this -> registers->registers.HL_double = this -> memory.read_16_bit(this->registers->registers.PC + 1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) =(cycles) - 3;
@@ -642,7 +642,7 @@ void CPU::FDE(std::function<void()> process_t_cycle){
 
         case 0x31: {
             // spdlog::info("LD SP, d16 {:X}", opcode);
-            this -> LD_3B_3C( & (this -> registers -> registers.SP), & cycles, process_t_cycle);
+            this -> LD_3B_3C( & (this -> registers -> registers.SP), & cycles);
             //     this -> registers->registers.SP = this -> memory.read_16_bit(this->registers->registers.PC +1);
             //    (this->registers->registers.PC) += 3;
             //    (cycles) -= 3;

@@ -6,7 +6,7 @@
 #include <spdlog/spdlog.h>
 #include <fstream>
 #include "gb.h"
-    Memory::Memory(system_status_struct* system){
+    Memory::Memory(system_status_struct& system): system(system) {
         mem = new uint8_t[65536];
 
         ROM = mem;
@@ -24,7 +24,7 @@
         TAC = mem + 0xFF07;
         TMA = mem + 0xFF06;
         TIMA = mem + 0xFF05;
-        this->system = system;
+        // this->system = system;
         // if(!this->fill_memory(76)){
         //     spdlog::error("Memory not filled");
         // }
@@ -52,8 +52,8 @@ uint8_t Memory::read_8_bit(uint16_t address){
    }
 int Memory::write_8_bit(uint16_t address, uint8_t data){
     if (address == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
+        this->system.m_cycles = 0;
+        this->system.t_cycles = 0;
         this->mem[address] = 0;
         return 0;
     }
@@ -72,14 +72,14 @@ int Memory::write_16_bit(uint16_t address, uint16_t data){
     this->mem[address] = first;
     this->mem[address + 1] = second;
     if (address == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
+        this->system.m_cycles = 0;
+        this->system.t_cycles = 0;
         this->mem[address] = 0;
         return 0;
     }
     if (address + 1 == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
+        this->system.m_cycles = 0;
+        this->system.t_cycles = 0;
         this->mem[address + 1] = 0;
         return 0;
     }

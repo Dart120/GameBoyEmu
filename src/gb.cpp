@@ -47,15 +47,16 @@ GB::GB(std::string log_to){
     system->m_cycles = 0;
     // System.cycles = 0;
     this->system_counter = 0;
-    this->memory = new Memory(system);
+    this->memory = new Memory(*system);
     this->gpu = new GPU(*memory);
     // this->clock = new Clock();
-    this->cpu = new CPU(*memory,system);
+    std::function<void()> func = [this](){ this->process_t_cycle(); };
+    this->cpu = new CPU(*memory,*system,func);
 }
 void GB::go() {
     while(1){
-        std::function<void()> func = [this](){ this->process_t_cycle(); };
-        this->cpu->FDE(func);
+        // std::function<void()> func = [this](){ this->process_t_cycle(); };
+        this->cpu->FDE();
         
         
     }
