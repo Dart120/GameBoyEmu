@@ -1,2 +1,2 @@
 #!/bin/sh
-./src/bin/main ROMS/cpu_instrs/individual/03-op_sp,hl.gb 7
+./src/bin/main /workspaces/GameBoyEmu/ROMS/cpu_instrs/individual/08-misc_instrs.gb 8

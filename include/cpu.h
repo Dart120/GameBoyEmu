@@ -131,7 +131,7 @@ class CPU
 
     // RST
     void RST_UNCOND(uint8_t number,uint16_t *cycles);
-    void RST_COND(uint8_t COND, uint16_t *cycles);
+    // void RST_COND(uint8_t COND, uint16_t *cycles);
 
     // ROTATE
     

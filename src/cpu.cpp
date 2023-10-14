@@ -1697,7 +1697,7 @@ void CPU::FDE(){
         }
         case 0xC8: {
             // spdlog::info("RST Z {:X}", opcode);
-            this -> RST_COND(this -> registers -> get_flag(FLAG_Z), & cycles);
+            this -> RET_COND(this -> registers -> get_flag(FLAG_Z), & cycles);
             break;
         }
         case 0xC9: {
@@ -1773,7 +1773,7 @@ void CPU::FDE(){
         }
         case 0xD8: {
             // spdlog::info("RST C {:X}", opcode);
-            this -> RST_COND(this -> registers -> get_flag(FLAG_C), & cycles);
+            this -> RET_COND(this -> registers -> get_flag(FLAG_C), & cycles);
             break;
         }
         case 0xD9: { //Needs interrupt for RETI
