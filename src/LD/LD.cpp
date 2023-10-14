@@ -120,19 +120,18 @@ void CPU::LD_2B_3C_MEM_TO_ACC(uint16_t *cycles){
 
 void CPU::LD_3B_5C(uint16_t* SP, uint16_t *cycles){
     this->process_4t_cycles();
-    u_int8_t low = this->memory.read_8_bit(this->registers->registers.PC + 1);
     this->process_4t_cycles();
-    u_int8_t high = this->memory.read_8_bit(this->registers->registers.PC + 2);
     this->process_4t_cycles();
-    this->memory.write_16_bit(this->memory.read_16_bit(this->registers->registers.PC + 1),*SP);
-    *SP = (*SP) & 0xFF00;
-    *SP = (*SP) | low;
+    // this->memory.write_16_bit(this->memory.read_16_bit(this->registers->registers.PC + 1),*SP);
+    u_int8_t low = *SP & 0x00FF;
+    u_int8_t high = (*SP & 0xFF00) >> 8;
+    this->memory.write_8_bit(this->memory.read_16_bit(this->registers->registers.PC + 1),low);
     this->process_4t_cycles();
-    *SP = (*SP) & 0x00FF;
-    *SP = (*SP) | (high << 8);
+    this->memory.write_8_bit(this->memory.read_16_bit(this->registers->registers.PC + 1) + 1,high);
     this->process_4t_cycles();
     (*cycles) += 5;
     this->registers->registers.PC += 3;
+
 }
 
 void CPU::LD_3B_3C(uint16_t* into, uint16_t *cycles){
