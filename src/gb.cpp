@@ -24,7 +24,7 @@ GB::GB(std::string log_to){
       
 
         // Set the logger level, e.g., info, warn, error, etc.
-        doctor->set_level(spdlog::level::info);
+        doctor->set_level(spdlog::level::off);
         logger->set_level(spdlog::level::off);
         
        
@@ -42,16 +42,16 @@ GB::GB(std::string log_to){
     {
         std::cout << "Log init failed: " << ex.what() << std::endl;
     }
-    system_status_struct* system = new system_status_struct;
-    system->t_cycles = 0;
-    system->m_cycles = 0;
+    this->system = new system_status_struct;
+    this->system->t_cycles = 0;
+    this->system->m_cycles = 0;
     // System.cycles = 0;
     this->system_counter = 0;
-    this->memory = new Memory(*system);
+    this->memory = new Memory(*this->system);
     this->gpu = new GPU(*memory);
     // this->clock = new Clock();
     std::function<void()> func = [this](){ this->process_t_cycle(); };
-    this->cpu = new CPU(*memory,*system,func);
+    this->cpu = new CPU(*memory,*this->system,func);
 }
 void GB::go() {
     while(1){
@@ -62,6 +62,9 @@ void GB::go() {
     }
 }
 void GB::process_t_cycle(){
-    // this->gpu->process_t_cycle();
+    this->system->m_cycles += 1;
+    this->system->t_cycles += 4;
+    this->gpu->process_t_cycle();
+
 
 }

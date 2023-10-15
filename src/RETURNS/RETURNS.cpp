@@ -15,12 +15,12 @@ void CPU::RET_COND(uint8_t COND, uint16_t *cycles){
         uint16_t result = low + (uint16_t) (high << 8);
         this->registers->registers.PC = result;
       
-        *cycles += 5;
+        // *cycles += 5;
         
     } else {
         this->process_4t_cycles();
         this->registers->registers.PC++;
-        *cycles += 2;
+        // *cycles += 2;
     }
 }
 void CPU::RET_UNCOND(uint16_t *cycles){
@@ -36,7 +36,7 @@ void CPU::RET_UNCOND(uint16_t *cycles){
   
     this->registers->registers.PC = result;
     this->process_4t_cycles();
-    *cycles += 4;
+    // *cycles += 4;
     this->registers->registers.SP++;
 }
 void CPU::RETI(uint16_t *cycles){
@@ -51,6 +51,6 @@ void CPU::RETI(uint16_t *cycles){
     uint16_t result = low + (uint16_t) (high << 8);
     this->registers->registers.PC = result;
     this->process_4t_cycles();
-    *cycles += 4;
+    // *cycles += 4;
     
 }

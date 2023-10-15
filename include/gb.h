@@ -21,6 +21,7 @@ class GB
     CPU* cpu;
     void go();
     void process_t_cycle();
+    system_status_struct* system;
 
     
     // CPU cpu;

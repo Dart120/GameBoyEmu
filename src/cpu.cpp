@@ -103,7 +103,7 @@ void CPU::FDE(){
 
         //  m += (cycles - cycles_old);
         //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
-        t_cycles += (cycles - this -> old_cycles) * 4;
+        // t_cycles += (cycles - this -> old_cycles) * 4;
         // FIXME Uncomment below if breaking blarrgs tests
         // this -> system. m_cycles = cycles;
         // this -> system. t_cycles = t_cycles;
@@ -234,7 +234,7 @@ void CPU::FDE(){
         case 0x00: {
             // spdlog::info("NOP {:X}", opcode);
             this -> registers -> registers.PC += 1;
-            (cycles) ++;
+            this->process_4t_cycles();
 
             break;
         }
@@ -276,6 +276,7 @@ void CPU::FDE(){
         }
 
         case 0x07: { // spdlog::info("RLCA {:X}", opcode);
+        this->process_4t_cycles();
             bool lastValue = this -> registers -> registers.AF.A >> 7 & 1UL;
             this -> registers -> registers.AF.A = this -> registers -> registers.AF.A << 1;
             if (lastValue) {
@@ -288,7 +289,7 @@ void CPU::FDE(){
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             this -> registers -> clear_flag(FLAG_Z);
-            (cycles) ++;
+            
             (this -> registers -> registers.PC) += 1;
             break;
         }
@@ -351,6 +352,7 @@ void CPU::FDE(){
 
         case 0x0F: {
             // spdlog::info("RRCA {:X}", opcode);
+            this->process_4t_cycles();
             bool firstValue = this -> registers -> registers.AF.A & 1UL;
             this -> registers -> registers.AF.A = this -> registers -> registers.AF.A >> 1;
             if (firstValue) {
@@ -364,14 +366,14 @@ void CPU::FDE(){
             this -> registers -> clear_flag(FLAG_Z);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) ++;
+          
             break;
         }
 
         case 0x10: {
             // spdlog::info("STOP {:X} read", opcode);
             exit(0);
-            (cycles) ++;
+            this->process_4t_cycles();
             (this -> registers -> registers.PC) += 2;
             break;
         }
@@ -422,6 +424,7 @@ void CPU::FDE(){
 
         case 0x17: {
             // spdlog::info("RLA {:X}", opcode);
+            this->process_4t_cycles();
             bool p_c = this -> registers -> get_flag(FLAG_C);
             if (this -> registers -> registers.AF.A >> 7) {
                 this -> registers -> set_flag(FLAG_C);
@@ -437,7 +440,7 @@ void CPU::FDE(){
             this -> registers -> clear_flag(FLAG_Z);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+            
             break;
         }
 
@@ -548,6 +551,7 @@ void CPU::FDE(){
             break;
         }
         case 0x27: { // spdlog::info("DAA {:X}", opcode);
+        this->process_4t_cycles();
             int a = this -> registers -> registers.AF.A;
 
             if (!this -> registers -> get_flag(FLAG_N)) {
@@ -572,7 +576,7 @@ void CPU::FDE(){
             this -> registers -> check_if_result_zero(a);
 
             this -> registers -> registers.AF.A = (uint8_t) a;
-            (cycles) ++;
+          
             (this -> registers -> registers.PC) += 1;
             break;
         }
@@ -626,11 +630,12 @@ void CPU::FDE(){
 
         case 0x2F: {
             // spdlog::info("CPL {:X}", opcode);
+            this->process_4t_cycles();
             this -> registers -> registers.AF.A = ~this -> registers -> registers.AF.A;
             this -> registers -> set_flag(FLAG_N);
             this -> registers -> set_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) ++;
+           
             break;
         }
 
@@ -690,11 +695,12 @@ void CPU::FDE(){
 
         case 0x37: {
             // spdlog::info("SCF {:X}", opcode);
+            this->process_4t_cycles();
             this -> registers -> set_flag(FLAG_C);
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+
             break;
         }
 
@@ -750,6 +756,7 @@ void CPU::FDE(){
 
         case 0x3F: {
             // spdlog::info("CCF {:X}", opcode);
+            this->process_4t_cycles();
             if (this -> registers -> get_flag(FLAG_C)) {
                 this -> registers -> clear_flag(FLAG_C);
             } else {
@@ -758,7 +765,7 @@ void CPU::FDE(){
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+      
             break;
         }
 
@@ -1240,8 +1247,8 @@ void CPU::FDE(){
             // spdlog::info("HALT {:X}", opcode);
             // exit(0);
             // TODO halt is broken
+            this->process_4t_cycles();
             this->halted = true;
-            cycles++;
             this->registers->registers.PC++;
             break;
         }
@@ -1887,11 +1894,12 @@ void CPU::FDE(){
         case 0xF3: {
             // spdlog::info("DI {:X}", opcode);
             // Requires interrupts
+            this->process_4t_cycles();
             this -> registers -> IME = 0;
             enable_IME_next_flag_one = false;
             enable_IME_next_flag_two = false;
             this -> registers -> registers.PC++;
-            cycles++;
+            
             break;
 
         }
@@ -1929,9 +1937,10 @@ void CPU::FDE(){
 
             // spdlog::info("EI {:X}", opcode);
             // enable_IME_next_flag_one = true;
+            this->process_4t_cycles();
             this -> registers -> IME = true;
             this -> registers -> registers.PC++;
-            cycles++;
+     
             break;
         }
         case 0xFE: {

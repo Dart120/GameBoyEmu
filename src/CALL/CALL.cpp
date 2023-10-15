@@ -19,13 +19,13 @@ void CPU::CALL_COND(uint8_t COND, uint16_t *cycles){\
         this->process_4t_cycles();
         // spdlog::info("call high: {:X}, low: {:X}",high,low);
        
-        *cycles += 6;
+        // *cycles += 6;
        
     } else {
         this->process_4t_cycles();
         this->process_4t_cycles();
         this->registers->registers.PC += 3;
-        *cycles += 3;
+        // *cycles += 3;
     }
 }
 void CPU::CALL_UNCOND(uint16_t *cycles){
@@ -44,6 +44,6 @@ void CPU::CALL_UNCOND(uint16_t *cycles){
     this->memory.write_8_bit(this->registers->registers.SP,low);
     this->process_4t_cycles();
     this->registers->registers.PC = new_PC;
-    *cycles += 6;
+    // *cycles += 6;
 }
 

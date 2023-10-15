@@ -28,5 +28,5 @@ void CPU::RST_UNCOND(uint8_t number,uint16_t *cycles){
     this->process_4t_cycles();
     // uint16_t new_pc = this->memory.read_16_bit(byte_address);
     this->registers->registers.PC = byte_address;
-    *cycles += 4;
+    // *cycles += 4;
 }

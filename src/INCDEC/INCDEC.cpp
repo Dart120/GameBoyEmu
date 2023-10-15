@@ -19,7 +19,7 @@ void CPU::INC_8_BIT(uint8_t* reg, uint16_t *cycles){
     this->registers->clear_flag(FLAG_N);
     // spdlog::info("F: {:B}",this->registers->registers.AF.F);
     this->registers->registers.PC++;
-    (*cycles)++;
+    // (*cycles)++;
 }
 void CPU::DEC_8_BIT(uint8_t* reg, uint16_t *cycles){
     this->process_4t_cycles();
@@ -29,7 +29,7 @@ void CPU::DEC_8_BIT(uint8_t* reg, uint16_t *cycles){
     this->registers->check_if_result_zero(result);
     
     this->registers->registers.PC++;
-    (*cycles)++;
+    // (*cycles)++;
 }
 void CPU::INC_16_BIT(uint16_t* reg, uint16_t *cycles){
     u_int16_t result = (*reg) + 1;
@@ -42,7 +42,7 @@ void CPU::INC_16_BIT(uint16_t* reg, uint16_t *cycles){
     *reg = (*reg) | (high);
     this->process_4t_cycles();
     this->registers->registers.PC++;
-    (*cycles) += 2;
+    // (*cycles) += 2;
 }
 void CPU::DEC_16_BIT(uint16_t* reg, uint16_t *cycles){
     u_int16_t result = (*reg) - 1;
@@ -55,7 +55,7 @@ void CPU::DEC_16_BIT(uint16_t* reg, uint16_t *cycles){
     *reg = (*reg) | (high);
     this->process_4t_cycles();
     this->registers->registers.PC++;
-    (*cycles) += 2;
+    // (*cycles) += 2;
                 
 }
 void CPU::DEC_FROM_MEMORY(uint16_t address, uint16_t *cycles){
@@ -67,7 +67,7 @@ void CPU::DEC_FROM_MEMORY(uint16_t address, uint16_t *cycles){
     this->process_4t_cycles();
     this->registers->check_if_result_zero(result);
     this->registers->set_flag(FLAG_N);
-    (*cycles) += 3;
+    // (*cycles) += 3;
 this->registers->registers.PC++;
 }
 void CPU::INC_FROM_MEMORY(uint16_t address, uint16_t *cycles){
@@ -77,7 +77,7 @@ void CPU::INC_FROM_MEMORY(uint16_t address, uint16_t *cycles){
     this->process_4t_cycles();
     this->registers->check_if_result_zero(result);
     this->registers->clear_flag(FLAG_N);
-    (*cycles) += 3;
+    // (*cycles) += 3;
     this->memory.write_8_bit(this->registers->registers.HL_double,result);
     this->process_4t_cycles();
     this->registers->registers.PC++;
