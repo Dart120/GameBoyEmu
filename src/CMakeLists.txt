@@ -15,6 +15,12 @@ foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(EXECUTABLE_NAME ${EXECUTABLE} NAME_WE)
     add_executable(main ${EXECUTABLE})
 endforeach()
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(main ${SDL2_LIBRARIES})
+find_package(spdlog REQUIRED)
+target_link_libraries(main PRIVATE spdlog::spdlog)
+
 
 
 

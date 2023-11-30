@@ -105,6 +105,7 @@
         "memory_resource": "cpp",
         "source_location": "cpp",
         "stop_token": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "format": "cpp"
     }
 }

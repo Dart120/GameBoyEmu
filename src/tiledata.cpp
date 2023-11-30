@@ -18,11 +18,12 @@ TileData::TileData(Memory& memory): memory(memory){
     this->object_tile_address_mem_address_ptr = &this->object_tile_address_mem_address;
 }
 void TileData::read_block_n(u_int16_t starting_at, u_int16_t ending_at, u_int8_t starting_idx, std::map < uint8_t, uint8_t* >& map_to_populate){
-    
+    // modified to always return pointers to 3
     u_int16_t curr = starting_at;
-    u_int8_t curr_idx = starting_idx;
+    u_int16_t curr_idx = starting_idx;
     while (curr < ending_at){
         map_to_populate[curr_idx] = &this->memory.mem[curr];
+        
         curr += 16;
         curr_idx++;
     }
@@ -55,8 +56,8 @@ u_int8_t* TileData::getBGTile(u_int8_t address){
     // return &u;
     
     if (this->memory.get_bit_from_addr(0xFF40,4)){
-        // std::cout << "object"<<std::endl;
-        return this->object_tile_address_mem_address[address];
+        // std::cout << " tile starts at " << (*(*this->object_tile_address_mem_address_ptr)[address])<<std::endl;
+        return (*this->object_tile_address_mem_address_ptr)[address];
     } else {
         // std::cout << "bg"<<std::endl;
         // if ((*this->bg_tile_address_mem_address_ptr).find(address) != (*this->bg_tile_address_mem_address_ptr).end()) {

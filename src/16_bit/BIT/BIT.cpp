@@ -35,7 +35,7 @@ void CPU::RES_2B_4C(uint8_t bit_n, uint16_t *cycles){
     this->process_4t_cycles();
     uint8_t sauce = ~(1 << bit_n);
     this->process_4t_cycles();
-    bool bit = this->memory.write_8_bit(this->registers->registers.HL_double,this->memory.read_8_bit(this->registers->registers.HL_double)  & sauce);
+    this->memory.write_8_bit(this->registers->registers.HL_double,this->memory.read_8_bit(this->registers->registers.HL_double)  & sauce);
     this->process_4t_cycles();
     this->registers->registers.PC += 2;
     // *cycles += 4;
@@ -53,7 +53,7 @@ void CPU::SET_2B_4C(uint8_t bit_n, uint16_t *cycles){
     this->process_4t_cycles();
     uint8_t sauce = (1 << bit_n);
     this->process_4t_cycles();
-    bool bit = this->memory.write_8_bit(this->registers->registers.HL_double,this->memory.read_8_bit(this->registers->registers.HL_double)  | sauce);
+    this->memory.write_8_bit(this->registers->registers.HL_double,this->memory.read_8_bit(this->registers->registers.HL_double)  | sauce);
     this->process_4t_cycles();
     this->registers->registers.PC += 2;
     // *cycles += 4;

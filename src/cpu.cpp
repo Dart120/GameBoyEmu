@@ -21,7 +21,6 @@
 
 #include <spdlog/spdlog.h>
 
-#include <bits/stdc++.h>
 
 using namespace std;
 // TODO pass a callback so every t cycle we can do ppu can do one cycle of stuff, the ppu can have a state machine to ensure it cyucles through its modes
@@ -223,7 +222,7 @@ void CPU::FDE(){
         if (this -> memory.read_8_bit(0xff02) == 0x81) {
             char c = this -> memory.read_8_bit(0xff01);
 
-            printf("%c", c);
+            // printf("%c", c);
             this -> memory.write_8_bit(0xff02, 0);
         }
 
