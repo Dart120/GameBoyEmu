@@ -174,7 +174,7 @@ class Registers{
         this->registers.BC_double = 0x0013;
         this->registers.DE_double = 0x00D8;
         this->registers.HL_double = 0x014D;
-        this->registers.PC = 0x0100;
+        this->registers.PC = 0x0000;
         this->registers.SP = 0xFFFE;
         this->IME = true;
         return 1;

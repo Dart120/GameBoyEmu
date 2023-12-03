@@ -23,7 +23,7 @@
 
 
 using namespace std;
-// TODO pass a callback so every t cycle we can do ppu can do one cycle of stuff, the ppu can have a state machine to ensure it cyucles through its modes
+// TODO in Desktop there is a photo of the differed instruction for tetris, can try to bug hunt this or look for better tests than blarggs
 // Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7 //00001111
 #define FLAG_N 6 //0000CHNZ
@@ -110,7 +110,7 @@ void CPU::FDE(){
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
 
-        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} IME:{} IF:{:08b} IE:{:08b} TAC:{:02X} TMA:{:02X} DIV:{:02X} TIMA:{:02X} d_cycles:{} cycles:{} 0x0000: {:04X}";
+        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}";
         // std::cout <<"cycle "<< std::dec << c 
         //   << " IME: " << this->registers->IME 
         //   << " IF: " << std::hex << this->memory.read_8_bit(0xFF0F) 
@@ -181,16 +181,7 @@ void CPU::FDE(){
             this -> memory.read_8_bit(this -> registers -> registers.PC + 1),
             this -> memory.read_8_bit(this -> registers -> registers.PC + 2),
             this -> memory.read_8_bit(this -> registers -> registers.PC + 3),
-            this -> registers -> IME,
-            * this -> memory.IF,
-            * this -> memory.IE,
-            * this -> memory.TAC,
-            * this -> memory.TMA,
-            * this -> memory.DIV,
-            * this -> memory.TIMA,
-            cycles - this -> old_cycles,
-            cycles,
-            this -> memory.read_16_bit(0x0000)
+      
         );
         this -> old_cycles = cycles;
         // m_old = m;
