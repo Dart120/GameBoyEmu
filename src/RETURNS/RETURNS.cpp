@@ -3,8 +3,9 @@
 
 void CPU::RET_COND(uint8_t COND, uint16_t *cycles){
     this->process_4t_cycles();
-    this->process_4t_cycles();
+    
     if (COND){
+        this->process_4t_cycles();
         this->process_4t_cycles();
         uint8_t low = this->memory.read_8_bit(this->registers->registers.SP);
         this->registers->registers.SP++;

@@ -1,2 +1,2 @@
 #!/bin/sh
-./src/bin/main ROMS/Tetris.gb tetris
+./build/src/main ROMS/gb-test-roms-master/instr_timing/instr_timing.gb test

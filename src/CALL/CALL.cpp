@@ -1,7 +1,7 @@
 #include "cpu.h"
 
 
-void CPU::CALL_COND(uint8_t COND, uint16_t *cycles){\
+void CPU::CALL_COND(uint8_t COND, uint16_t *cycles){
     this->process_4t_cycles();
     if (COND){
         uint8_t low = ((this->registers->registers.PC + 3) & 0xFF);

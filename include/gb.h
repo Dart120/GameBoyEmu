@@ -22,6 +22,7 @@ class GB
     void go();
     void process_t_cycle();
     system_status_struct* system;
+    std::chrono::_V2::system_clock::time_point last_sync;
 
     
     // CPU cpu;

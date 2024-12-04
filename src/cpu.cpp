@@ -32,6 +32,7 @@ using namespace std;
 CPU::CPU(Memory & memory, system_status_struct & system, std::function<void()> process_4t_cycles): memory(memory), system(system), process_4t_cycles(process_4t_cycles) {
     // this -> memory = memory;
     // this -> system = system;
+    
     this -> registers = new Registers();
     this -> registers -> set_registers();
     this -> old_cycles = 0;
@@ -45,6 +46,7 @@ CPU::CPU(Memory & memory, system_status_struct & system, std::function<void()> p
         {2, &this -> ms_11_time},
         {3, &this -> ms_8_time}
     };
+  
 
 }
 int8_t CPU::unsigned_8_to_signed_8(uint8_t n) {
@@ -93,6 +95,7 @@ if (this -> registers -> IME) {
 
 void CPU::FDE(){
     
+    
     uint16_t & cycles = this -> system. m_cycles;
     uint16_t & t_cycles = this -> system. t_cycles;
   
@@ -100,12 +103,7 @@ void CPU::FDE(){
     bool &enable_IME_next_flag_two = this->system.enable_IME_next_flag_two;
 
 
-        //  m += (cycles - cycles_old);
-        //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
-        // t_cycles += (cycles - this -> old_cycles) * 4;
-        // FIXME Uncomment below if breaking blarrgs tests
-        // this -> system. m_cycles = cycles;
-        // this -> system. t_cycles = t_cycles;
+   
         
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
@@ -124,7 +122,7 @@ void CPU::FDE(){
         //  if (m_old % 64 < m % 64){
         //     (*this->memory.DIV)++;
         //  }
-        ( * this -> memory.DIV) = t_cycles >> 8;
+        (*this -> memory.DIV) = t_cycles >> 8;
        
         
          
@@ -166,23 +164,23 @@ void CPU::FDE(){
         this -> ms_6_time = cycles >> 10;
         this -> ms_8_time = cycles >> 8;
         this -> ms_12_time = cycles >> 4;
-        doctor -> info(log_string,
-            this -> registers -> registers.AF.A,
-            this -> registers -> registers.AF.F,
-            this -> registers -> registers.BC.B,
-            this -> registers -> registers.BC.C,
-            this -> registers -> registers.DE.D,
-            this -> registers -> registers.DE.E,
-            this -> registers -> registers.HL.H,
-            this -> registers -> registers.HL.L,
-            this -> registers -> registers.SP,
-            this -> registers -> registers.PC,
-            this -> memory.read_8_bit(this -> registers -> registers.PC),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 1),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 2),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 3),
+        // doctor -> info(log_string,
+        //     this -> registers -> registers.AF.A,
+        //     this -> registers -> registers.AF.F,
+        //     this -> registers -> registers.BC.B,
+        //     this -> registers -> registers.BC.C,
+        //     this -> registers -> registers.DE.D,
+        //     this -> registers -> registers.DE.E,
+        //     this -> registers -> registers.HL.H,
+        //     this -> registers -> registers.HL.L,
+        //     this -> registers -> registers.SP,
+        //     this -> registers -> registers.PC,
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 1),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 2),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 3)
       
-        );
+        // );
         this -> old_cycles = cycles;
         // m_old = m;
         // cycles_old = cycles;
@@ -190,30 +188,32 @@ void CPU::FDE(){
         // if (p%600000 == 0){
         //     doctor->flush();
         // }
+        doctor-> info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+         this->registers->registers.AF.A,
+         this->registers->registers.AF.F,
+         this->registers->registers.BC.B,
+         this->registers->registers.BC.C,
+         this->registers->registers.DE.D,
+         this->registers->registers.DE.E,
+         this->registers->registers.HL.H,
+         this->registers->registers.HL.L,
+         this->registers->registers.SP,
+         this->registers->registers.PC,
+         this->memory.read_8_bit(this->registers->registers.PC),
+         this->memory.read_8_bit(this->registers->registers.PC + 1),
+         this->memory.read_8_bit(this->registers->registers.PC + 2),
+         this->memory.read_8_bit(this->registers->registers.PC + 3)
+         );
+         doctor-> info("FF00:{:02X}",
+         (int)this->memory.read_8_bit(0xFF00)
+         );
+        // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
 
-        //  spdlog::info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
-        //  this->registers->registers.AF.A,
-        //  this->registers->registers.AF.F,
-        //  this->registers->registers.BC.B,
-        //  this->registers->registers.BC.C,
-        //  this->registers->registers.DE.D,
-        //  this->registers->registers.DE.E,
-        //  this->registers->registers.HL.H,
-        //  this->registers->registers.HL.L,
-        //  this->registers->registers.SP,
-        //  this->registers->registers.PC,
-        //  this->memory.read_8_bit(this->registers->registers.PC),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 1),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 2),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 3)
-        //  );
-        // // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
-
-        // // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
+        // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
         if (this -> memory.read_8_bit(0xff02) == 0x81) {
             char c = this -> memory.read_8_bit(0xff01);
 
-            // printf("%c", c);
+            printf("%c", c);
             this -> memory.write_8_bit(0xff02, 0);
         }
 
@@ -3293,7 +3293,7 @@ void CPU::FDE(){
 
         default: {
             // spdlog::info("Unimplemented 8 bit {:X}", opcode);
-            cout << "Unimplemented 8 bit " << (int) opcode << std::endl;
+            cout << "Unimplemented 8 bit " << std::hex << (int) opcode << std::endl;
             break;
         }
 

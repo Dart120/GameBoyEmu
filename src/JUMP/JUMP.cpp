@@ -10,10 +10,11 @@ void CPU::JUMP_ON_COND_s8(bool cond, uint16_t *cycles){
         // (*cycles) += 3;
     } else {
         this->process_4t_cycles();
+        
         // (*cycles) += 2;
     }
-    this->registers->registers.PC += 2;
     
+    this->registers->registers.PC += 2;
 }
 void CPU::JUMP_UNCOND_s8(uint16_t *cycles){
     this->process_4t_cycles();

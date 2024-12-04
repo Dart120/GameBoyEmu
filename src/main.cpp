@@ -18,6 +18,9 @@ int main(int argc, char *argv[])
         if (!gb.memory->read_rom(argv[1])){
             std::cout << "Rom read not working\n";
         }
+        // if (!gb.memory->read_boot_rom("ROMS/dmg_boot.bin")){
+        //     std::cout << "BOOTROM read not working\n";
+        // }
      
     }else{
         std::cout << "Please supply path to rom\n";

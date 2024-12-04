@@ -32,7 +32,7 @@ class Memory
   
     system_status_struct& system;
     MODES& GPU_mode;
-    int fill_memory(uint8_t num);
+    void fill_memory();
     uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t set_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t clear_bit_from_addr(uint16_t address, uint8_t bit);
@@ -41,6 +41,7 @@ class Memory
     uint16_t read_16_bit(uint16_t address);
     int write_16_bit(uint16_t address, uint16_t data);
     bool read_rom(char* name);
+    bool read_boot_rom(char* name);
     bool is_inaccessible(uint16_t address);
     // Member Functions()
  

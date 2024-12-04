@@ -9,6 +9,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <chrono>
+#include <thread>
 using namespace std::chrono;
 
 
@@ -16,6 +17,7 @@ using namespace std::chrono;
 
 
 GB::GB(std::string log_to){
+    auto last_sync = std::chrono::high_resolution_clock::now();
     
     try 
     {
@@ -32,7 +34,7 @@ GB::GB(std::string log_to){
 
         // Set the logger level, e.g., info, warn, error, etc.
         doctor->set_level(spdlog::level::info);
-        logger->set_level(spdlog::level::off);
+        logger->set_level(spdlog::level::info);
         
        
 
@@ -67,7 +69,7 @@ GB::GB(std::string log_to){
     this->cpu = new CPU(*memory,*this->system,func);
 }
 void GB::go() {
-    this->gpu->render();
+  
     auto start = std::chrono::steady_clock::now();
     while(1){
         
@@ -75,12 +77,16 @@ void GB::go() {
         // std::function<void()> func = [this](){ this->process_t_cycle(); };
         
         this->cpu->FDE();
-        auto now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() > 16.7){
-          
-            this->gpu->render();
-            start = std::chrono::steady_clock::now();
+        SDL_Event e;
+    // Handle events on queue
+        while (SDL_PollEvent(&e) != 0) {
+            // User requests quit
+            if (e.type == SDL_QUIT) {
+                // quit = true;
+                exit(0);
+            }
         }
+
         
         // SDL_Delay(1);
         // std::cout<<"after cpu ROWS: " << this->gpu->VP_ROWS << std::endl;
@@ -89,10 +95,26 @@ void GB::go() {
     }
 }
 void GB::process_t_cycle(){
+    const double t_cycle_time_ns = 238.0; // Nanoseconds per T-cycle
+    const int cycles_per_callback = 4;
+    const double callback_time_ns = t_cycle_time_ns * cycles_per_callback;
     // std::cout<<"T cycle processed" << std::endl;
     this->system->m_cycles += 1;
     this->system->t_cycles += 4;
     this->gpu->do_4_dots();
+    auto now = std::chrono::high_resolution_clock::now();
+    double elapsed_ns = std::chrono::duration<double, std::nano>(now - last_sync).count();
+
+    // Calculate expected time for the work done
+    double expected_ns = callback_time_ns;
+
+    if (elapsed_ns < expected_ns) {
+        // Wait for the remaining time
+        std::this_thread::sleep_for(std::chrono::nanoseconds(static_cast<int>(expected_ns - elapsed_ns)));
+    }
+
+    // Update last sync time
+    last_sync = std::chrono::high_resolution_clock::now();
 
 
 }

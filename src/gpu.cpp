@@ -15,155 +15,200 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <map>
+
+#include <spdlog/sinks/basic_file_sink.h>
+
+#include <spdlog/spdlog.h>
 // void printArray(std::array<unsigned char, 160> a,int n){
 // 	for(int i=0;i<n;i++)
 //       std::cout<<a[i]<<" ";
 //   	std::cout<<std::endl;
 // }
-GPU::GPU(Memory& memory, MODES& GPU_modes,int scale): memory(memory),tiledata(memory),background(memory,tiledata), window(memory,tiledata), object(memory,tiledata), GPU_modes(GPU_modes), buffer{}, display_ctl(buffer) {
+#define STAT 0xFF41
+#define LCDC 0xFF40
+#define SCX 0xFF43
+#define LYC 0xFF45
+#define IF 0xFF0F
 
-}
+#define SCY 0xFF42
+#define WX 0xFF4B
+#define WY 0xFF4A
+using namespace std;
+// TODO banning CPU and PPU from memory
+// TODO Spirites
+// TODO Turning off LCD
+// TODO palettes
+// TODO DMA Trans
+//  
+GPU::GPU(Memory& memory, MODES& GPU_modes,int scale): memory(memory),tiledata(memory),background(memory,tiledata), window(memory,tiledata), object(memory,tiledata), GPU_modes(OAM_SCAN), buffer{}, display_ctl(buffer), pixel_fetcher(memory) {}
+
 void GPU::do_4_dots(){
-    
-    int STAT = 0xFF41;
-    int IF = 0xFF0F;
-    int LY = 0xFF44;
-    int LYC = 0xFF45;
-    if (!this->memory.get_bit_from_addr(0xFF40, 7)) {
-        std::cout<<"LCD OFF: " << (int) !this->memory.get_bit_from_addr(0xFF40, 7) << std::endl;
-    }
-    
-    if (!this->memory.get_bit_from_addr(0xFF40, 7)){
-        this->clock = 0;
-        this->memory.write_8_bit(LY,0);
-        this->memory.write_8_bit(STAT,0);
-        this->GPU_modes = H_BLANK;
-        return;
-    }
-    this->clock += 4;
 
-    const char* modes[] = {"H_BLANK", "V_BLANK",  "OAM_SCAN", "DRAW"};
-    MODES curr_mode = static_cast<MODES>(this->memory.read_8_bit(STAT) & 0x3);
-    // std::cout<<"LCD MODE: " << curr_mode << " LCD CLOCK: " << this->clock << " STAT: " <<(int) this->memory.mem[0xFF41] <<" LY: " << (int) this->memory.read_8_bit(LY)<<" LYC: " << (int) this->memory.read_8_bit(LYC) << std::endl;
-    // std::cout std::endl;
-    MODES next_mode;
-    if (this->memory.read_8_bit(LY) >= this->VP_ROWS)
+    uint8_t LY = this->memory.read_8_bit(0xFF44);
+    spdlog::info("LY:{:02X} MODE:{:02X} cycles_left:{} X_pos :{}",
+            LY,
+            GPU_modes,
+            cycles_left,
+            X_POS);
+    switch (this->GPU_modes)
     {
-        // std::cout<<"Next mode: " << 1<< std::endl;
-        // std::cout<<"LY: " << (int) this->memory.read_8_bit(LY)<<" ROWS: " << this->VP_ROWS << std::endl;
-        next_mode = V_BLANK;
-        if (next_mode != curr_mode){
-            if (this->memory.get_bit_from_addr(STAT,4)){
-                this->memory.set_bit_from_addr(IF,1);
+        case OAM_SCAN:{
+            WYeqLY = false;
+            if (this->cycles_left == 80){
+                if (this->memory.get_bit_from_addr(STAT, 5)) this->memory.set_bit_from_addr(IF, 1);
+                this->OAM_scan();
+                this->cycles_left -= 4;
+                if (LY == this->memory.read_8_bit(LYC) && this->memory.set_bit_from_addr(STAT, 6)) this->memory.set_bit_from_addr(IF, 1);
+                else this->memory.clear_bit_from_addr(STAT, 2);
             }
-        }
-    }
-    else if (this->clock <= this->mode_3_limit)
-    {
-        // under 204
-        // std::cout<<"NEXT IS DRAW"<< std::endl;
-        // std::cout<<"Next mode: " << 3<< std::endl;
-        next_mode = DRAW;
-        if (next_mode != curr_mode){
-            this->get_line(this->memory.read_8_bit(LY));
-            for (size_t i = 0; i < 160; i++)
-            {
-                this->buffer[this->memory.read_8_bit(LY)][i] = this->curr_line[i];
+            else {
+                this->cycles_left -= 4;
             }
-            this->display_ctl.update(this->memory.read_8_bit(LY));
-            
-        // std::cout <<(int) this->curr_line[0] << std::endl;
-        // exit(0);
-            
-            
-        }
-    }
-    else if (this->clock <= this->mode_2_limit)
-    {
-        // Under 376
-        // std::cout<<"NEXT IS OAM_SCAN"<< std::endl;
-        // std::cout<<"Next mode: " << 2<< std::endl;
-        next_mode = OAM_SCAN;
-        if (next_mode != curr_mode){
-            if (this->memory.get_bit_from_addr(STAT,5)){
-
-                this->memory.set_bit_from_addr(IF,1);
+            if (this->cycles_left == 0){
+                this->GPU_modes = DRAW;
+                this->memory.set_bit_from_addr(STAT, 1);
+                this->memory.set_bit_from_addr(STAT, 0);
+                this->cycles_left = 376;
             }
-           
+            break;}
+    case DRAW:{
+        if (cycles_left == 376){
+            dump_counter = this->memory.read_8_bit(SCX) % 8;
+
         }
-
-    }
-    else if (this->clock <= 456+32)
-    {
-        // std::cout<<"Next mode: " << 0<< std::endl;
-        // std::cout<<"NEXT IS H_BLANK"<< std::endl;
-        next_mode = H_BLANK;
-        if (next_mode != curr_mode){
-            if (this->memory.get_bit_from_addr(STAT,3)){
-                this->memory.set_bit_from_addr(IF,1);
-            }
-        }
-    }
-    else
-    {
-        throw std::runtime_error("Unregisted LCD Mode");
-    }
-
-//    std::cout<<" STAT: " <<(int) this->memory.mem[0xFF41] <<" next mode: " <<(int) next_mode << std::endl;
-    this->memory.write_8_bit(STAT,(this->memory.read_8_bit(STAT) & 0xFC) | next_mode); 
-    // std::cout<< " STAT: " <<(int) this->memory.mem[0xFF41] << std::endl;
-
-    if (this->memory.read_8_bit(LY) == this->memory.read_8_bit(LYC)){
-        this->memory.set_bit_from_addr(STAT,2);
-        this->memory.set_bit_from_addr(IF,1);
-
-    } else {
-        this->memory.clear_bit_from_addr(STAT,2);
-    }
-    if (this->clock >= this->DOTS_PER_LINE){
-        this->clock = 0;
-        this->memory.mem[LY]++;
-        if (this->memory.read_8_bit(LY) > this->MAX_LY) {
-            this->memory.write_8_bit(LY,0);
-        } 
-        if (this->memory.read_8_bit(LY) == this->VP_ROWS) {
-            this->memory.set_bit_from_addr(IF,0);
-        } 
+      
+        this->DRAW_2_dots(LY);
+       
+        if (this->DRAW_2_dots(LY)){
+            GPU_modes = H_BLANK;
         
-    }
-}
-void GPU::get_line(u_int8_t line_n){
-    // TODO bg_pixels or win pixels seem to just be zeros, might be a mem issue tbh need to look into it but the value 3 is generated 
-    // by roberts for the special at line 128 by the window at an early x so maybe look into window memory figure out whats going on
-    std::array<u_int8_t,160> bg_pixels = this->background.read_line(line_n);
-
-    std::array<u_int8_t,160> win_pixels;
-    win_pixels.fill(5);
-    // bg_pixels.fill(400);
-    // std::cout << " Window enabled " <<(int) this->memory.get_bit_from_addr(0xFF40,5) << std::endl;
-    if (this->memory.get_bit_from_addr(0xFF40,5)){
-        win_pixels = this->window.read_line(line_n);
-    }
-    
-    
-    for (size_t i = 0; i < 160; i++)
-    {
-        this->curr_line[i] = win_pixels[i];
-        if (this->curr_line[i] == 5){
-            this->curr_line[i] = bg_pixels[i];
+            this->memory.clear_bit_from_addr(STAT, 1);
+            this->memory.clear_bit_from_addr(STAT, 0);
+            H_BLANK_cycles = cycles_left;
+            
         }
-        // if (line_n == 128){
-        //     std::cout << " line_n " <<(int) line_n << " x "<<(int) i << " value " << (int) this->curr_line[i] << std::endl;
-        // }
+        break;}
+    case H_BLANK:{
+        if (cycles_left == H_BLANK_cycles){ 
+            if (this->memory.get_bit_from_addr(STAT, 3)) this->memory.set_bit_from_addr(IF, 1);
+        }
+        cycles_left -= 4;
+        
+        if (cycles_left <= 0){
+            // cout<<(int)this->memory.read_8_bit(0xFF44)<<endl;
+            this->memory.write_8_bit(0xFF44, ++LY);
+            // cout<<(int)this->memory.read_8_bit(0xFF44)<<endl;
+            if (LY == 144){ 
+                GPU_modes = V_BLANK;
+                cycles_left = 4560;
+                pixel_fetcher.reset(false);
+                this->memory.set_bit_from_addr(IF,0);
+                if (this->memory.get_bit_from_addr(STAT, 4)) this->memory.set_bit_from_addr(IF, 1);
+                if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
+                display_ctl.render();
+                
+            } else { 
+         
+                GPU_modes = OAM_SCAN;
+                cycles_left = 80;
+                pixel_fetcher.reset(false);
+            }
+        }
+        break;}
+    case V_BLANK:{
+
+        cycles_left -= 4;
+        if (cycles_left != 4560 && cycles_left % 456 == 0){
+            this->memory.write_8_bit(0xFF44, ++LY);
+            if (LY == this->memory.read_8_bit(LYC) && this->memory.set_bit_from_addr(STAT, 6)) this->memory.set_bit_from_addr(IF, 1);
+            else this->memory.clear_bit_from_addr(STAT, 2);
+            // if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
+        }
+        if (cycles_left == 0){
+            this->memory.write_8_bit(0xFF44, 0);
+            GPU_modes = OAM_SCAN;
+            cycles_left = 80;
+            pixel_fetcher.WLC = 0;
+          
+        }
+        break;}
+
+    default:
+        break;
     }
 
-    this->object.object_pixels_on_line(line_n,this->curr_line);
+}
+bool GPU::DRAW_2_dots(u_int8_t LY){
+    // must check if fifo is empty!
+    bool was_empty = pixel_fetcher.BG_FIFO.empty();
+    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty()){ 
+        display_ctl.update(LY, X_POS, pixel_fetcher.BG_FIFO.front().color);
+        X_POS++;
+        pixel_fetcher.BG_FIFO.pop();
+        
+    } else if (dump_counter){
+        dump_counter--;
+    }
 
-    //  exit(0);
     
 
+  
+    if(!pixel_fetcher.rendering_window){
+        check_window(LY);
+    }
+    
 
+    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty()){ 
+        display_ctl.update(LY, X_POS, pixel_fetcher.BG_FIFO.front().color);
+        if (check_EOL()) {
+            cycles_left -= 2;
+            return true;
+        }
+        pixel_fetcher.BG_FIFO.pop();
+    } else if (dump_counter){
+        dump_counter--;
+    }
+ 
+    
+    
+    if(!pixel_fetcher.rendering_window){
+        check_window(LY);
+    }
+    pixel_fetcher.process_2_cycles(LY, was_empty);
+    cycles_left -= 2;
+    return false;
 }
-void GPU::render(){
-    this->display_ctl.render();
+void GPU::check_window(uint8_t LY){
+    if (LY <= this->memory.read_8_bit(WY)){
+        WYeqLY = true;
+    }
+    bool should_switch =  WYeqLY && this->memory.get_bit_from_addr(LCDC, 5) && X_POS >= this->memory.read_8_bit(WX) - 7;
+    if (should_switch){
+        pixel_fetcher.switch_to_window();
+    }
+}
+bool GPU::check_EOL(){
+    if (++X_POS == 160){
+        X_POS = 0;
+        return true;
+    }
+    return false;
+}
+void GPU::OAM_scan(){
+    uint8_t LY = this->memory.read_8_bit(0xFF44);
+    uint16_t addr = 0xFE00;
+    bool tall_mode = ((this->memory.read_8_bit(0xFF40) >> 2 ) & 1);
+    for (uint8_t oam_idx = 0; oam_idx < 40; oam_idx++){
+        uint8_t y_pos = this->memory.read_8_bit(addr);
+        uint8_t x_pos = this->memory.read_8_bit(addr + 1);
+        uint8_t tile_number = this->memory.read_8_bit(addr + 2);
+        uint8_t sprite_flags = this->memory.read_8_bit(addr + 3);
+        addr += 4;
+        if (LY + 16 >= y_pos && LY + 16 < y_pos + (tall_mode ? 16 : 8)){
+            sprite_buffer.push_back({y_pos, x_pos, tile_number, sprite_flags});
+            if (sprite_buffer.size() == 10){
+                break;
+            }
+        }
+    }
 }

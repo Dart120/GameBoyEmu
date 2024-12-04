@@ -106,7 +106,7 @@ void CPU::LD_2B_3C_HL(uint16_t *cycles){
     this->memory.write_8_bit(this->registers->registers.HL_double,d8);
     this->process_4t_cycles();
     // (*cycles) += 2;
-    (this->registers->registers.PC) += 3;
+    (this->registers->registers.PC) += 2;
 }
 void CPU::LD_2B_3C_MEM_TO_ACC(uint16_t *cycles){
     this->process_4t_cycles();

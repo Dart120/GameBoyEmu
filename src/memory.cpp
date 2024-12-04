@@ -29,16 +29,22 @@
         TMA = mem + 0xFF06;
         TIMA = mem + 0xFF05;
         // this->system = system;
-        // if(!this->fill_memory(76)){
-        //     spdlog::error("Memory not filled");
-        // }
+        this->fill_memory();
+    
         
        
      
     };
-   int Memory::fill_memory(uint8_t num){
-       memset(this->mem,num,65536);
-       return 1;
+   void Memory::fill_memory(){
+       this->mem[0xFF40] = 0x91;
+       this->mem[0xFF46] = 0xFF;
+       this->mem[0xFF47] = 0xFC;
+       this->mem[0xFF48] = 0xFF;
+       this->mem[0xFF49] = 0xFF;
+       this->mem[0xFF0F] = 0xE1;
+       this->mem[0xFF00] = 0x0F;
+       this->mem[0xFF02] = 0x7E;
+       this->mem[0xFF04] = 0xAC;
    }
    bool Memory::is_inaccessible(uint16_t address){
     // need to check 
@@ -87,6 +93,7 @@ uint8_t Memory::read_8_bit(uint16_t address){
     if (this->is_inaccessible(address)){
             return 0xFF;
         }
+ 
     // if (address == 0xFF44){
     //     return 0x90;
     // }
@@ -96,6 +103,7 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     if (this->is_inaccessible(address)){
             return 0xFF;
         }
+    // FIXME
     if (address == 0xFF04){
         this->system.m_cycles = 0;
         this->system.t_cycles = 0;
@@ -151,6 +159,26 @@ bool Memory::read_rom(char* path){
         std::cout<<"Rom too big "<< size << "> 32767" "\n";
         return 0;
     }
+    myFile.seekg(0,std::ios::beg);
+    myFile.read ((char*) this -> mem, size);
+    if (!myFile) {
+        spdlog::info("Rom not read");
+        std::cout<<"Rom not read"<< "\n";
+        exit(1);
+        return 0;
+    }
+    // std::cout<<"Cartridge Type: "<<std::hex<<(int)this->mem[0x0147]<< std::endl;
+    return 1;
+}
+bool Memory::read_boot_rom(char* path){
+    // FIXME,Seperate bootrom and normal room
+    std::ifstream myFile (path, std::ios::in | std::ios::binary);
+    if (!myFile.is_open()) {
+        std::cout << "Failed to open ROM file" << "\n";
+        return false;
+    }
+    myFile.seekg(0,std::ios::end);
+    int size = (int) myFile.tellg();
     myFile.seekg(0,std::ios::beg);
     myFile.read ((char*) this -> mem, size);
     if (!myFile) {
