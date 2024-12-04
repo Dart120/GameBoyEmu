@@ -35,17 +35,17 @@ CPU::CPU(Memory & memory, system_status_struct & system, std::function<void()> p
     
     this -> registers = new Registers();
     this -> registers -> set_registers();
-    this -> old_cycles = 0;
-    this -> ms_11_time = 0;
-    this -> ms_6_time = 0;
-    this -> ms_8_time = 0;
-    this -> ms_12_time = 0;
-    this->TAC_to_prefix = {
-        {0, &this -> ms_6_time},
-        {1, &this -> ms_12_time},
-        {2, &this -> ms_11_time},
-        {3, &this -> ms_8_time}
-    };
+    // this -> old_cycles = 0;
+    // this -> ms_11_time = 0;
+    // this -> ms_6_time = 0;
+    // this -> ms_8_time = 0;
+    // this -> ms_12_time = 0;
+    // this->TAC_to_prefix = {
+    //     {0, &this -> ms_6_time},
+    //     {1, &this -> ms_12_time},
+    //     {2, &this -> ms_11_time},
+    //     {3, &this -> ms_8_time}
+    // };
   
 
 }
@@ -96,8 +96,7 @@ if (this -> registers -> IME) {
 void CPU::FDE(){
     
     
-    uint16_t & cycles = this -> system. m_cycles;
-    uint16_t & t_cycles = this -> system. t_cycles;
+
   
     bool &enable_IME_next_flag_one = this->system.enable_IME_next_flag_one;
     bool &enable_IME_next_flag_two = this->system.enable_IME_next_flag_two;
@@ -118,52 +117,54 @@ void CPU::FDE(){
             enable_IME_next_flag_one = false;
             enable_IME_next_flag_two = true;
         }
+
+        uint16_t cycles = 0;
         //  timing
         //  if (m_old % 64 < m % 64){
         //     (*this->memory.DIV)++;
         //  }
-        (*this -> memory.DIV) = t_cycles >> 8;
+        // (*this -> memory.DIV) = t_cycles >> 8;
        
         
          
       
-        if (this -> memory.get_bit_from_addr(0xFF07, 2) == 1) {
-            if (this->TAC_to_prefix.find(( * this -> memory.TAC) & 3) != this->TAC_to_prefix.end()) {
-                    bool inc = false;
-                    switch (( * this -> memory.TAC) & 3)
-                    {
-                    case 0:
-                        inc = cycles >> 5 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 1:
-                        inc = cycles >> 10 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 2:
-                        inc = cycles >> 8 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 3:
-                        inc = cycles >> 4  != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
+        // if (this -> memory.get_bit_from_addr(0xFF07, 2) == 1) {
+        //     if (this->TAC_to_prefix.find(( * this -> memory.TAC) & 3) != this->TAC_to_prefix.end()) {
+        //             bool inc = false;
+        //             switch (( * this -> memory.TAC) & 3)
+        //             {
+        //             case 0:
+        //                 inc = cycles >> 5 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 1:
+        //                 inc = cycles >> 10 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 2:
+        //                 inc = cycles >> 8 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 3:
+        //                 inc = cycles >> 4  != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
                     
-                    default:
-                        break;
-                    }
+        //             default:
+        //                 break;
+        //             }
 
-                    if (inc){
-                        if (*this->memory.TIMA == 0xFF) {
-                            *this->memory.TIMA = *this->memory.TMA;
-                            this->memory.set_bit_from_addr(0xFF0F,2);
-                        }
-                        (*this->memory.TIMA)++;
-                    }
+        //             if (inc){
+        //                 if (*this->memory.TIMA == 0xFF) {
+        //                     *this->memory.TIMA = *this->memory.TMA;
+        //                     this->memory.set_bit_from_addr(0xFF0F,2);
+        //                 }
+        //                 (*this->memory.TIMA)++;
+        //             }
                     
-                }
-        }
+        //         }
+        // }
 
-        this -> ms_11_time = cycles >> 5;
-        this -> ms_6_time = cycles >> 10;
-        this -> ms_8_time = cycles >> 8;
-        this -> ms_12_time = cycles >> 4;
+        // this -> ms_11_time = cycles >> 5;
+        // this -> ms_6_time = cycles >> 10;
+        // this -> ms_8_time = cycles >> 8;
+        // this -> ms_12_time = cycles >> 4;
         // doctor -> info(log_string,
         //     this -> registers -> registers.AF.A,
         //     this -> registers -> registers.AF.F,
@@ -181,7 +182,7 @@ void CPU::FDE(){
         //     this -> memory.read_8_bit(this -> registers -> registers.PC + 3)
       
         // );
-        this -> old_cycles = cycles;
+
         // m_old = m;
         // cycles_old = cycles;
 
@@ -204,9 +205,9 @@ void CPU::FDE(){
          this->memory.read_8_bit(this->registers->registers.PC + 2),
          this->memory.read_8_bit(this->registers->registers.PC + 3)
          );
-         doctor-> info("FF00:{:02X}",
-         (int)this->memory.read_8_bit(0xFF00)
-         );
+        //  doctor-> info("FF00:{:02X}",
+        //  (int)this->memory.read_8_bit(0xFF00)
+        //  );
         // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
 
         // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
@@ -1397,7 +1398,7 @@ void CPU::FDE(){
         }
         case 0x8E: {
             // spdlog::info("ADC A, (HL) {:X}", opcode);
-            this -> ADC_1B_1C(this -> memory.read_8_bit(this -> registers -> registers.HL_double), & cycles);
+            this -> ADC_1B_2C_8Bit(this -> memory.read_8_bit(this -> registers -> registers.HL_double), & cycles);
             break;
         }
         case 0x8F: {

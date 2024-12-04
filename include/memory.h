@@ -2,6 +2,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 #include <stdint.h>
+#include <functional>
 #include "system_status.h"
 #include "modes.h"
 
@@ -10,7 +11,7 @@ class Memory
 {
     // Access specifier
     public:
-    Memory(system_status_struct& system, MODES& GPU_mode);
+    Memory(std::function<void()> reset_timer, MODES& GPU_mode);
     // Data Members
     
     uint8_t* mem;
@@ -30,7 +31,7 @@ class Memory
     uint8_t* TMA;
     uint8_t* TIMA;
   
-    system_status_struct& system;
+    std::function<void()> reset_timer;
     MODES& GPU_mode;
     void fill_memory();
     uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);

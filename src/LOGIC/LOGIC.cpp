@@ -13,6 +13,7 @@ void CPU::AND_1B_1C(uint8_t reg1, uint16_t *cycles){
 }
 void CPU::AND_1B_2C(uint16_t address, uint16_t *cycles){
     this->process_4t_cycles();
+    this->process_4t_cycles();
     uint8_t value = this->memory.read_8_bit(address);
     this->registers->set_flag(FLAG_H);
     this->registers->clear_flag(FLAG_C);

@@ -42,6 +42,27 @@ void CPU::ADC_1B_1C(uint8_t reg1, uint16_t *cycles){
     // *cycles++;
     this->registers->registers.PC++;
 }
+void CPU::ADC_1B_2C(uint16_t *cycles){
+    this->process_4t_cycles();
+    this->process_4t_cycles();
+    uint8_t c = this->registers->get_flag(FLAG_C);
+    uint8_t reg1 = this->memory.read_8_bit(this->registers->registers.HL_double);
+
+    this->registers->clear_flag(FLAG_N);
+    this->registers->check_H_8_ADD(reg1,(uint8_t)  (c));
+    this->registers->check_C_8_ADD(reg1,(uint8_t)  (c));
+    uint8_t to_add = (reg1 + c);
+    if (!this->registers->get_flag(FLAG_H)){
+        this->registers->check_H_8_ADD(this->registers->registers.AF.A,to_add);
+    }
+    if (!this->registers->get_flag(FLAG_C)){
+        this->registers->check_C_8_ADD(this->registers->registers.AF.A,to_add);
+    }
+    this->registers->registers.AF.A += (uint8_t) (reg1 + c);
+    this->registers->check_if_result_zero(this->registers->registers.AF.A);
+    // *cycles++;
+    this->registers->registers.PC++;
+}
 void CPU::ADC_2B_2C(uint16_t *cycles){
     this->process_4t_cycles();
     uint8_t d8 = this->memory.read_8_bit(this->registers->registers.PC + 1);

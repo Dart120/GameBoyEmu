@@ -4,6 +4,7 @@
 #define FMT_HEADER_ONLY
 #include <fmt/core.h> 
 #include "gb.h"
+#include "timer.h"
 #include "system_status.h"
 #include "modes.h"
 #include <spdlog/sinks/basic_file_sink.h>
@@ -54,18 +55,18 @@ GB::GB(std::string log_to){
     MODES GPU_Mode = OAM_SCAN;
     MODES& GPU_Mode_REF = GPU_Mode;
 
-
+    std::function<void()> func2 = [this](){ this->reset_timer(); };
+    
     this->system = new system_status_struct;
     this->system->t_cycles = 0;
     this->system->m_cycles = 0;
-    // System.cycles = 0;
-    this->system_counter = 0;
-    this->memory = new Memory(*this->system, GPU_Mode_REF);
+    this->memory = new Memory(func2,GPU_Mode_REF);
     this->gpu = new GPU(*memory, GPU_Mode_REF,2);
     
     // std::cout<<" ROWS: " << this->gpu->VP_ROWS << std::endl;
-    // this->clock = new Clock();
+    this->timer = new Timer(*memory);
     std::function<void()> func = [this](){ this->process_t_cycle(); };
+    
     this->cpu = new CPU(*memory,*this->system,func);
 }
 void GB::go() {
@@ -95,13 +96,14 @@ void GB::go() {
     }
 }
 void GB::process_t_cycle(){
+    this->timer->process_4t_cycles();
     const double t_cycle_time_ns = 238.0; // Nanoseconds per T-cycle
     const int cycles_per_callback = 4;
     const double callback_time_ns = t_cycle_time_ns * cycles_per_callback;
     // std::cout<<"T cycle processed" << std::endl;
-    this->system->m_cycles += 1;
-    this->system->t_cycles += 4;
+ 
     this->gpu->do_4_dots();
+
     auto now = std::chrono::high_resolution_clock::now();
     double elapsed_ns = std::chrono::duration<double, std::nano>(now - last_sync).count();
 
@@ -115,6 +117,7 @@ void GB::process_t_cycle(){
 
     // Update last sync time
     last_sync = std::chrono::high_resolution_clock::now();
-
-
+}
+void GB::reset_timer(){
+    this->timer->reset_timer();
 }

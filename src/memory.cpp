@@ -9,7 +9,7 @@
 #include "modes.h"
 // pass a pointer to the gpu field
 // TODO Deal with DMA Transfer
-    Memory::Memory(system_status_struct& system, MODES& GPU_mode): system(system), GPU_mode(GPU_mode) {
+    Memory::Memory(std::function<void()> reset_timer, MODES& GPU_mode): reset_timer(reset_timer), GPU_mode(GPU_mode) {
         std::cout<<"Memory has been created"<< "\n";
         mem = new uint8_t[65536];
 
@@ -103,11 +103,9 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     if (this->is_inaccessible(address)){
             return 0xFF;
         }
-    // FIXME
+    // FIXME TIME
     if (address == 0xFF04){
-        this->system.m_cycles = 0;
-        this->system.t_cycles = 0;
-        this->mem[address] = 0;
+        reset_timer();
         return 0;
     }
     this->mem[address] = data;
@@ -131,14 +129,12 @@ int Memory::write_16_bit(uint16_t address, uint16_t data){
     this->mem[address] = first;
     this->mem[address + 1] = second;
     if (address == 0xFF04){
-        this->system.m_cycles = 0;
-        this->system.t_cycles = 0;
+        reset_timer();
         this->mem[address] = 0;
         return 0;
     }
     if (address + 1 == 0xFF04){
-        this->system.m_cycles = 0;
-        this->system.t_cycles = 0;
+        reset_timer();
         this->mem[address + 1] = 0;
         return 0;
     }

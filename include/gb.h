@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "cpu.h"
 #include "gpu.h"
+#include "timer.h"
 #include "system_status.h"
 #include <spdlog/spdlog.h>
 #include <vector>
@@ -21,6 +22,8 @@ class GB
     CPU* cpu;
     void go();
     void process_t_cycle();
+    void reset_timer();
+    Timer* timer;
     system_status_struct* system;
     std::chrono::_V2::system_clock::time_point last_sync;
 

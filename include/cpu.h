@@ -30,12 +30,7 @@ class CPU
     std::function<void()> process_4t_cycles;
     
     Registers* registers;
-    int old_cycles;
-    uint16_t ms_6_time;
-    uint16_t ms_12_time;
-    uint16_t ms_11_time;
-    uint16_t ms_8_time;
-    std::map < uint8_t, uint16_t* > TAC_to_prefix;
+ 
 
     bool halted = false;
     // Data Members
@@ -80,6 +75,7 @@ class CPU
     void ADD_1B_1C(uint8_t reg1, uint16_t *cycles);
     void ADD_2B_2C(uint16_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t reg1, uint16_t *cycles);
+    void ADC_1B_2C(uint16_t *cycles);
     void ADC_1B_1C(uint8_t reg1, uint16_t *cycles);
     void ADC_2B_2C(uint16_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint16_t *cycles);
