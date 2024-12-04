@@ -120,7 +120,7 @@ void GPU::do_4_dots(){
         cycles_left -= 4;
         if (cycles_left != 4560 && cycles_left % 456 == 0){
             this->memory.write_8_bit(0xFF44, ++LY);
-            if (LY == this->memory.read_8_bit(LYC) && this->memory.get_bit_from_addr(STAT, 6)) this->memory.set_bit_from_addr(IF, 1);
+            if (LY == this->memory.read_8_bit(LYC) && this->memory.set_bit_from_addr(STAT, 6)) this->memory.set_bit_from_addr(IF, 1);
             else this->memory.clear_bit_from_addr(STAT, 2);
             // if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
         }
