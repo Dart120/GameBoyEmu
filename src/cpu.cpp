@@ -59,8 +59,11 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n) {
 void CPU::handle_interrupts() {
     uint8_t todo = ( * this -> memory.IE) & ( * this -> memory.IF);
     if (todo){
+        
          this->halted = false;
 if (this -> registers -> IME) {
+    cout<< "An interrupt is being handled"<<endl;
+    
 
         
         uint8_t target = 7;
@@ -77,13 +80,25 @@ if (this -> registers -> IME) {
             }
         }
         u_int16_t trash = 10;
+        cout<< "target " <<(int) target<<endl;
+        // exit(0);
 
         if (bit_to_isr.find(target) != bit_to_isr.end()) {
             // std::cout <<"here: "<<(int) todo<<std::endl;
             // exit(0);
            
             * this -> memory.IF &= ~(1 << target);
-            this -> PUSH(this -> registers -> registers.PC, & trash);
+       
+            this->registers->registers.SP--;
+            uint8_t high = this->registers->registers.PC >> 8;
+            this->memory.write_8_bit(this->registers->registers.SP--,high);
+          
+            uint8_t low = this->registers->registers.PC & 0xFF;
+            this->memory.write_8_bit(this->registers->registers.SP,low);
+          
+            // *cycles += 4;
+            this->registers->registers.PC++;
+            
             this -> registers -> registers.PC = bit_to_isr[target];
             this -> registers -> IME = false;
         }
@@ -1777,6 +1792,8 @@ void CPU::FDE(){
         case 0xD9: { //Needs interrupt for RETI
             // spdlog::info("RETI {:X}", opcode);
             this -> RET_UNCOND( & cycles);
+            this -> registers -> IME = 1;
+
             break;
         }
         case 0xDA: {
@@ -1927,6 +1944,7 @@ void CPU::FDE(){
         case 0xFB: {
 
             // spdlog::info("EI {:X}", opcode);
+            cout << "EI"<<endl;
             // enable_IME_next_flag_one = true;
             this->process_4t_cycles();
             this -> registers -> IME = true;

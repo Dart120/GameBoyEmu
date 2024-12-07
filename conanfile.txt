@@ -1,6 +1,5 @@
 [requires]
-fmt/8.1.1
-spdlog/1.10.0
-
+spdlog/1.12.0
+fmt/10.2.1
 [generators]
 CMakeToolchain

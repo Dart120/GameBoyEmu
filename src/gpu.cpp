@@ -45,11 +45,11 @@ GPU::GPU(Memory& memory, MODES& GPU_modes,int scale): memory(memory),tiledata(me
 void GPU::do_4_dots(){
 
     uint8_t LY = this->memory.read_8_bit(0xFF44);
-    spdlog::info("LY:{:02X} MODE:{:02X} cycles_left:{} X_pos :{}",
-            LY,
-            GPU_modes,
-            cycles_left,
-            X_POS);
+    // spdlog::info("LY:{:02X} MODE:{:02X} cycles_left:{} X_pos :{}",
+    //         LY,
+    //         GPU_modes,
+    //         cycles_left,
+    //         X_POS);
     switch (this->GPU_modes)
     {
         case OAM_SCAN:{
@@ -103,15 +103,21 @@ void GPU::do_4_dots(){
                 cycles_left = 4560;
                 pixel_fetcher.reset(false);
                 this->memory.set_bit_from_addr(IF,0);
+                
                 if (this->memory.get_bit_from_addr(STAT, 4)) this->memory.set_bit_from_addr(IF, 1);
+                cout<<(int)this->memory.get_bit_from_addr(0xFFFF,0)<<endl;
+                cout<<(int)this->memory.get_bit_from_addr(IF,0)<<endl;
                 if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
                 display_ctl.render();
+                this->memory.clear_bit_from_addr(STAT, 1);
+                this->memory.set_bit_from_addr(STAT, 0);
                 
             } else { 
-         
                 GPU_modes = OAM_SCAN;
                 cycles_left = 80;
                 pixel_fetcher.reset(false);
+                this->memory.set_bit_from_addr(STAT, 1);
+                this->memory.clear_bit_from_addr(STAT, 0);
             }
         }
         break;}
@@ -120,9 +126,12 @@ void GPU::do_4_dots(){
         cycles_left -= 4;
         if (cycles_left != 4560 && cycles_left % 456 == 0){
             this->memory.write_8_bit(0xFF44, ++LY);
+            this->memory.set_bit_from_addr(IF, 0);
             if (LY == this->memory.read_8_bit(LYC) && this->memory.get_bit_from_addr(STAT, 6)) this->memory.set_bit_from_addr(IF, 1);
-            else this->memory.clear_bit_from_addr(STAT, 2);
-            // if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
+            else { 
+                this->memory.clear_bit_from_addr(STAT, 2);
+                }
+            if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
         }
         if (cycles_left == 0){
             this->memory.write_8_bit(0xFF44, 0);

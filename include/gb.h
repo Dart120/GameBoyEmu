@@ -25,7 +25,7 @@ class GB
     void reset_timer();
     Timer* timer;
     system_status_struct* system;
-    std::chrono::_V2::system_clock::time_point last_sync;
+    // std::chrono::_V2::system_clock::time_point last_sync;
 
     
     // CPU cpu;

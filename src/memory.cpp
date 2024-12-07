@@ -45,6 +45,7 @@
        this->mem[0xFF00] = 0x0F;
        this->mem[0xFF02] = 0x7E;
        this->mem[0xFF04] = 0xAC;
+       this->mem[0xFF00] = 0xFF;
    }
    bool Memory::is_inaccessible(uint16_t address){
     // need to check 
@@ -107,6 +108,15 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
     if (address == 0xFF04){
         reset_timer();
         return 0;
+    }
+    if (address == 0xFF00){
+       return 0;
+    }
+    if (address >= 0xFF10 && address <= 0xFF3F) {
+        // Stub write to sound registers
+        // Optionally log for debugging
+        // spdlog::info("Stubbed write to sound register 0x{:04X} with value 0x{:02X}", addr, value);
+        return 0 ;
     }
     this->mem[address] = data;
     return 0;
