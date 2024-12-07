@@ -53,6 +53,8 @@ class GPU
     MODES GPU_modes;
     PixelFetcher pixel_fetcher;
     std::vector<Sprite> sprite_buffer;
+    long clock = 0;
+    uint8_t line = 0;
 
     std::queue<Pixel> Sprite_FIFO;
     std::array<std::array<u_int8_t,160>,144> buffer;
@@ -60,7 +62,7 @@ class GPU
     uint8_t X_POS = 0;
     uint8_t dump_counter = 0;
     bool WYeqLY = false; 
-    int clock = 0;
+  
     const int t_cycles_in_OAM_scan = 80;
     const int t_cycles_in_V_blank = 4560;
     int cycles_left = 80;
@@ -71,7 +73,11 @@ class GPU
     
    
     void do_4_dots();
+    void update_LY();
     void OAM_scan();
+    void drawScanLine();
+    void drawBackground();
+    std::vector<uint8_t> readTileData(uint8_t tileIdx, uint8_t dataStart);
     bool DRAW_2_dots(u_int8_t LY);
     void check_window(uint8_t LY);
     bool check_EOL();
@@ -80,6 +86,7 @@ class GPU
     const int MAX_LY = 153;
     const int VP_ROWS = 144;
     const int VP_COLS = 160;
+    void drawTileLine (std::vector<uint8_t>  tileData, uint8_t line, uint8_t x);
     
    
 
