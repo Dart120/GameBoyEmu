@@ -34,8 +34,8 @@ GB::GB(std::string log_to){
       
 
         // Set the logger level, e.g., info, warn, error, etc.
-        doctor->set_level(spdlog::level::info);
-        logger->set_level(spdlog::level::info);
+        doctor->set_level(spdlog::level::off);
+        logger->set_level(spdlog::level::off);
         
        
 

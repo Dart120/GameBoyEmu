@@ -105,8 +105,8 @@ void GPU::do_4_dots(){
                 this->memory.set_bit_from_addr(IF,0);
                 
                 if (this->memory.get_bit_from_addr(STAT, 4)) this->memory.set_bit_from_addr(IF, 1);
-                cout<<(int)this->memory.get_bit_from_addr(0xFFFF,0)<<endl;
-                cout<<(int)this->memory.get_bit_from_addr(IF,0)<<endl;
+                // cout<<(int)this->memory.get_bit_from_addr(0xFFFF,0)<<endl;
+                // cout<<(int)this->memory.get_bit_from_addr(IF,0)<<endl;
                 if (pixel_fetcher.rendering_window) pixel_fetcher.WLC++;
                 display_ctl.render();
                 this->memory.clear_bit_from_addr(STAT, 1);
