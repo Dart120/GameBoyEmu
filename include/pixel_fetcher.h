@@ -11,6 +11,7 @@
 #include "objects.h"
 #include "display_ctl.h"
 #include "pixel.h"
+#include "sprite_pixel.h"
 #include <vector>
 #include <queue>
 #include <map>
@@ -28,6 +29,7 @@ class PixelFetcher
     bool rendering_window;
     void switch_to_window();
     std::queue<Pixel> BG_FIFO;
+    std::queue<SpritePixel> S_FIFO;
     void process_2_cycles(uint8_t LY, bool should_push);
     void get_tile(uint8_t LY);
     void reset(bool stall);

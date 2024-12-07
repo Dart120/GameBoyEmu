@@ -81,7 +81,7 @@ void PixelFetcher::process_2_cycles(uint8_t LY, bool should_push){
                 // cout<< "tile idx "<< tile_data_lower << endl;
                 // cout<< upper * 2 + low << endl;
                 // cout<< idx_to_color(upper * 2 + low) << endl;
-                BG_FIFO.push({idx_to_color(upper * 2 + low), true, true});
+                BG_FIFO.push({idx_to_color(upper * 2 + low)});
                 
             }
             X_POS++;

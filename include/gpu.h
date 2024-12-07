@@ -22,6 +22,7 @@ struct Sprite {
     uint8_t x_pos;
     uint8_t tile_number;
     uint8_t sprite_flags;
+    uint8_t oam_idx;
     bool palette(){
         return (bool) ((sprite_flags >> 4) & 1);
     }

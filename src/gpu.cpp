@@ -214,7 +214,7 @@ void GPU::OAM_scan(){
         uint8_t sprite_flags = this->memory.read_8_bit(addr + 3);
         addr += 4;
         if (LY + 16 >= y_pos && LY + 16 < y_pos + (tall_mode ? 16 : 8)){
-            sprite_buffer.push_back({y_pos, x_pos, tile_number, sprite_flags});
+            sprite_buffer.push_back({y_pos, x_pos, tile_number, sprite_flags, oam_idx});
             if (sprite_buffer.size() == 10){
                 break;
             }
