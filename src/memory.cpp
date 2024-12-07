@@ -68,6 +68,10 @@
     return false;
      
    }
+   bool Memory::is_write_inaccessible(uint16_t address){
+    if (address >= 0x0000 && address <= 0x7FFF) return true;
+    return false;
+   }
    uint8_t Memory::get_bit_from_addr(uint16_t address, uint8_t bit){
         if (this->is_inaccessible(address)){
             return 0xFF;
@@ -101,7 +105,7 @@ uint8_t Memory::read_8_bit(uint16_t address){
        return this->mem[address];
    }
 int Memory::write_8_bit(uint16_t address, uint8_t data){
-    if (this->is_inaccessible(address)){
+    if (this->is_write_inaccessible(address)){
             return 0xFF;
         }
     // FIXME TIME
@@ -131,7 +135,7 @@ uint16_t Memory::read_16_bit(uint16_t address){
     return ((high << 8) + low);
    }
 int Memory::write_16_bit(uint16_t address, uint16_t data){
-    if (this->is_inaccessible(address)){
+    if (this->is_write_inaccessible(address)){
         return 0xFFFF;
     }
     uint8_t first = 0x00ff & data;

@@ -44,6 +44,7 @@ class Memory
     bool read_rom(char* name);
     bool read_boot_rom(char* name);
     bool is_inaccessible(uint16_t address);
+    bool is_write_inaccessible(uint16_t address);
     // Member Functions()
  
 };
