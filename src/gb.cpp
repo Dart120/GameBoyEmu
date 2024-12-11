@@ -11,6 +11,9 @@
 #include <spdlog/spdlog.h>
 #include <chrono>
 #include <thread>
+#include <unordered_set>
+#include <string>
+#include <bitset>
 using namespace std::chrono;
 
 
@@ -34,7 +37,7 @@ GB::GB(std::string log_to){
       
 
         // Set the logger level, e.g., info, warn, error, etc.
-        doctor->set_level(spdlog::level::off);
+        doctor->set_level(spdlog::level::info);
         logger->set_level(spdlog::level::off);
         
        
@@ -56,11 +59,12 @@ GB::GB(std::string log_to){
     MODES& GPU_Mode_REF = GPU_Mode;
 
     std::function<void()> func2 = [this](){ this->reset_timer(); };
+    std::function<void(uint8_t)> func3 = [this](uint8_t data){ this->start_dma(data); };
     
     this->system = new system_status_struct;
     this->system->t_cycles = 0;
     this->system->m_cycles = 0;
-    this->memory = new Memory(func2,GPU_Mode_REF);
+    this->memory = new Memory(func2,cycles_left_DMA,GPU_Mode_REF);
     this->gpu = new GPU(*memory, GPU_Mode_REF,2);
     
     // std::cout<<" ROWS: " << this->gpu->VP_ROWS << std::endl;
@@ -76,8 +80,20 @@ void GB::go() {
         
         // std::cout<<"b4 cpu ROWS: " << this->gpu->VP_ROWS << std::endl;
         // std::function<void()> func = [this](){ this->process_t_cycle(); };
+        if (cycles_left_DMA){
+            if (cycles_left_DMA == 640){
+                this->start_dma(this->memory->read_8_bit(0xFF46));
+            }
+            this->timer->process_4t_cycles();
+            this->gpu->do_4_dots();
+            
+            cycles_left_DMA -= 4;
+        } else {
+            this->cpu->FDE();
+        }
+
         
-        this->cpu->FDE();
+        
         SDL_Event e;
     // Handle events on queue
         while (SDL_PollEvent(&e) != 0) {
@@ -85,6 +101,91 @@ void GB::go() {
             if (e.type == SDL_QUIT) {
                 // quit = true;
                 exit(0);
+            }
+            switch( e.type ){
+                case SDL_KEYDOWN:
+                    std::cout<<"key pressed"<<std::endl;
+                    switch( e.key.keysym.sym ){
+                        case SDLK_LEFT:
+                        std::cout<<"left pressed"<<std::endl;
+                            dir_keys.insert(1);
+                            break;
+                        case SDLK_RIGHT:
+                            dir_keys.insert(0);
+                            break;
+                        case SDLK_UP:
+                            dir_keys.insert(2);
+                            break;
+                        case SDLK_DOWN:
+                            dir_keys.insert(3);
+                            break;
+                        case SDLK_a:
+                            but_keys.insert(0);
+                            break;
+                        case SDLK_s:
+                            but_keys.insert(1);
+                            break;
+                        case SDLK_z:
+                            but_keys.insert(2);
+                            break;
+                        case SDLK_x:
+                            but_keys.insert(3);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                case SDL_KEYUP:
+                    switch( e.key.keysym.sym ){
+                        case SDLK_LEFT:
+                            dir_keys.erase(1);
+                            break;
+                        case SDLK_RIGHT:
+                            dir_keys.erase(0);
+                            break;
+                        case SDLK_UP:
+                            dir_keys.erase(2);
+                            break;
+                        case SDLK_DOWN:
+                            dir_keys.erase(3);
+                            break;
+                        case SDLK_a:
+                            but_keys.erase(0);
+                            break;
+                        case SDLK_s:
+                            but_keys.erase(1);
+                            break;
+                        case SDLK_z:
+                            but_keys.erase(2);
+                            break;
+                        case SDLK_x:
+                            but_keys.erase(3);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+
+        }
+        this->memory->mem[0xFF00] |= 0x0F;
+
+        // std::cout<<  std::bitset<8>(this->memory->mem[0xFF00]) <<" dir key registering "<<std::endl;
+        if(!this->memory->get_bit_from_addr(0xFF00,4)){
+            // std::cout<<"dir key registering"<<std::endl;
+            
+            for (uint8_t bit: dir_keys){
+                std::cout<<"clear dir "<< (int) bit<<std::endl;
+                this->memory->clear_bit_from_addr(0xFF00,bit);
+            }
+        } else if (!this->memory->get_bit_from_addr(0xFF00,5)){
+            for (uint8_t bit: but_keys){
+                std::cout<<"clear but "<< (int) bit<<std::endl;
+                this->memory->clear_bit_from_addr(0xFF00,bit);
             }
         }
 
@@ -120,4 +221,17 @@ void GB::process_t_cycle(){
 }
 void GB::reset_timer(){
     this->timer->reset_timer();
+}
+void GB::start_dma(uint8_t data){
+    
+    uint16_t start = data * 0x100;
+    uint16_t end = (data * 0x100) + 0x9F;
+    uint16_t start_oam = 0xFE00;
+    while (start <= end){
+        this->memory->write_8_bit(start_oam,this->memory->read_8_bit(start));
+        start_oam++;
+        start++;
+    }
+    cycles_left_DMA = 640;
+    
 }

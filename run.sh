@@ -1,2 +1,2 @@
 #!/bin/sh
-./build/src/main ROMS/Tetris.gb test
+./build/src/main ROMS/QIX.gb test

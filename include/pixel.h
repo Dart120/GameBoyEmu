@@ -5,7 +5,8 @@
 
 struct Pixel {
     uint8_t color;
-    Pixel(uint8_t color): color(color) {}
+    uint8_t color_idx;
+    Pixel(uint8_t color, uint8_t color_idx): color(color), color_idx(color_idx) {}
 };
 
 

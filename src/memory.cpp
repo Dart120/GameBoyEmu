@@ -5,11 +5,13 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <fstream>
+#include <bitset>
 #include "gb.h"
 #include "modes.h"
+
 // pass a pointer to the gpu field
 // TODO Deal with DMA Transfer
-    Memory::Memory(std::function<void()> reset_timer, MODES& GPU_mode): reset_timer(reset_timer), GPU_mode(GPU_mode) {
+    Memory::Memory(std::function<void()> reset_timer, uint16_t& cycles_left_dma, MODES& GPU_mode): reset_timer(reset_timer), cycles_left_dma(cycles_left_dma), GPU_mode(GPU_mode) {
         std::cout<<"Memory has been created"<< "\n";
         mem = new uint8_t[65536];
 
@@ -113,7 +115,15 @@ int Memory::write_8_bit(uint16_t address, uint8_t data){
         reset_timer();
         return 0;
     }
+    if (address == 0xFF46 && data <= 0xDF){
+        // std::cout <<(int) data<< " DMA requested in mode"<< ((int) this->mem[0xFF40] & 0x03) << std::endl;
+        cycles_left_dma = 640;
+    }
     if (address == 0xFF00){
+        std::cout<<  std::bitset<8>(data) <<" wrote to joyp "<<std::endl;
+        this->mem[address] &= 0x0F;
+        data &= 0xF0;
+        this->mem[address] |= data;
        return 0;
     }
     if (address >= 0xFF10 && address <= 0xFF3F) {

@@ -62,7 +62,7 @@ void CPU::handle_interrupts() {
         
          this->halted = false;
 if (this -> registers -> IME) {
-    cout<< "An interrupt is being handled"<<endl;
+    // cout<< "An interrupt is being handled"<<endl;
     
 
         
@@ -80,7 +80,7 @@ if (this -> registers -> IME) {
             }
         }
         u_int16_t trash = 10;
-        cout<< "target " <<(int) target<<endl;
+        // cout<< "target " <<(int) target<<endl;
         // exit(0);
 
         if (bit_to_isr.find(target) != bit_to_isr.end()) {

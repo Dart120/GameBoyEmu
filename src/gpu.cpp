@@ -11,6 +11,7 @@
 #include "background.h"
 #include "window.h"
 #include "objects.h"
+#include "sprite.h"
 #include "display_ctl.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
@@ -40,16 +41,11 @@ using namespace std;
 // TODO palettes
 // TODO DMA Trans
 //  
-GPU::GPU(Memory& memory, MODES& GPU_modes,int scale): memory(memory),tiledata(memory),background(memory,tiledata), window(memory,tiledata), object(memory,tiledata), GPU_modes(OAM_SCAN), buffer{}, display_ctl(buffer), pixel_fetcher(memory) {}
+GPU::GPU(Memory& memory, MODES& GPU_modes,int scale): memory(memory),tiledata(memory),background(memory,tiledata), window(memory,tiledata), object(memory,tiledata), GPU_modes(OAM_SCAN), buffer{}, display_ctl(buffer), pixel_fetcher(memory,to_display,this->fetching_sprites, tall_mode) {}
 
 void GPU::do_4_dots(){
 
     uint8_t LY = this->memory.read_8_bit(0xFF44);
-    // spdlog::info("LY:{:02X} MODE:{:02X} cycles_left:{} X_pos :{}",
-    //         LY,
-    //         GPU_modes,
-    //         cycles_left,
-    //         X_POS);
     switch (this->GPU_modes)
     {
         case OAM_SCAN:{
@@ -101,7 +97,7 @@ void GPU::do_4_dots(){
             if (LY == 144){ 
                 GPU_modes = V_BLANK;
                 cycles_left = 4560;
-                pixel_fetcher.reset(false);
+                pixel_fetcher.reset(false,false);
                 this->memory.set_bit_from_addr(IF,0);
                 
                 if (this->memory.get_bit_from_addr(STAT, 4)) this->memory.set_bit_from_addr(IF, 1);
@@ -115,7 +111,7 @@ void GPU::do_4_dots(){
             } else { 
                 GPU_modes = OAM_SCAN;
                 cycles_left = 80;
-                pixel_fetcher.reset(false);
+                pixel_fetcher.reset(false, false);
                 this->memory.set_bit_from_addr(STAT, 1);
                 this->memory.clear_bit_from_addr(STAT, 0);
             }
@@ -150,30 +146,30 @@ void GPU::do_4_dots(){
 bool GPU::DRAW_2_dots(u_int8_t LY){
     // must check if fifo is empty!
     bool was_empty = pixel_fetcher.BG_FIFO.empty();
-    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty()){ 
-        display_ctl.update(LY, X_POS, pixel_fetcher.BG_FIFO.front().color);
+    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty() && to_display.empty()){ 
+        display_ctl.update(LY, X_POS, pixel_fetcher.pixel_mixing());
         X_POS++;
-        pixel_fetcher.BG_FIFO.pop();
+        check_sprite_buffer();
+      
         
     } else if (dump_counter){
         dump_counter--;
     }
 
-    
-
-  
     if(!pixel_fetcher.rendering_window){
         check_window(LY);
     }
     
 
-    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty()){ 
-        display_ctl.update(LY, X_POS, pixel_fetcher.BG_FIFO.front().color);
+    if (!dump_counter && !pixel_fetcher.BG_FIFO.empty() && to_display.empty()){ 
+        display_ctl.update(LY, X_POS, pixel_fetcher.pixel_mixing());
+        X_POS++;
+        check_sprite_buffer();
         if (check_EOL()) {
             cycles_left -= 2;
             return true;
         }
-        pixel_fetcher.BG_FIFO.pop();
+      
     } else if (dump_counter){
         dump_counter--;
     }
@@ -197,7 +193,7 @@ void GPU::check_window(uint8_t LY){
     }
 }
 bool GPU::check_EOL(){
-    if (++X_POS == 160){
+    if (X_POS == 160){
         X_POS = 0;
         return true;
     }
@@ -206,12 +202,28 @@ bool GPU::check_EOL(){
 void GPU::OAM_scan(){
     uint8_t LY = this->memory.read_8_bit(0xFF44);
     uint16_t addr = 0xFE00;
-    bool tall_mode = ((this->memory.read_8_bit(0xFF40) >> 2 ) & 1);
+    tall_mode = ((this->memory.read_8_bit(0xFF40) >> 2 ) & 1);
     for (uint8_t oam_idx = 0; oam_idx < 40; oam_idx++){
         uint8_t y_pos = this->memory.read_8_bit(addr);
         uint8_t x_pos = this->memory.read_8_bit(addr + 1);
         uint8_t tile_number = this->memory.read_8_bit(addr + 2);
         uint8_t sprite_flags = this->memory.read_8_bit(addr + 3);
+    //     bool priority = sprite_flags & (1 << 7);  // BG-to-OBJ Priority
+    // bool y_flip = sprite_flags & (1 << 6);    // Y flip
+    // bool x_flip = sprite_flags & (1 << 5);    // X flip
+    // bool use_palette_1 = sprite_flags & (1 << 4); // OBJ-to-Palette Number (DMG only)
+
+    // std::cout << fmt::format(
+    //     "Y Position: {}, X Position: {}, Tile Number: {}, "
+    //     "Flags: [Priority: {}, Y Flip: {}, X Flip: {}, Palette: {}]\n",
+    //     static_cast<int>(y_pos),
+    //     static_cast<int>(x_pos),
+    //     static_cast<int>(tile_number),
+    //     priority ? "On" : "Off",
+    //     y_flip ? "Yes" : "No",
+    //     x_flip ? "Yes" : "No",
+    //     use_palette_1 ? "1" : "0"
+    // );
         addr += 4;
         if (LY + 16 >= y_pos && LY + 16 < y_pos + (tall_mode ? 16 : 8)){
             sprite_buffer.push_back({y_pos, x_pos, tile_number, sprite_flags, oam_idx});
@@ -220,4 +232,30 @@ void GPU::OAM_scan(){
             }
         }
     }
+}
+
+void GPU::check_sprite_buffer(){
+    uint8_t LY = this->memory.read_8_bit(0xFF44);
+    // std::cout << fmt::format(
+    //     "At line {}\n",
+    //     static_cast<int>(LY)
+    // );
+    for (auto it = sprite_buffer.begin(); it != sprite_buffer.end(); ) {
+        if ((*it).x_pos <= X_POS + 8) {
+            to_display.push((*it));
+            it = sprite_buffer.erase(it);
+            // TODO check again once OAM tranfer is done
+            // std::cout << fmt::format(
+            //     "We found tile {} at x = {}\n",
+            //     static_cast<int>((*it).tile_number), 
+            //     static_cast<int>(X_POS)
+            // );
+           
+            fetching_sprites = true;
+            pixel_fetcher.reset(false,true);
+        } else {
+            ++it;
+        }
+    }
+    
 }

@@ -11,7 +11,7 @@ class Memory
 {
     // Access specifier
     public:
-    Memory(std::function<void()> reset_timer, MODES& GPU_mode);
+    Memory(std::function<void()> reset_timer, uint16_t& cycles_left_dma, MODES& GPU_mode);
     // Data Members
     
     uint8_t* mem;
@@ -32,6 +32,8 @@ class Memory
     uint8_t* TIMA;
   
     std::function<void()> reset_timer;
+    uint16_t& cycles_left_dma;
+    bool start_dma;
     MODES& GPU_mode;
     void fill_memory();
     uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);
@@ -45,6 +47,7 @@ class Memory
     bool read_boot_rom(char* name);
     bool is_inaccessible(uint16_t address);
     bool is_write_inaccessible(uint16_t address);
+    
     // Member Functions()
  
 };
