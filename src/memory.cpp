@@ -5,8 +5,14 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 #include <fstream>
+#include <bitset>
 #include "gb.h"
-    Memory::Memory(system_status_struct* system){
+#include "modes.h"
+
+// pass a pointer to the gpu field
+// TODO Deal with DMA Transfer
+    Memory::Memory(std::function<void()> reset_timer, uint16_t& cycles_left_dma, MODES& GPU_mode): reset_timer(reset_timer), cycles_left_dma(cycles_left_dma), GPU_mode(GPU_mode) {
+        std::cout<<"Memory has been created"<< "\n";
         mem = new uint8_t[65536];
 
         ROM = mem;
@@ -24,62 +30,135 @@
         TAC = mem + 0xFF07;
         TMA = mem + 0xFF06;
         TIMA = mem + 0xFF05;
-        this->system = system;
-        // if(!this->fill_memory(76)){
-        //     spdlog::error("Memory not filled");
-        // }
+        // this->system = system;
+        this->fill_memory();
+    
         
        
      
     };
-   int Memory::fill_memory(uint8_t num){
-       memset(this->mem,num,65536);
-       return 1;
+   void Memory::fill_memory(){
+       this->mem[0xFF40] = 0x91;
+       this->mem[0xFF46] = 0xFF;
+       this->mem[0xFF47] = 0xFC;
+       this->mem[0xFF48] = 0xFF;
+       this->mem[0xFF49] = 0xFF;
+       this->mem[0xFF0F] = 0xE1;
+       this->mem[0xFF00] = 0x0F;
+       this->mem[0xFF02] = 0x7E;
+       this->mem[0xFF04] = 0xAC;
+       this->mem[0xFF00] = 0xFF;
+   }
+   bool Memory::is_inaccessible(uint16_t address){
+    // need to check 
+    // u_int16_t OAM[2] = {0xFE00, 0xFE9F};
+    // u_int16_t VRAM[2] = {0x8000, 0x97FF};
+    // u_int16_t PALETTES[2] = {0xFF47, 0xFF49};
+    // auto between = [](u_int16_t* range, uint16_t address) {return address >= range[0] and address <= range[1]; };
+    // switch (this->GPU_mode)
+    // {
+    // case OAM_SCAN:
+    //     return between(OAM,address);
+    //     break;
+    // case DRAW:
+    //     return between(OAM,address) || between(VRAM,address) || between(PALETTES,address);
+    //     break;
+    // default:
+    //     return false;
+    //     break;
+    // }
+    return false;
+     
+   }
+   bool Memory::is_write_inaccessible(uint16_t address){
+    if (address >= 0x0000 && address <= 0x7FFF) return true;
+    return false;
    }
    uint8_t Memory::get_bit_from_addr(uint16_t address, uint8_t bit){
+        if (this->is_inaccessible(address)){
+            return 0xFF;
+        }
        return (this->mem[address] >> bit) & 1;
    }
+  
+   uint8_t Memory::clear_bit_from_addr(uint16_t address, uint8_t bit){
+        if (this->is_inaccessible(address)){
+            return 0xFF;
+        }
+        (this->mem[address]) &= (~(1 << bit));
+        return 0;
+   }
    uint8_t Memory::set_bit_from_addr(uint16_t address, uint8_t bit){
+        if (this->is_inaccessible(address)){
+            return 0xFF;
+        }
         (this->mem[address]) |= (1 << bit);
         return 0;
    }
 
 uint8_t Memory::read_8_bit(uint16_t address){
-    if (address == 0xFF44){
-        return 0x90;
-    }
+    if (this->is_inaccessible(address)){
+            return 0xFF;
+        }
+ 
+    // if (address == 0xFF44){
+    //     return 0x90;
+    // }
        return this->mem[address];
    }
 int Memory::write_8_bit(uint16_t address, uint8_t data){
+    if (this->is_write_inaccessible(address)){
+            return 0xFF;
+        }
+    // FIXME TIME
     if (address == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
-        this->mem[address] = 0;
+        reset_timer();
         return 0;
+    }
+    if (address == 0xFF46 && data <= 0xDF){
+        // std::cout <<(int) data<< " DMA requested in mode"<< ((int) this->mem[0xFF40] & 0x03) << std::endl;
+        cycles_left_dma = 640;
+    }
+    if (address == 0xFF00){
+        std::cout<<  std::bitset<8>(data) <<" wrote to joyp "<<std::endl;
+        this->mem[address] &= 0x0F;
+        data &= 0xF0;
+        this->mem[address] |= data;
+       return 0;
+    }
+    if (address >= 0xFF10 && address <= 0xFF3F) {
+        // Stub write to sound registers
+        // Optionally log for debugging
+        // spdlog::info("Stubbed write to sound register 0x{:04X} with value 0x{:02X}", addr, value);
+        return 0 ;
     }
     this->mem[address] = data;
     return 0;
    }
 uint16_t Memory::read_16_bit(uint16_t address){
+    if (this->is_inaccessible(address)){
+            return 0xFFFF;
+    }
     uint8_t low = this->mem[address];
     uint8_t high = this->mem[address + 1];
     // spdlog::info("low {:X} high {:X} result {:X}",low,high,((high << 8) | low));
     return ((high << 8) + low);
    }
 int Memory::write_16_bit(uint16_t address, uint16_t data){
+    if (this->is_write_inaccessible(address)){
+        return 0xFFFF;
+    }
     uint8_t first = 0x00ff & data;
     uint8_t second = (0xff00 & data) >> 8;
     this->mem[address] = first;
     this->mem[address + 1] = second;
     if (address == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
+        reset_timer();
         this->mem[address] = 0;
         return 0;
     }
     if (address + 1 == 0xFF04){
-        this->system->m_cycles = 0;
-        this->system->t_cycles = 0;
+        reset_timer();
         this->mem[address + 1] = 0;
         return 0;
     }
@@ -108,7 +187,27 @@ bool Memory::read_rom(char* path){
         exit(1);
         return 0;
     }
-    std::cout<<"Cartridge Type: "<<std::hex<<(int)this->mem[0x0147]<< std::endl;
+    // std::cout<<"Cartridge Type: "<<std::hex<<(int)this->mem[0x0147]<< std::endl;
+    return 1;
+}
+bool Memory::read_boot_rom(char* path){
+    // FIXME,Seperate bootrom and normal room
+    std::ifstream myFile (path, std::ios::in | std::ios::binary);
+    if (!myFile.is_open()) {
+        std::cout << "Failed to open ROM file" << "\n";
+        return false;
+    }
+    myFile.seekg(0,std::ios::end);
+    int size = (int) myFile.tellg();
+    myFile.seekg(0,std::ios::beg);
+    myFile.read ((char*) this -> mem, size);
+    if (!myFile) {
+        spdlog::info("Rom not read");
+        std::cout<<"Rom not read"<< "\n";
+        exit(1);
+        return 0;
+    }
+    // std::cout<<"Cartridge Type: "<<std::hex<<(int)this->mem[0x0147]<< std::endl;
     return 1;
 }
 

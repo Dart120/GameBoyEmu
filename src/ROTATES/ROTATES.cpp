@@ -4,6 +4,7 @@
 #include<iostream>
 #include <spdlog/spdlog.h>
 void CPU::RRA(uint16_t *cycles){
+    this->process_4t_cycles();
     uint8_t first_bit = this -> registers->registers.AF.A & 1;
     // bool p_c = this->registers->get_flag(FLAG_C);
     this -> registers->registers.AF.A = this -> registers->registers.AF.A >> 1;
@@ -20,6 +21,6 @@ void CPU::RRA(uint16_t *cycles){
     this->registers->clear_flag(FLAG_Z);
 
     (this->registers->registers.PC) += 1;
-    *cycles += 1;    
+    // *cycles += 1;    
 }
 

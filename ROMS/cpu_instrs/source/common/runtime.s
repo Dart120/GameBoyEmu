@@ -90,7 +90,7 @@ std_reset:
      wreg NR51,$FF  ; mono
      wreg NR50,$77  ; volume
      
-     ; TODO: clear all memory?
+  
      
      ld   hl,std_print
      call init_printing

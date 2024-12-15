@@ -14,7 +14,7 @@ class CPU
 {
     
     public:
-    CPU(Memory& memory, system_status_struct* system);
+    CPU(Memory& memory, system_status_struct& system, std::function<void()> process_4t_cycles);
     uint8_t read_8_bit(uint16_t address);
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);
@@ -22,16 +22,15 @@ class CPU
     int8_t unsigned_8_to_signed_8(uint8_t n);
     void FDE();
     
+    
     // Access specifier
-    system_status_struct* system;
     Memory memory;
+
+    system_status_struct& system;
+    std::function<void()> process_4t_cycles;
+    
     Registers* registers;
-    int old_cycles;
-    uint16_t ms_6_time;
-    uint16_t ms_12_time;
-    uint16_t ms_11_time;
-    uint16_t ms_8_time;
-    std::map < uint8_t, uint16_t* > TAC_to_prefix;
+ 
 
     bool halted = false;
     // Data Members
@@ -76,6 +75,7 @@ class CPU
     void ADD_1B_1C(uint8_t reg1, uint16_t *cycles);
     void ADD_2B_2C(uint16_t *cycles);
     void ADC_1B_2C_8Bit(uint8_t reg1, uint16_t *cycles);
+    void ADC_1B_2C(uint16_t *cycles);
     void ADC_1B_1C(uint8_t reg1, uint16_t *cycles);
     void ADC_2B_2C(uint16_t *cycles);
     void SUB_1B_1C(uint8_t reg1,uint16_t *cycles);
@@ -127,7 +127,7 @@ class CPU
 
     // RST
     void RST_UNCOND(uint8_t number,uint16_t *cycles);
-    void RST_COND(uint8_t COND, uint16_t *cycles);
+    // void RST_COND(uint8_t COND, uint16_t *cycles);
 
     // ROTATE
     

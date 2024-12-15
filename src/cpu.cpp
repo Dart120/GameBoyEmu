@@ -21,31 +21,32 @@
 
 #include <spdlog/spdlog.h>
 
-#include <bits/stdc++.h>
 
 using namespace std;
-
+// TODO in Desktop there is a photo of the differed instruction for tetris, can try to bug hunt this or look for better tests than blarggs
 // Because it's a little-endian processor you put least significant byte first.
 #define FLAG_Z 7 //00001111
 #define FLAG_N 6 //0000CHNZ
 #define FLAG_H 5 //00004567
 #define FLAG_C 4
-CPU::CPU(Memory & memory, system_status_struct * system): memory(memory) {
-    this -> memory = memory;
-    this -> system = system;
+CPU::CPU(Memory & memory, system_status_struct & system, std::function<void()> process_4t_cycles): memory(memory), system(system), process_4t_cycles(process_4t_cycles) {
+    // this -> memory = memory;
+    // this -> system = system;
+    
     this -> registers = new Registers();
     this -> registers -> set_registers();
-    this -> old_cycles = 0;
-    this -> ms_11_time = 0;
-    this -> ms_6_time = 0;
-    this -> ms_8_time = 0;
-    this -> ms_12_time = 0;
-    this->TAC_to_prefix = {
-        {0, &this -> ms_6_time},
-        {1, &this -> ms_12_time},
-        {2, &this -> ms_11_time},
-        {3, &this -> ms_8_time}
-    };
+    // this -> old_cycles = 0;
+    // this -> ms_11_time = 0;
+    // this -> ms_6_time = 0;
+    // this -> ms_8_time = 0;
+    // this -> ms_12_time = 0;
+    // this->TAC_to_prefix = {
+    //     {0, &this -> ms_6_time},
+    //     {1, &this -> ms_12_time},
+    //     {2, &this -> ms_11_time},
+    //     {3, &this -> ms_8_time}
+    // };
+  
 
 }
 int8_t CPU::unsigned_8_to_signed_8(uint8_t n) {
@@ -58,8 +59,11 @@ int8_t CPU::unsigned_8_to_signed_8(uint8_t n) {
 void CPU::handle_interrupts() {
     uint8_t todo = ( * this -> memory.IE) & ( * this -> memory.IF);
     if (todo){
+        
          this->halted = false;
 if (this -> registers -> IME) {
+    // cout<< "An interrupt is being handled"<<endl;
+    
 
         
         uint8_t target = 7;
@@ -76,13 +80,25 @@ if (this -> registers -> IME) {
             }
         }
         u_int16_t trash = 10;
+        // cout<< "target " <<(int) target<<endl;
+        // exit(0);
 
         if (bit_to_isr.find(target) != bit_to_isr.end()) {
             // std::cout <<"here: "<<(int) todo<<std::endl;
             // exit(0);
            
             * this -> memory.IF &= ~(1 << target);
-            this -> PUSH(this -> registers -> registers.PC, & trash);
+       
+            this->registers->registers.SP--;
+            uint8_t high = this->registers->registers.PC >> 8;
+            this->memory.write_8_bit(this->registers->registers.SP--,high);
+          
+            uint8_t low = this->registers->registers.PC & 0xFF;
+            this->memory.write_8_bit(this->registers->registers.SP,low);
+          
+            // *cycles += 4;
+            this->registers->registers.PC++;
+            
             this -> registers -> registers.PC = bit_to_isr[target];
             this -> registers -> IME = false;
         }
@@ -92,30 +108,21 @@ if (this -> registers -> IME) {
     
 }
 
-void CPU::FDE() {
+void CPU::FDE(){
+    
+    
 
-    uint16_t & cycles = this -> system -> m_cycles;
-    uint16_t & t_cycles = this -> system -> t_cycles;
-    //  uint32_t cycles_old = 500000000;
-    //  uint32_t m = 0;
-    //  uint32_t m_old = 0;
+  
+    bool &enable_IME_next_flag_one = this->system.enable_IME_next_flag_one;
+    bool &enable_IME_next_flag_two = this->system.enable_IME_next_flag_two;
 
-    uint32_t timer_interval = 0;
-    unordered_set < uint8_t > new_inst;
-    bool enable_IME_next_flag_one = false;
-    bool enable_IME_next_flag_two = false;
-    while (1) {
 
-        //  m += (cycles - cycles_old);
-        //  std::cout << cycles_old<<" "<<cycles_old<<" "<<m<<" "<<m_old<<" "<<std::endl;
-        t_cycles += (cycles - this -> old_cycles) * 4;
-        this -> system -> m_cycles = cycles;
-        this -> system -> t_cycles = t_cycles;
+   
         
 
         uint8_t opcode = this -> memory.read_8_bit(this -> registers -> registers.PC);
 
-        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X} IME:{} IF:{:08b} IE:{:08b} TAC:{:02X} TMA:{:02X} DIV:{:02X} TIMA:{:02X} d_cycles:{} cycles:{} 0x0000: {:04X}";
+        string log_string = "A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}";
         // std::cout <<"cycle "<< std::dec << c 
         //   << " IME: " << this->registers->IME 
         //   << " IF: " << std::hex << this->memory.read_8_bit(0xFF0F) 
@@ -125,105 +132,100 @@ void CPU::FDE() {
             enable_IME_next_flag_one = false;
             enable_IME_next_flag_two = true;
         }
+
+        uint16_t cycles = 0;
         //  timing
         //  if (m_old % 64 < m % 64){
         //     (*this->memory.DIV)++;
         //  }
-        ( * this -> memory.DIV) = t_cycles >> 8;
+        // (*this -> memory.DIV) = t_cycles >> 8;
        
         
          
       
-        if (this -> memory.get_bit_from_addr(0xFF07, 2) == 1) {
-            if (this->TAC_to_prefix.find(( * this -> memory.TAC) & 3) != this->TAC_to_prefix.end()) {
-                    bool inc = false;
-                    switch (( * this -> memory.TAC) & 3)
-                    {
-                    case 0:
-                        inc = cycles >> 5 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 1:
-                        inc = cycles >> 10 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 2:
-                        inc = cycles >> 8 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
-                    case 3:
-                        inc = cycles >> 4  != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
-                        break;
+        // if (this -> memory.get_bit_from_addr(0xFF07, 2) == 1) {
+        //     if (this->TAC_to_prefix.find(( * this -> memory.TAC) & 3) != this->TAC_to_prefix.end()) {
+        //             bool inc = false;
+        //             switch (( * this -> memory.TAC) & 3)
+        //             {
+        //             case 0:
+        //                 inc = cycles >> 5 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 1:
+        //                 inc = cycles >> 10 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 2:
+        //                 inc = cycles >> 8 != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
+        //             case 3:
+        //                 inc = cycles >> 4  != *this->TAC_to_prefix[( * this -> memory.TAC) & 3];
+        //                 break;
                     
-                    default:
-                        break;
-                    }
+        //             default:
+        //                 break;
+        //             }
 
-                    if (inc){
-                        if (*this->memory.TIMA == 0xFF) {
-                            *this->memory.TIMA = *this->memory.TMA;
-                            this->memory.set_bit_from_addr(0xFF0F,2);
-                        }
-                        (*this->memory.TIMA)++;
-                    }
+        //             if (inc){
+        //                 if (*this->memory.TIMA == 0xFF) {
+        //                     *this->memory.TIMA = *this->memory.TMA;
+        //                     this->memory.set_bit_from_addr(0xFF0F,2);
+        //                 }
+        //                 (*this->memory.TIMA)++;
+        //             }
                     
-                }
-        }
+        //         }
+        // }
 
-        this -> ms_11_time = cycles >> 5;
-        this -> ms_6_time = cycles >> 10;
-        this -> ms_8_time = cycles >> 8;
-        this -> ms_12_time = cycles >> 4;
-        doctor -> info(log_string,
-            this -> registers -> registers.AF.A,
-            this -> registers -> registers.AF.F,
-            this -> registers -> registers.BC.B,
-            this -> registers -> registers.BC.C,
-            this -> registers -> registers.DE.D,
-            this -> registers -> registers.DE.E,
-            this -> registers -> registers.HL.H,
-            this -> registers -> registers.HL.L,
-            this -> registers -> registers.SP,
-            this -> registers -> registers.PC,
-            this -> memory.read_8_bit(this -> registers -> registers.PC),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 1),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 2),
-            this -> memory.read_8_bit(this -> registers -> registers.PC + 3),
-            this -> registers -> IME,
-            * this -> memory.IF,
-            * this -> memory.IE,
-            * this -> memory.TAC,
-            * this -> memory.TMA,
-            * this -> memory.DIV,
-            * this -> memory.TIMA,
-            cycles - this -> old_cycles,
-            cycles,
-            this -> memory.read_16_bit(0x0000)
-        );
-        this -> old_cycles = cycles;
+        // this -> ms_11_time = cycles >> 5;
+        // this -> ms_6_time = cycles >> 10;
+        // this -> ms_8_time = cycles >> 8;
+        // this -> ms_12_time = cycles >> 4;
+        // doctor -> info(log_string,
+        //     this -> registers -> registers.AF.A,
+        //     this -> registers -> registers.AF.F,
+        //     this -> registers -> registers.BC.B,
+        //     this -> registers -> registers.BC.C,
+        //     this -> registers -> registers.DE.D,
+        //     this -> registers -> registers.DE.E,
+        //     this -> registers -> registers.HL.H,
+        //     this -> registers -> registers.HL.L,
+        //     this -> registers -> registers.SP,
+        //     this -> registers -> registers.PC,
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 1),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 2),
+        //     this -> memory.read_8_bit(this -> registers -> registers.PC + 3)
+      
+        // );
+
         // m_old = m;
         // cycles_old = cycles;
 
         // if (p%600000 == 0){
         //     doctor->flush();
         // }
-
-        //  spdlog::info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
-        //  this->registers->registers.AF.A,
-        //  this->registers->registers.AF.F,
-        //  this->registers->registers.BC.B,
-        //  this->registers->registers.BC.C,
-        //  this->registers->registers.DE.D,
-        //  this->registers->registers.DE.E,
-        //  this->registers->registers.HL.H,
-        //  this->registers->registers.HL.L,
-        //  this->registers->registers.SP,
-        //  this->registers->registers.PC,
-        //  this->memory.read_8_bit(this->registers->registers.PC),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 1),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 2),
-        //  this->memory.read_8_bit(this->registers->registers.PC + 3)
+        doctor-> info("A:{:02X} F:{:02X} B:{:02X} C:{:02X} D:{:02X} E:{:02X} H:{:02X} L:{:02X} SP:{:04X} PC:{:04X} PCMEM:{:02X},{:02X},{:02X},{:02X}",
+         this->registers->registers.AF.A,
+         this->registers->registers.AF.F,
+         this->registers->registers.BC.B,
+         this->registers->registers.BC.C,
+         this->registers->registers.DE.D,
+         this->registers->registers.DE.E,
+         this->registers->registers.HL.H,
+         this->registers->registers.HL.L,
+         this->registers->registers.SP,
+         this->registers->registers.PC,
+         this->memory.read_8_bit(this->registers->registers.PC),
+         this->memory.read_8_bit(this->registers->registers.PC + 1),
+         this->memory.read_8_bit(this->registers->registers.PC + 2),
+         this->memory.read_8_bit(this->registers->registers.PC + 3)
+         );
+        //  doctor-> info("FF00:{:02X}",
+        //  (int)this->memory.read_8_bit(0xFF00)
         //  );
-        // // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
+        // spdlog::info("PC Value: {:X} read",this->registers->registers.PC);
 
-        // // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
+        // spdlog::info("First Few Bytes {:X} {:X} {:X} {:X}", this->memory.mem[0], this->memory.mem[1], this->memory.mem[2], this->memory.mem[3]);
         if (this -> memory.read_8_bit(0xff02) == 0x81) {
             char c = this -> memory.read_8_bit(0xff01);
 
@@ -238,7 +240,7 @@ void CPU::FDE() {
         case 0x00: {
             // spdlog::info("NOP {:X}", opcode);
             this -> registers -> registers.PC += 1;
-            (cycles) ++;
+            this->process_4t_cycles();
 
             break;
         }
@@ -280,6 +282,7 @@ void CPU::FDE() {
         }
 
         case 0x07: { // spdlog::info("RLCA {:X}", opcode);
+        this->process_4t_cycles();
             bool lastValue = this -> registers -> registers.AF.A >> 7 & 1UL;
             this -> registers -> registers.AF.A = this -> registers -> registers.AF.A << 1;
             if (lastValue) {
@@ -292,7 +295,7 @@ void CPU::FDE() {
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             this -> registers -> clear_flag(FLAG_Z);
-            (cycles) ++;
+            
             (this -> registers -> registers.PC) += 1;
             break;
         }
@@ -355,6 +358,7 @@ void CPU::FDE() {
 
         case 0x0F: {
             // spdlog::info("RRCA {:X}", opcode);
+            this->process_4t_cycles();
             bool firstValue = this -> registers -> registers.AF.A & 1UL;
             this -> registers -> registers.AF.A = this -> registers -> registers.AF.A >> 1;
             if (firstValue) {
@@ -368,14 +372,14 @@ void CPU::FDE() {
             this -> registers -> clear_flag(FLAG_Z);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) ++;
+          
             break;
         }
 
         case 0x10: {
             // spdlog::info("STOP {:X} read", opcode);
             exit(0);
-            (cycles) ++;
+            this->process_4t_cycles();
             (this -> registers -> registers.PC) += 2;
             break;
         }
@@ -426,6 +430,7 @@ void CPU::FDE() {
 
         case 0x17: {
             // spdlog::info("RLA {:X}", opcode);
+            this->process_4t_cycles();
             bool p_c = this -> registers -> get_flag(FLAG_C);
             if (this -> registers -> registers.AF.A >> 7) {
                 this -> registers -> set_flag(FLAG_C);
@@ -441,7 +446,7 @@ void CPU::FDE() {
             this -> registers -> clear_flag(FLAG_Z);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+            
             break;
         }
 
@@ -552,6 +557,7 @@ void CPU::FDE() {
             break;
         }
         case 0x27: { // spdlog::info("DAA {:X}", opcode);
+        this->process_4t_cycles();
             int a = this -> registers -> registers.AF.A;
 
             if (!this -> registers -> get_flag(FLAG_N)) {
@@ -576,7 +582,7 @@ void CPU::FDE() {
             this -> registers -> check_if_result_zero(a);
 
             this -> registers -> registers.AF.A = (uint8_t) a;
-            (cycles) ++;
+          
             (this -> registers -> registers.PC) += 1;
             break;
         }
@@ -630,11 +636,12 @@ void CPU::FDE() {
 
         case 0x2F: {
             // spdlog::info("CPL {:X}", opcode);
+            this->process_4t_cycles();
             this -> registers -> registers.AF.A = ~this -> registers -> registers.AF.A;
             this -> registers -> set_flag(FLAG_N);
             this -> registers -> set_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) ++;
+           
             break;
         }
 
@@ -694,11 +701,12 @@ void CPU::FDE() {
 
         case 0x37: {
             // spdlog::info("SCF {:X}", opcode);
+            this->process_4t_cycles();
             this -> registers -> set_flag(FLAG_C);
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+
             break;
         }
 
@@ -754,6 +762,7 @@ void CPU::FDE() {
 
         case 0x3F: {
             // spdlog::info("CCF {:X}", opcode);
+            this->process_4t_cycles();
             if (this -> registers -> get_flag(FLAG_C)) {
                 this -> registers -> clear_flag(FLAG_C);
             } else {
@@ -762,7 +771,7 @@ void CPU::FDE() {
             this -> registers -> clear_flag(FLAG_N);
             this -> registers -> clear_flag(FLAG_H);
             (this -> registers -> registers.PC) += 1;
-            (cycles) -= 1;
+      
             break;
         }
 
@@ -1244,8 +1253,8 @@ void CPU::FDE() {
             // spdlog::info("HALT {:X}", opcode);
             // exit(0);
             // TODO halt is broken
+            this->process_4t_cycles();
             this->halted = true;
-            cycles++;
             this->registers->registers.PC++;
             break;
         }
@@ -1404,7 +1413,7 @@ void CPU::FDE() {
         }
         case 0x8E: {
             // spdlog::info("ADC A, (HL) {:X}", opcode);
-            this -> ADC_1B_1C(this -> memory.read_8_bit(this -> registers -> registers.HL_double), & cycles);
+            this -> ADC_1B_2C_8Bit(this -> memory.read_8_bit(this -> registers -> registers.HL_double), & cycles);
             break;
         }
         case 0x8F: {
@@ -1701,7 +1710,7 @@ void CPU::FDE() {
         }
         case 0xC8: {
             // spdlog::info("RST Z {:X}", opcode);
-            this -> RST_COND(this -> registers -> get_flag(FLAG_Z), & cycles);
+            this -> RET_COND(this -> registers -> get_flag(FLAG_Z), & cycles);
             break;
         }
         case 0xC9: {
@@ -1777,12 +1786,14 @@ void CPU::FDE() {
         }
         case 0xD8: {
             // spdlog::info("RST C {:X}", opcode);
-            this -> RST_COND(this -> registers -> get_flag(FLAG_C), & cycles);
+            this -> RET_COND(this -> registers -> get_flag(FLAG_C), & cycles);
             break;
         }
         case 0xD9: { //Needs interrupt for RETI
             // spdlog::info("RETI {:X}", opcode);
             this -> RET_UNCOND( & cycles);
+            this -> registers -> IME = 1;
+
             break;
         }
         case 0xDA: {
@@ -1891,11 +1902,12 @@ void CPU::FDE() {
         case 0xF3: {
             // spdlog::info("DI {:X}", opcode);
             // Requires interrupts
+            this->process_4t_cycles();
             this -> registers -> IME = 0;
             enable_IME_next_flag_one = false;
             enable_IME_next_flag_two = false;
             this -> registers -> registers.PC++;
-            cycles++;
+            
             break;
 
         }
@@ -1932,10 +1944,12 @@ void CPU::FDE() {
         case 0xFB: {
 
             // spdlog::info("EI {:X}", opcode);
+            cout << "EI"<<endl;
             // enable_IME_next_flag_one = true;
+            this->process_4t_cycles();
             this -> registers -> IME = true;
             this -> registers -> registers.PC++;
-            cycles++;
+     
             break;
         }
         case 0xFE: {
@@ -3298,7 +3312,7 @@ void CPU::FDE() {
 
         default: {
             // spdlog::info("Unimplemented 8 bit {:X}", opcode);
-            cout << "Unimplemented 8 bit " << (int) opcode << std::endl;
+            cout << "Unimplemented 8 bit " << std::hex << (int) opcode << std::endl;
             break;
         }
 
@@ -3330,6 +3344,6 @@ void CPU::FDE() {
             this -> registers -> IME = true;
             enable_IME_next_flag_two = false;
         }
-    }
+    
 
 }

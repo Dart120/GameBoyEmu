@@ -2,13 +2,16 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 #include <stdint.h>
+#include <functional>
 #include "system_status.h"
+#include "modes.h"
+
 struct system_status_struct;
 class Memory
 {
     // Access specifier
     public:
-    Memory(system_status_struct* system);
+    Memory(std::function<void()> reset_timer, uint16_t& cycles_left_dma, MODES& GPU_mode);
     // Data Members
     
     uint8_t* mem;
@@ -28,15 +31,23 @@ class Memory
     uint8_t* TMA;
     uint8_t* TIMA;
   
-    system_status_struct* system;
-    int fill_memory(uint8_t num);
+    std::function<void()> reset_timer;
+    uint16_t& cycles_left_dma;
+    bool start_dma;
+    MODES& GPU_mode;
+    void fill_memory();
     uint8_t get_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t set_bit_from_addr(uint16_t address, uint8_t bit);
+    uint8_t clear_bit_from_addr(uint16_t address, uint8_t bit);
     uint8_t read_8_bit(uint16_t address);
     int write_8_bit(uint16_t address, uint8_t data);
     uint16_t read_16_bit(uint16_t address);
     int write_16_bit(uint16_t address, uint16_t data);
     bool read_rom(char* name);
+    bool read_boot_rom(char* name);
+    bool is_inaccessible(uint16_t address);
+    bool is_write_inaccessible(uint16_t address);
+    
     // Member Functions()
  
 };
